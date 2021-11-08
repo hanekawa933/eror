@@ -6,7 +6,7 @@ import InputFilterTable from "../components/InputFilterTable";
 import axios from "axios";
 import OptionButtonMenuTable from "../components/OptionButtonMenuTable";
 
-const TableUserAccount = () => {
+const TableCategory = () => {
   const [query, setQuery] = useState(``);
   const [active, setActive] = useState([1]);
   const [filterText, setFilterText] = useState("");
@@ -15,7 +15,7 @@ const TableUserAccount = () => {
 
   const fetchUserData = async () => {
     try {
-      const result = await axios.get("http://localhost/eror/api/user");
+      const result = await axios.get("http://localhost/eror/api/kategori");
       setUsers(result.data.data);
     } catch (error) {
       alert(error);
@@ -28,10 +28,8 @@ const TableUserAccount = () => {
 
   const columnNames = [
     { names: "No", selector: "no", width: "7%" },
-    { names: "User Info", selector: "user_info", width: "13%" },
-    { names: "User Profile", selector: "user_profile", width: "30%" },
-    { names: "User Contact", selector: "user_contact", width: "25%" },
-    { names: "Roles", selector: "roles", width: "13%" },
+    { names: "Category", selector: "category" },
+    { names: "Icon Category", selector: "icon_category" },
     { names: "Option", selector: "option" },
   ];
 
@@ -56,61 +54,28 @@ const TableUserAccount = () => {
 
   const dataTable = users.map((result, index) => {
     return {
+      id: index,
       no: index + 1,
-      username: result.username,
-      nama_lengkap: result.nama_lengkap,
-      jenis_kelamin: result.jenis_kelamin,
-      email: result.email,
-      no_telp: result.no_telp,
-      jabatan: result.jabatan,
-      role_id: result.role_id,
-      role: result.nama,
+      nama: result.nama,
+      category: (
+        <Text fontSize="1.3em" my="3">
+          {result.nama}
+        </Text>
+      ),
+      icon_category: (
+        <Box my="3">
+          <Text fontSize="1.3em">{result.nama}</Text>
+        </Box>
+      ),
+      option: <OptionButtonMenuTable />,
     };
   });
 
   const filteredItems = dataTable.filter((item) => {
     if (!filterText) return true;
-    if (
-      item.username.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.nama_lengkap.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.jenis_kelamin.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.email.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.no_telp.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.jabatan.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.role.toLowerCase().includes(filterText.toLowerCase())
-    ) {
+    if (item.nama.toLowerCase().includes(filterText.toLowerCase())) {
       return true;
     }
-  });
-
-  const filteredTableWithStyle = filteredItems.map((result, index) => {
-    return {
-      no: index + 1,
-      user_info: (
-        <Text fontSize="1.3em" my="3">
-          {result.username}
-        </Text>
-      ),
-      user_profile: (
-        <Box my="3">
-          <Text fontSize="1.3em">{result.nama_lengkap}</Text>
-          <Text color="gray.400">{result.jenis_kelamin}</Text>
-        </Box>
-      ),
-      user_contact: (
-        <Box my="3">
-          <Text fontSize="1.3em">{result.email}</Text>
-          <Text color="gray.400">{result.no_telp}</Text>
-        </Box>
-      ),
-      roles: (
-        <Box my="3">
-          <Text fontSize="1.3em">{result.jabatan}</Text>
-          <Text color="gray.400">{result.role}</Text>
-        </Box>
-      ),
-      option: <OptionButtonMenuTable />,
-    };
   });
 
   const columns = columnNames.map((res) => {
@@ -119,7 +84,6 @@ const TableUserAccount = () => {
       selector: (row) => row[res.selector],
       sortable: true,
       width: res.width,
-      center: res.center,
     };
   });
 
@@ -128,7 +92,7 @@ const TableUserAccount = () => {
       <Box mt="5">
         <DataTable
           columns={columns}
-          data={filteredTableWithStyle}
+          data={filteredItems}
           pagination
           paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
           subHeader
@@ -143,4 +107,4 @@ const TableUserAccount = () => {
   );
 };
 
-export default TableUserAccount;
+export default TableCategory;

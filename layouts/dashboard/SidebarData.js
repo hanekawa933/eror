@@ -43,11 +43,6 @@ const operational = [
     to: "/dashboard/create/category",
     icon: getIcon(category),
   },
-  {
-    text: "status",
-    to: "/dashboard/create/status",
-    icon: getIcon(status),
-  },
 ];
 
 const report = [
@@ -65,11 +60,6 @@ const report = [
     text: "category",
     to: "/dashboard/table/category",
     icon: getIcon(category),
-  },
-  {
-    text: "status",
-    to: "/dashboard/table/status",
-    icon: getIcon(status),
   },
 ];
 

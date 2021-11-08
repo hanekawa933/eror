@@ -41,10 +41,6 @@ const FormReport = () => {
     jenis_kerusakan: Yup.string().required("Input tidak boleh kosong"),
     lokasi: Yup.string().required("Input tidak boleh kosong"),
     keterangan: Yup.string().required(),
-    keterangan_admin: Yup.string().required("Input tidak boleh kosong"),
-    keterangan_teknisi: Yup.string().required("Input tidak boleh kosong"),
-    tanggal_lapor: Yup.date().required("Input tidak boleh kosong"),
-    tanggal_pengecekan: Yup.date().required("Input tidak boleh kosong"),
     kategori_id: Yup.number().required("Input tidak boleh kosong"),
   });
 
@@ -57,7 +53,7 @@ const FormReport = () => {
     };
     try {
       const result = await axios.post(
-        "http://localhost/eror/api/report",
+        "http://localhost/eror/api/laporan",
         body,
         config
       );
@@ -73,10 +69,6 @@ const FormReport = () => {
       jenis_kerusakan: "",
       lokasi: "",
       keterangan: "",
-      keterangan_admin: "",
-      keterangan_teknisi: "",
-      tanggal_lapor: "",
-      tanggal_pengecekan: "",
       kategori_id: "",
     },
     validationSchema: Schema,
@@ -104,7 +96,9 @@ const FormReport = () => {
         pt="5"
         isInvalid={Boolean(touched[label] && errors[label])}
       >
-        <FormLabel textTransform="capitalize">{label}</FormLabel>
+        <FormLabel textTransform="capitalize">
+          {label.split("_").join(" ")}
+        </FormLabel>
         <Input
           type="text"
           name={label}
@@ -157,8 +151,6 @@ const FormReport = () => {
           {InputTypeText("jenis_kerusakan")}
           {InputTypeText("lokasi")}
           {InputTypeText("keterangan")}
-          {InputTypeText("tanggal_lapor")}
-          {InputTypeText("kategori")}
           <FormControl
             id="kategori_id"
             pt="5"

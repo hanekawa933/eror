@@ -17,6 +17,7 @@ import { useFormik, Form, FormikProvider } from "formik";
 import axios from "axios";
 
 const FormUser = () => {
+  const [create, setCreate] = useState([]);
   const Schema = Yup.object().shape({
     username: Yup.string().required("Input tidak boleh kosong"),
     nama_lengkap: Yup.string().required("Input tidak boleh kosong"),
@@ -91,7 +92,9 @@ const FormUser = () => {
         pt="5"
         isInvalid={Boolean(touched[label] && errors[label])}
       >
-        <FormLabel textTransform="capitalize">{label}</FormLabel>
+        <FormLabel textTransform="capitalize">
+          {label.split("_").join(" ")}
+        </FormLabel>
         <Input
           type="text"
           name={label}
