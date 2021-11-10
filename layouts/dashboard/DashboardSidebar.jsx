@@ -3,10 +3,11 @@ import {
   Box,
   Flex,
   Spacer,
-  Radio,
+  Switch,
   Avatar,
   Text,
   Heading,
+  Tooltip,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import NavSection from "./NavSection";
@@ -21,10 +22,8 @@ const DashboardSidebar = () => {
       display={["none", "none", "none", "none", "inline", "inline"]}
       pb="10"
     >
-      <Flex pt="5" px="5">
+      <Flex pt="5" px="5" justifyContent="center" alignItems="center">
         <Link href="/dashboard/home">Disini Logo</Link>
-        <Spacer />
-        <Radio />
       </Flex>
       <Box my="7" mx="5" bg="gray.100" borderRadius="md" py="4" px="7">
         <Flex>

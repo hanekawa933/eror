@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Avatar } from "@chakra-ui/react";
+import {
+  Box,
+  Menu,
+  MenuButton,
+  MenuList,
+  Button,
+  Divider,
+} from "@chakra-ui/react";
+import { SettingsIcon, SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 
@@ -35,12 +43,50 @@ const DashboardNavbar = () => {
     >
       <Icon icon="ci:list-ul" width={30} height={30} cursor="pointer" />
       <p>Disini Logo</p>
-      <Avatar
-        size="md"
-        name="Avatar"
-        src="/assets/img/photo_profile.png"
-        cursor="pointer"
-      />
+      <Menu>
+        <MenuButton as={Button}>
+          <SettingsIcon />
+        </MenuButton>
+        <MenuList>
+          <Box as="span" px="5" fontSize="1.1em" fontWeight="bold">
+            Settings
+          </Box>
+          <Divider pb="3" />
+          <Box display="flex" flexDirection="column" px="5">
+            <Box as="span" py="3" fontWeight="semibold">
+              App Theme
+            </Box>
+            <Box display="flex" justifyContent="space-around">
+              <Box
+                cursor="pointer"
+                width="20"
+                height="20"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                background="yellow.100"
+                borderRadius="md"
+                _hover={{ background: "yellow.200" }}
+              >
+                <SunIcon color="gray.900" />
+              </Box>
+              <Box
+                cursor="pointer"
+                width="20"
+                height="20"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                background="gray.800"
+                borderRadius="md"
+                _hover={{ background: "gray.900" }}
+              >
+                <MoonIcon />
+              </Box>
+            </Box>
+          </Box>
+        </MenuList>
+      </Menu>
     </Box>
   );
 };

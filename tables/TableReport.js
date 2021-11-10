@@ -1,5 +1,24 @@
 import { useState, useEffect, useMemo } from "react";
-import { Box, Button, Heading, Text, Badge, FormLabel } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  Badge,
+  FormLabel,
+  useDisclosure,
+  FormControl,
+  Input,
+  FormErrorMessage,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Select,
+} from "@chakra-ui/react";
 import DataTable from "react-data-table-component";
 import transparentTheme from "../styles/tableTheme";
 import InputFilterTable from "../components/InputFilterTable";
@@ -7,26 +26,108 @@ import moment from "moment";
 import "moment/locale/id";
 import axios from "axios";
 import OptionButtonMenuTable from "../components/OptionButtonMenuTable";
+import * as Yup from "yup";
+import { useFormik, Form, FormikProvider, Field } from "formik";
 
 const TableUserAccount = () => {
-  const [query, setQuery] = useState(``);
-  const [active, setActive] = useState([1]);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [reports, setReports] = useState([]);
+  const [ids, setIds] = useState("");
+  const [user, setUser] = useState([]);
+  const [category, setCategory] = useState([]);
 
-  const fetchUserData = async () => {
+  const fetchReportUserAndCategory = async () => {
     try {
+      const users = await axios.get("http://localhost/eror/api/user");
+      const category = await axios.get("http://localhost/eror/api/kategori");
       const result = await axios.get("http://localhost/eror/api/laporan");
-      setUsers(result.data.data);
+      setReports(result.data.data);
+      setUser(users.data.data);
+      setCategory(category.data.data);
     } catch (error) {
       alert(error);
     }
   };
 
   useEffect(() => {
-    fetchUserData();
+    fetchReportUserAndCategory();
   }, []);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const openAndSetIds = (val) => {
+    onOpen();
+    setIds(val);
+  };
+
+  const dataFiltered = reports.filter((val) => {
+    return val.id === ids;
+  });
+
+  const Schema = Yup.object().shape({
+    pelapor_id: Yup.number().required("Input tidak boleh kosong"),
+    jenis_kerusakan: Yup.string().required("Input tidak boleh kosong"),
+    lokasi: Yup.string().required("Input tidak boleh kosong"),
+    keterangan: Yup.string().required(),
+    kategori_id: Yup.number().required("Input tidak boleh kosong"),
+  });
+
+  let initValues = {};
+
+  dataFiltered.map(async (result) => {
+    return (initValues = {
+      pelapor_id: result.pelapor_id,
+      jenis_kerusakan: result.jenis_kerusakan,
+      lokasi: result.lokasi,
+      keterangan: result.keterangan,
+      kategori_id: result.kategori_id,
+    });
+  });
+
+  const updateReport = (ids, values) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const body = JSON.stringify(values);
+
+      const result = axios.put(
+        `http://localhost/eror/api/laporan/update/id/${ids}`,
+        body,
+        config
+      );
+      setIds("");
+      fetchReportUserAndCategory();
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: initValues,
+    validationSchema: Schema,
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      updateReport(ids, values);
+      resetForm({});
+      onClose();
+      setSubmitting(false);
+    },
+    enableReinitialize: true,
+  });
+
+  const {
+    errors,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    getFieldProps,
+    handleBlur,
+    values,
+  } = formik;
 
   const columnNames = [
     { names: "No", selector: "no", width: "7%" },
@@ -55,15 +156,15 @@ const TableUserAccount = () => {
 
   transparentTheme;
 
-  const dataTable = users.map((result, index) => {
+  const dataTable = reports.map((result, index) => {
     const BadgeProgress = (
       <Badge
         colorScheme={
-          result.status_id === 4
+          parseInt(result.status_id) === 4
             ? "blue"
-            : result.status_id === 3
+            : parseInt(result.status_id) === 3
             ? "yellow"
-            : result.status_id === 2
+            : parseInt(result.status_id) === 2
             ? "red"
             : "green"
         }
@@ -117,7 +218,9 @@ const TableUserAccount = () => {
           <Text color="gray.400">{result.role}</Text>
         </Box>
       ),
-      option: <OptionButtonMenuTable />,
+      option: (
+        <OptionButtonMenuTable setAndOpen={() => openAndSetIds(result.id)} />
+      ),
       progress: BadgeProgress,
     };
   });
@@ -344,8 +447,113 @@ const TableUserAccount = () => {
     </Box>
   );
 
+  const InputTypeText = (label) => {
+    return (
+      <FormControl
+        id={label}
+        pt="5"
+        isInvalid={Boolean(touched[label] && errors[label])}
+      >
+        <FormLabel textTransform="capitalize">
+          {label.split("_").join(" ")}
+        </FormLabel>
+        <Input
+          type="text"
+          name={label}
+          {...getFieldProps(label)}
+          onBlur={handleBlur}
+        />
+        <FormErrorMessage>{touched[label] && errors[label]}</FormErrorMessage>
+      </FormControl>
+    );
+  };
+
+  const userOption = user.map((result, index) => {
+    return (
+      <option value={result.id} key={index}>
+        {result.username}
+      </option>
+    );
+  });
+
+  const categoryOption = category.map((result, index) => {
+    return (
+      <option value={result.id} key={index}>
+        {result.nama}
+      </option>
+    );
+  });
+
+  const modalEdit = (
+    <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Report</ModalHeader>
+        <ModalCloseButton />
+        <FormikProvider value={formik}>
+          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+            <ModalBody>
+              <FormControl
+                id="pelapor_id"
+                pt="5"
+                isInvalid={Boolean(touched.pelapor_id && errors.pelapor_id)}
+              >
+                <FormLabel textTransform="capitalize">Pelapor</FormLabel>
+                <Select
+                  placeholder="Pilih User"
+                  name="pelapor_id"
+                  {...getFieldProps("pelapor_id")}
+                  onBlur={handleBlur}
+                >
+                  {userOption}
+                </Select>
+                <FormErrorMessage>
+                  {touched.pelapor_id && errors.pelapor_id}
+                </FormErrorMessage>
+              </FormControl>
+              {InputTypeText("jenis_kerusakan")}
+              {InputTypeText("lokasi")}
+              {InputTypeText("keterangan")}
+              <FormControl
+                id="kategori_id"
+                pt="5"
+                isInvalid={Boolean(touched.kategori_id && errors.kategori_id)}
+              >
+                <FormLabel textTransform="capitalize">Kategori</FormLabel>
+                <Select
+                  placeholder="Pilih Kategori"
+                  name="kategori_id"
+                  {...getFieldProps("kategori_id")}
+                  onBlur={handleBlur}
+                >
+                  {categoryOption}
+                </Select>
+                <FormErrorMessage>
+                  {touched.kategori_id && errors.kategori_id}
+                </FormErrorMessage>
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="red" mr={3} onClick={onClose}>
+                Batal
+              </Button>
+              <Button
+                type="submit"
+                colorScheme="green"
+                isLoading={isSubmitting}
+              >
+                Ubah Data
+              </Button>
+            </ModalFooter>
+          </Form>
+        </FormikProvider>
+      </ModalContent>
+    </Modal>
+  );
+
   return (
     <Box>
+      {modalEdit}
       <Box mt="5">
         <DataTable
           columns={columns}

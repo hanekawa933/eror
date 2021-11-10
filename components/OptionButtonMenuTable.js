@@ -9,7 +9,7 @@ import {
 
 import { SettingsIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
-const OptionButtonMenuTable = () => {
+const OptionButtonMenuTable = ({ setAndDelete, setAndOpen }) => {
   return (
     <Menu>
       <MenuButton as={Button} size="sm" variant="outline">
@@ -23,6 +23,7 @@ const OptionButtonMenuTable = () => {
             colorScheme="red"
             leftIcon={<DeleteIcon />}
             width="100%"
+            onClick={() => setAndDelete()}
           >
             Delete
           </Button>
@@ -34,6 +35,7 @@ const OptionButtonMenuTable = () => {
             colorScheme="whatsapp"
             leftIcon={<EditIcon />}
             width="100%"
+            onClick={() => setAndOpen()}
           >
             Edit
           </Button>
