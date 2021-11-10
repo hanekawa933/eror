@@ -2,12 +2,10 @@ import React from "react";
 import {
   Box,
   Flex,
-  Spacer,
-  Switch,
   Avatar,
   Text,
   Heading,
-  Tooltip,
+  useColorMode,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import NavSection from "./NavSection";
@@ -25,12 +23,24 @@ const DashboardSidebar = () => {
       <Flex pt="5" px="5" justifyContent="center" alignItems="center">
         <Link href="/dashboard/home">Disini Logo</Link>
       </Flex>
-      <Box my="7" mx="5" bg="gray.100" borderRadius="md" py="4" px="7">
+      <Box
+        my="7"
+        mx="5"
+        bg={useColorMode().colorMode === "dark" ? "gray.700" : "gray.100"}
+        borderRadius="md"
+        py="4"
+        px="7"
+      >
         <Flex>
           <Avatar size="md" name="Avatar" src="/assets/img/photo_profile.png" />
           <Box mx="5">
             <Heading fontSize="md">Username</Heading>
-            <Text fontSize="sm" color="gray.500">
+            <Text
+              fontSize="sm"
+              color={
+                useColorMode().colorMode === "dark" ? "gray.200" : "gray.700"
+              }
+            >
               Administrator
             </Text>
           </Box>

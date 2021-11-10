@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, List, ListItem, Flex, Text, Span, Link } from "@chakra-ui/react";
+import {
+  Box,
+  List,
+  ListItem,
+  useColorMode,
+  Text,
+  Link,
+} from "@chakra-ui/react";
 import { Link as NextLink } from "next/link";
 import { general, report, operational } from "./SidebarData";
 import { Icon } from "@iconify/react";
@@ -9,6 +16,7 @@ const logoutIcon = "simple-line-icons:logout";
 const getIcon = (icon) => <Icon icon={icon} width={22} height={22} />;
 
 const NavSection = ({ logout }) => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
 
   const ActiveList = (path, key, icon, text, btn) => {
@@ -21,14 +29,14 @@ const NavSection = ({ logout }) => {
           alignItems="center"
           display="flex"
           borderRadius="md"
-          bg="gray.700"
+          bg={colorMode === "dark" ? "gray.700" : "gray.100"}
           p="3"
           boxShadow="dark-lg"
           _hover={{ textDecoration: "none" }}
         >
           {icon}
           <Text
-            color="gray.100"
+            color={colorMode === "dark" ? "gray.100" : "gray.700"}
             fontWeight="500"
             fontSize="sm"
             casing="uppercase"
@@ -51,12 +59,14 @@ const NavSection = ({ logout }) => {
           alignItems="center"
           display="flex"
           borderRadius="md"
-          _hover={{ background: "gray.700" }}
+          _hover={{
+            background: colorMode === "dark" ? "gray.700" : "gray.100",
+          }}
           p="3"
         >
           {icon}
           <Text
-            color="gray.100"
+            color={colorMode === "dark" ? "gray.100" : "gray.700"}
             fontWeight="500"
             fontSize="sm"
             casing="uppercase"
@@ -89,7 +99,10 @@ const NavSection = ({ logout }) => {
       <Link
         href="/dashboard"
         borderRadius="md"
-        _hover={{ background: "gray.700", textDecoration: "none" }}
+        _hover={{
+          background: colorMode === "dark" ? "gray.700" : "gray.100",
+          textDecoration: "none",
+        }}
         onClick={logout}
         alignItems="center"
         display="flex"
@@ -97,7 +110,7 @@ const NavSection = ({ logout }) => {
       >
         {getIcon(logoutIcon)}
         <Text
-          color="gray.100"
+          color={colorMode === "dark" ? "gray.100" : "gray.700"}
           fontWeight="500"
           fontSize="sm"
           casing="uppercase"

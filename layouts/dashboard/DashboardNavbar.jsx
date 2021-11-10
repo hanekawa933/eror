@@ -6,6 +6,7 @@ import {
   MenuList,
   Button,
   Divider,
+  useColorMode,
 } from "@chakra-ui/react";
 import { SettingsIcon, SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { Icon } from "@iconify/react";
@@ -14,6 +15,9 @@ import Image from "next/image";
 const DashboardNavbar = () => {
   const NavbarMobile = "64px";
   const NavbarDesktop = "92px";
+
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <Box
       sx={{ "--my-calculation": "calc(100% - 280px)" }}
@@ -67,6 +71,7 @@ const DashboardNavbar = () => {
                 background="yellow.100"
                 borderRadius="md"
                 _hover={{ background: "yellow.200" }}
+                onClick={colorMode === "dark" ? toggleColorMode : () => null}
               >
                 <SunIcon color="gray.900" />
               </Box>
@@ -80,8 +85,9 @@ const DashboardNavbar = () => {
                 background="gray.800"
                 borderRadius="md"
                 _hover={{ background: "gray.900" }}
+                onClick={colorMode === "light" ? toggleColorMode : () => null}
               >
-                <MoonIcon />
+                <MoonIcon color="gray.100" />
               </Box>
             </Box>
           </Box>
