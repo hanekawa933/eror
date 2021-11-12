@@ -16,12 +16,12 @@ const getIcon = (icon) => <Icon icon={icon} width={22} height={22} />;
 
 const general = [
   {
-    text: "home",
+    text: "beranda",
     to: "/dashboard/home",
     icon: getIcon(dashboard),
   },
   {
-    text: "profile",
+    text: "profil",
     to: "/dashboard/profile",
     icon: getIcon(profile),
   },
@@ -29,17 +29,17 @@ const general = [
 
 const operational = [
   {
-    text: "account",
+    text: "akun",
     to: "/dashboard/create/account",
     icon: getIcon(account),
   },
   {
-    text: "report",
+    text: "laporan",
     to: "/dashboard/create/report",
     icon: getIcon(reportIcon),
   },
   {
-    text: "category",
+    text: "kategori",
     to: "/dashboard/create/category",
     icon: getIcon(category),
   },
@@ -47,20 +47,44 @@ const operational = [
 
 const report = [
   {
-    text: "account",
+    text: "akun",
     to: "/dashboard/table/account",
     icon: getIcon(account),
   },
   {
-    text: "report",
+    text: "laporan",
     to: "/dashboard/table/report",
     icon: getIcon(reportIcon),
   },
   {
-    text: "category",
+    text: "kategori",
     to: "/dashboard/table/category",
     icon: getIcon(category),
   },
 ];
 
-export { general, report, operational };
+const user = [
+  {
+    text: "riwayat",
+    to: "/report/history",
+    icon: getIcon(category),
+  },
+];
+
+const admin = [
+  {
+    text: "riwayat",
+    to: "/admin/report/history",
+    icon: getIcon(category),
+  },
+];
+
+const technician = [
+  {
+    text: "riwayat",
+    to: "/technician/report/history",
+    icon: getIcon(category),
+  },
+];
+
+export { general, report, operational, user, admin, technician };

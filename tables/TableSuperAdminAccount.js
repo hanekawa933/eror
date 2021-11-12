@@ -16,9 +16,10 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  useColorMode,
 } from "@chakra-ui/react";
 import DataTable from "react-data-table-component";
-import transparentTheme from "../styles/tableTheme";
+import { darkTheme, lightTheme } from "../styles/tableTheme";
 import InputFilterTable from "../components/InputFilterTable";
 import axios from "axios";
 import OptionButtonMenuTable from "../components/OptionButtonMenuTable";
@@ -147,7 +148,8 @@ const TableSuperAdminAccount = () => {
     );
   }, [filterText, resetPaginationToggle]);
 
-  transparentTheme;
+  darkTheme;
+  lightTheme;
 
   const dataTable = users.map((result, index) => {
     return {
@@ -304,7 +306,7 @@ const TableSuperAdminAccount = () => {
           persistTableHead
           highlightOnHover
           pointerOnHover
-          theme="dark"
+          theme={useColorMode().colorMode === "dark" ? "dark" : "light"}
         />
       </Box>
     </Box>

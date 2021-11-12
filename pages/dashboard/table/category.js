@@ -21,7 +21,6 @@ export default function DashboardTableCategory() {
         <Box p="10">
           <Box
             p="10"
-            background="gray.700"
             borderRadius="lg"
             boxShadow="2xl"
             _hover={{ boxShadow: "dark-lg" }}

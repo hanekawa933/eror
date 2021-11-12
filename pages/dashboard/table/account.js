@@ -28,7 +28,6 @@ export default function DashboardTableAccount() {
               <TabPanel>
                 <Box
                   p="10"
-                  background="gray.700"
                   borderRadius="lg"
                   boxShadow="2xl"
                   _hover={{ boxShadow: "dark-lg" }}
@@ -40,7 +39,6 @@ export default function DashboardTableAccount() {
               <TabPanel>
                 <Box
                   p="10"
-                  background="gray.700"
                   borderRadius="lg"
                   boxShadow="2xl"
                   _hover={{ boxShadow: "dark-lg" }}

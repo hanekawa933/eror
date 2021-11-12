@@ -18,9 +18,10 @@ import {
   ModalBody,
   ModalCloseButton,
   Select,
+  useColorMode,
 } from "@chakra-ui/react";
 import DataTable from "react-data-table-component";
-import transparentTheme from "../styles/tableTheme";
+import { darkTheme, lightTheme } from "../styles/tableTheme";
 import InputFilterTable from "../components/InputFilterTable";
 import moment from "moment";
 import "moment/locale/id";
@@ -154,7 +155,12 @@ const TableUserAccount = () => {
     );
   }, [filterText, resetPaginationToggle]);
 
-  transparentTheme;
+  darkTheme;
+  lightTheme;
+
+  const { colorMode } = useColorMode();
+
+  const fontColor = colorMode === "dark" ? "gray.400" : "gray.700";
 
   const dataTable = reports.map((result, index) => {
     const BadgeProgress = (
@@ -195,27 +201,35 @@ const TableUserAccount = () => {
       ),
       user_info: (
         <Box my="3">
-          <Text fontSize="1.3em">{result.nama_lengkap}</Text>
-          <Text color="gray.400">{result.email}</Text>
+          <Text fontSize="1.3em" fontWeight="semibold">
+            {result.nama_lengkap}
+          </Text>
+          <Text color={fontColor}>{result.email}</Text>
         </Box>
       ),
       report_detail: (
         <Box my="3">
-          <Text fontSize="1.3em">{result.jenis_kerusakan}</Text>
-          <Text color="gray.400">{result.lokasi}</Text>
+          <Text fontSize="1.3em" fontWeight="semibold">
+            {result.jenis_kerusakan}
+          </Text>
+          <Text color={fontColor}>{result.lokasi}</Text>
           {BadgeProgress}
         </Box>
       ),
       user_contact: (
         <Box my="3">
-          <Text fontSize="1.3em">{result.email}</Text>
-          <Text color="gray.400">{result.no_telp}</Text>
+          <Text fontSize="1.3em" fontWeight="semibold">
+            {result.email}
+          </Text>
+          <Text color={fontColor}>{result.no_telp}</Text>
         </Box>
       ),
       roles: (
         <Box my="3">
-          <Text fontSize="1.3em">{result.jabatan}</Text>
-          <Text color="gray.400">{result.role}</Text>
+          <Text fontSize="1.3em" fontWeight="semibold">
+            {result.jabatan}
+          </Text>
+          <Text color={fontColor}>{result.role}</Text>
         </Box>
       ),
       option: (
@@ -250,12 +264,16 @@ const TableUserAccount = () => {
     };
   });
 
+  const fontHeading = colorMode === "dark" ? "yellow.500" : "gray.900";
+  const fontLabel = colorMode === "dark" ? "yellow.300" : "gray.700";
+  const fontDesc = colorMode === "dark" ? "yellow.100" : "gray.500";
+
   const ExpandedComponent = ({ data }) => (
     <Box display="flex" py="5" justifyContent="space-around">
       <Box>
         <Heading
           fontSize="1.2em"
-          color="yellow.500"
+          color={fontHeading}
           textTransform="uppercase"
           pt="5"
         >
@@ -263,67 +281,79 @@ const TableUserAccount = () => {
         </Heading>
         <Box px="5">
           <Box py="3">
-            <FormLabel color="yellow.100">Username</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Username
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.username}
             </Text>
           </Box>
           <Box>
-            <FormLabel color="yellow.100">Nama Lengkap</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Nama Lengkap
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.nama_lengkap}
             </Text>
           </Box>
           <Box py="3">
-            <FormLabel color="yellow.100">Jenis Kelamin</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Jenis Kelamin
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.jenis_kelamin}
             </Text>
           </Box>
           <Box>
-            <FormLabel color="yellow.100">Email</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Email
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.email}
             </Text>
           </Box>
           <Box py="3">
-            <FormLabel color="yellow.100">No Telepon</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              No Telepon
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.no_telp}
             </Text>
           </Box>
           <Box>
-            <FormLabel color="yellow.100">Jabatan</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Jabatan
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.jabatan}
             </Text>
@@ -333,7 +363,7 @@ const TableUserAccount = () => {
       <Box>
         <Heading
           fontSize="1.2em"
-          color="yellow.500"
+          color={fontHeading}
           textTransform="uppercase"
           pt="5"
         >
@@ -342,102 +372,120 @@ const TableUserAccount = () => {
         <Box px="5">
           <Box py="3">{data.progress}</Box>
           <Box py="3">
-            <FormLabel color="yellow.100">Kategori</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Kategori
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               Mechanical Electronic
             </Text>
           </Box>
           <Box>
-            <FormLabel color="yellow.100">Jenis Kerusakan</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Jenis Kerusakan
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.jenis_kerusakan}
             </Text>
           </Box>
           <Box py="3">
-            <FormLabel color="yellow.100">Lokasi</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Lokasi
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.lokasi}
             </Text>
           </Box>
           <Box>
-            <FormLabel color="yellow.100">Keterangan</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Keterangan
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.keterangan}
             </Text>
           </Box>
           <Box display="flex" py="3">
             <Box>
-              <FormLabel color="yellow.100">Tanggal Lapor</FormLabel>
+              <FormLabel color={fontLabel} fontWeight="bold">
+                Tanggal Lapor
+              </FormLabel>
               <Text
                 fontSize="1.1em"
-                color="yellow.300"
+                color={fontDesc}
                 textTransform="capitalize"
-                fontWeight="bold"
+                fontWeight="semibold"
               >
                 {data.tanggal_lapor}
               </Text>
             </Box>
             <Box pl="5">
-              <FormLabel color="yellow.100">Tanggal Pengecekan</FormLabel>
+              <FormLabel color={fontLabel} fontWeight="bold">
+                Tanggal Pengecekan
+              </FormLabel>
               <Text
                 fontSize="1.1em"
-                color="yellow.300"
+                color={fontDesc}
                 textTransform="capitalize"
-                fontWeight="bold"
+                fontWeight="semibold"
               >
                 {data.tanggal_pengecekan}
               </Text>
             </Box>
           </Box>
           <Box>
-            <FormLabel color="yellow.100">Keterangan Admin</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Keterangan Admin
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.keterangan_admin}
             </Text>
           </Box>
           <Box>
-            <FormLabel color="yellow.100">Keterangan Teknisi</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Keterangan Teknisi
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.keterangan_teknisi}
             </Text>
           </Box>
           <Box>
-            <FormLabel color="yellow.100">Terakhir Diedit Oleh</FormLabel>
+            <FormLabel color={fontLabel} fontWeight="bold">
+              Terakhir Diedit Oleh
+            </FormLabel>
             <Text
               fontSize="1.1em"
-              color="yellow.300"
+              color={fontDesc}
               textTransform="capitalize"
-              fontWeight="bold"
+              fontWeight="semibold"
             >
               {data.nama_lengkap}
             </Text>
@@ -565,7 +613,7 @@ const TableUserAccount = () => {
           persistTableHead
           highlightOnHover
           pointerOnHover
-          theme="dark"
+          theme={useColorMode().colorMode === "dark" ? "dark" : "light"}
           expandableRows
           expandableRowsComponent={ExpandedComponent}
         />

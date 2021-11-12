@@ -1,15 +1,7 @@
 import Head from "next/head";
 import DashboardLayout from "../../../layouts/dashboard";
 import { FormCategory } from "../../../form";
-import {
-  Box,
-  Heading,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 
 export default function DashboardCreateCategory() {
   return (
@@ -21,7 +13,6 @@ export default function DashboardCreateCategory() {
         <Box p="14">
           <Box
             p="10"
-            background="gray.700"
             borderRadius="lg"
             boxShadow="2xl"
             _hover={{ boxShadow: "dark-lg" }}

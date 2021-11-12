@@ -1,4 +1,5 @@
-import React from "react";
+import { useContext } from "react";
+import { TempContext } from "../../context/TempContext";
 import {
   Box,
   List,
@@ -15,9 +16,10 @@ import { useRouter } from "next/router";
 const logoutIcon = "simple-line-icons:logout";
 const getIcon = (icon) => <Icon icon={icon} width={22} height={22} />;
 
-const NavSection = ({ logout }) => {
+const NavSection = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
+  const [settings, setSettings] = useContext(TempContext);
 
   const ActiveList = (path, key, icon, text, btn) => {
     return (
@@ -31,7 +33,7 @@ const NavSection = ({ logout }) => {
           borderRadius="md"
           bg={colorMode === "dark" ? "gray.700" : "gray.100"}
           p="3"
-          boxShadow="dark-lg"
+          boxShadow="xl"
           _hover={{ textDecoration: "none" }}
         >
           {icon}
@@ -41,6 +43,15 @@ const NavSection = ({ logout }) => {
             fontSize="sm"
             casing="uppercase"
             mx="5"
+            display={[
+              "inline",
+              "inline",
+              "inline",
+              settings.bigMode === true ? "none" : "inline",
+              settings.bigMode === true ? "none" : "inline",
+              settings.bigMode === true ? "none" : "inline",
+            ]}
+            _groupHover={{ display: "inline" }}
           >
             {text}
           </Text>
@@ -61,6 +72,7 @@ const NavSection = ({ logout }) => {
           borderRadius="md"
           _hover={{
             background: colorMode === "dark" ? "gray.700" : "gray.100",
+            boxShadow: "xl",
           }}
           p="3"
         >
@@ -71,6 +83,15 @@ const NavSection = ({ logout }) => {
             fontSize="sm"
             casing="uppercase"
             mx="5"
+            display={[
+              "inline",
+              "inline",
+              "inline",
+              settings.bigMode === true ? "none" : "inline",
+              settings.bigMode === true ? "none" : "inline",
+              settings.bigMode === true ? "none" : "inline",
+            ]}
+            _groupHover={{ display: "inline" }}
           >
             {text}
           </Text>
@@ -102,8 +123,8 @@ const NavSection = ({ logout }) => {
         _hover={{
           background: colorMode === "dark" ? "gray.700" : "gray.100",
           textDecoration: "none",
+          boxShadow: "xl",
         }}
-        onClick={logout}
         alignItems="center"
         display="flex"
         p="3"
@@ -115,6 +136,15 @@ const NavSection = ({ logout }) => {
           fontSize="sm"
           casing="uppercase"
           mx="5"
+          display={[
+            "inline",
+            "inline",
+            "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+          ]}
+          _groupHover={{ display: "inline" }}
         >
           logout
         </Text>
@@ -123,49 +153,85 @@ const NavSection = ({ logout }) => {
   );
 
   return (
-    <Box width="280px" mt="10">
+    <Box
+      w={[
+        "280px",
+        "280px",
+        "280px",
+        settings.bigMode === true ? "90px" : "280px",
+        settings.bigMode === true ? "90px" : "280px",
+        settings.bigMode === true ? "90px" : "280px",
+      ]}
+      mt="10"
+      _groupHover={{ width: "280px" }}
+    >
       <Box>
-        <Box>
-          <Text
-            fontWeight="500"
-            fontSize="sm"
-            casing="uppercase"
-            mx="5"
-            my="5"
-            letterSpacing="2px"
-          >
-            General
-          </Text>
+        <Box
+          fontWeight="500"
+          fontSize="sm"
+          textTransform="uppercase"
+          mx="5"
+          my="5"
+          letterSpacing="2px"
+          display={[
+            "inline",
+            "inline",
+            "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+          ]}
+          _groupHover={{ display: "inline" }}
+        >
+          General
         </Box>
         <List px="5">
           {GeneralList}
           {logoutLink}
         </List>
       </Box>
-      <Box>
-        <Text
+      <Box mt="5">
+        <Box
           fontWeight="500"
           fontSize="sm"
-          casing="uppercase"
+          textTransform="uppercase"
           mx="5"
           my="5"
           letterSpacing="2px"
+          display={[
+            "inline",
+            "inline",
+            "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+          ]}
+          _groupHover={{ display: "inline" }}
         >
-          Create
-        </Text>
+          Form
+        </Box>
         <List px="5">{OperationalList}</List>
       </Box>
-      <Box>
-        <Text
+      <Box mt="5">
+        <Box
           fontWeight="500"
           fontSize="sm"
-          casing="uppercase"
+          textTransform="uppercase"
           mx="5"
           my="5"
           letterSpacing="2px"
+          display={[
+            "inline",
+            "inline",
+            "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+          ]}
+          _groupHover={{ display: "inline" }}
         >
-          Table Data
-        </Text>
+          Tabel Data
+        </Box>
         <List px="5">{ReportList}</List>
       </Box>
     </Box>

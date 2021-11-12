@@ -1,5 +1,6 @@
 import Head from "next/head";
 import DashboardLayout from "../../layouts/dashboard";
+import { Box } from "@chakra-ui/react";
 
 export default function DashboardHome() {
   return (
@@ -7,7 +8,7 @@ export default function DashboardHome() {
       <Head>
         <title>E-ROR | SuperAdmin Home</title>
       </Head>
-      <DashboardLayout>Test dulu aja</DashboardLayout>
+      <DashboardLayout></DashboardLayout>
     </div>
   );
 }

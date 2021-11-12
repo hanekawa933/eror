@@ -1,4 +1,5 @@
-import React from "react";
+import Cookie from "js-cookie";
+import { useContext } from "react";
 import {
   FormControl,
   FormLabel,
@@ -8,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
+import { TempContext } from "../../context/TempContext";
 import axios from "axios";
 
 import { useRouter } from "next/router";
@@ -20,6 +22,8 @@ const AuthLogin = () => {
     password: Yup.string().required("Password tidak boleh kosong"),
   });
 
+  const [settings, setSettings] = useContext(TempContext);
+
   const login = async (val) => {
     try {
       const body = JSON.stringify(val);
@@ -29,14 +33,14 @@ const AuthLogin = () => {
         },
       };
       const result = await axios.post(
-        "http://localhost/eror/api/superadmin/login",
+        "http://localhost/eror/api/user/login",
         body,
         config
       );
-      localStorage.setItem("token", `Bearer ${result.data.token}`);
-      Router.push("/dashboard/home");
+      Cookie.set("token", `Bearer ${result.data.token}`);
     } catch (error) {
       alert(error);
+      console.log(error);
     }
   };
 

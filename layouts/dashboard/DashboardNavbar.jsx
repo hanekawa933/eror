@@ -1,4 +1,5 @@
-import React from "react";
+import { useState, useContext } from "react";
+import { TempContext, NavbarContext } from "../../context/TempContext";
 import {
   Box,
   Menu,
@@ -7,25 +8,34 @@ import {
   Button,
   Divider,
   useColorMode,
+  Image,
 } from "@chakra-ui/react";
 import { SettingsIcon, SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { Icon } from "@iconify/react";
-import Image from "next/image";
-
 const DashboardNavbar = () => {
   const NavbarMobile = "64px";
   const NavbarDesktop = "92px";
-
   const { colorMode, toggleColorMode } = useColorMode();
+
+  const [settings, setSettings] = useContext(TempContext);
+
+  const toggleSidebar = () => {
+    setSettings({ ...settings, active: !settings.active });
+  };
 
   return (
     <Box
-      sx={{ "--my-calculation": "calc(100% - 280px)" }}
+      sx={{
+        "--my-calculation":
+          settings.bigMode === false
+            ? "calc(100% - 280px)"
+            : "calc(100% - 90px)",
+      }}
       w={[
         "100%",
         "100%",
         "100%",
-        "100%",
+        "var(--my-calculation)",
         "var(--my-calculation)",
         "var(--my-calculation)",
       ]}
@@ -39,14 +49,27 @@ const DashboardNavbar = () => {
         NavbarDesktop,
         NavbarDesktop,
       ]}
+      bg={useColorMode().colorMode === "dark" ? "gray.800" : "white"}
       position="fixed"
       top="0"
       right="0"
       px="6"
       display="flex"
     >
-      <Icon icon="ci:list-ul" width={30} height={30} cursor="pointer" />
-      <p>Disini Logo</p>
+      <Button
+        visibility={[
+          "visible",
+          "visible",
+          "visible",
+          "hidden",
+          "hidden",
+          "hidden",
+        ]}
+        onClick={() => toggleSidebar()}
+        zIndex="5000"
+      >
+        <Icon icon="ci:list-ul" width={24} height={24} />
+      </Button>
       <Menu>
         <MenuButton as={Button}>
           <SettingsIcon />

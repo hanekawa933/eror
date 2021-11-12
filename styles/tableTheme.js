@@ -1,10 +1,14 @@
 import { createTheme } from "react-data-table-component";
 
 // createTheme creates a new theme named solarized that overrides the build in dark theme
-const transparentTheme = createTheme("dark", {
+export const lightTheme = createTheme("light", {
   background: {
     default: "transparent",
   },
 });
 
-export default transparentTheme;
+export const darkTheme = createTheme("dark", {
+  background: {
+    default: "transparent",
+  },
+});

@@ -73,9 +73,8 @@ export default function Login() {
                 </Heading>
                 <Heading fontSize="1.3em" color="yellow.500">
                   <Box as="span" color="gray.600" pr="2">
-                    By
+                    Electronic-Request For Repair
                   </Box>
-                  SetnegX
                 </Heading>
               </Box>
             </Box>
