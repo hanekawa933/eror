@@ -1,28 +1,36 @@
 import Cookie from "js-cookie";
-import { useContext } from "react";
+import { useState } from "react";
 import {
   FormControl,
   FormLabel,
   Input,
   Button,
   FormErrorMessage,
+  Link,
+  Box,
+  InputRightElement,
+  InputGroup,
+  useToast,
 } from "@chakra-ui/react";
+import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
-import { TempContext } from "../../context/TempContext";
 import axios from "axios";
 
 import { useRouter } from "next/router";
 
 const AuthLogin = () => {
+  const toast = useToast();
   const Router = useRouter();
+  const [user, setUser] = useState([]);
+  const [hidden, setHidden] = useState(true);
 
   const Schema = Yup.object().shape({
-    username: Yup.string().required("Username tidak boleh kosong"),
+    email: Yup.string()
+      .required("Email tidak boleh kosong")
+      .email("Email tidak valid"),
     password: Yup.string().required("Password tidak boleh kosong"),
   });
-
-  const [settings, setSettings] = useContext(TempContext);
 
   const login = async (val) => {
     try {
@@ -33,27 +41,64 @@ const AuthLogin = () => {
         },
       };
       const result = await axios.post(
-        "http://localhost/eror/api/user/login",
+        "http://localhost/eror_api/api/user/login",
         body,
         config
       );
       Cookie.set("token", `Bearer ${result.data.token}`);
+
+      axios.defaults.headers.common[
+        "x-auth-token"
+      ] = `Bearer ${result.data.token}`;
+
+      const user = await axios.get(
+        "http://localhost/eror_api/api/user/profile"
+      );
+
+      const user_role = parseInt(user.data.data.role_id);
+
+      const route =
+        user_role === 1
+          ? "/home"
+          : user_role === 2
+          ? "/admin/home"
+          : "/technician/home";
+
+      toast({
+        title: "Berhasil login",
+        status: "success",
+        duration: 2000,
+        position: "top",
+      });
+
+      Router.push(route);
     } catch (error) {
-      alert(error);
-      console.log(error);
+      toast({
+        title: !error.response ? "Server Error" : error.response.data.message,
+        description: "Gagal login!",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
     }
+  };
+
+  const viewPassword = () => {
+    setHidden(!hidden);
   };
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
     },
     validationSchema: Schema,
-    onSubmit: (values, { resetForm, error, setSubmitting }) => {
+    onSubmit: (values, { resetForm, setSubmitting }) => {
       login(values);
-      setSubmitting(false);
-      resetForm();
+      setTimeout(() => {
+        resetForm({});
+        setSubmitting(false);
+      }, 2000);
     },
   });
 
@@ -70,19 +115,17 @@ const AuthLogin = () => {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <FormControl
-          id="username"
-          isInvalid={Boolean(touched.username && errors.username)}
+          id="email"
+          isInvalid={Boolean(touched.email && errors.email)}
         >
-          <FormLabel>Username</FormLabel>
+          <FormLabel>Email</FormLabel>
           <Input
             type="text"
-            name="username"
-            {...getFieldProps("username")}
+            name="email"
+            {...getFieldProps("email")}
             onBlur={handleBlur}
           />
-          <FormErrorMessage>
-            {touched.username && errors.username}
-          </FormErrorMessage>
+          <FormErrorMessage>{touched.email && errors.email}</FormErrorMessage>
         </FormControl>
         <FormControl
           id="password"
@@ -90,19 +133,33 @@ const AuthLogin = () => {
           isInvalid={Boolean(touched.password && errors.password)}
         >
           <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            name="password"
-            {...getFieldProps("password")}
-            onBlur={handleBlur}
-          />
+          <InputGroup>
+            <Input
+              type={hidden ? "password" : "text"}
+              name="password"
+              {...getFieldProps("password")}
+              onBlur={handleBlur}
+            />
+            <InputRightElement
+              mx="3"
+              cursor="pointer"
+              onClick={() => viewPassword()}
+            >
+              {hidden ? <ViewIcon w={6} h={6} /> : <ViewOffIcon w={6} h={6} />}
+            </InputRightElement>
+          </InputGroup>
           <FormErrorMessage>
             {touched.password && errors.password}
           </FormErrorMessage>
         </FormControl>
+        <Box mt="3">
+          <Link color="#E67503" href="/forgot_password" fontWeight="700">
+            Lupa password?
+          </Link>
+        </Box>
         <Button
           type="submit"
-          colorScheme="blue"
+          colorScheme="orange"
           w="100%"
           isLoading={isSubmitting}
           mt="5"

@@ -1,14 +1,60 @@
 import Head from "next/head";
 import DashboardLayout from "../../../../layouts/dashboard";
 import { FormUserReport } from "../../../../form";
-import { Box } from "@chakra-ui/react";
+import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
+import { useContext, useEffect, useState } from "react";
+import { TempContext } from "../../../../context/TempContext";
+import axios from "axios";
+import { useRouter } from "next/router";
+import moment from "moment";
+import "moment/locale/id";
 
 export default function CreateUserReport() {
+  const [userLogin, setUserLogin] = useState([]);
+  const [category, setCategory] = useState({});
+  const [settings, setSettings] = useContext(TempContext);
+
+  const router = useRouter();
+  const { id } = router.query;
+
+  const fetchUserLogin = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost/eror_api/api/user/profile"
+      );
+      setUserLogin(result.data.data);
+      console.log(result.data.data);
+      setSettings({ ...settings, userLogin: result.data.data });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const fetchCategoryById = async (id) => {
+    try {
+      const result = await axios.get(
+        `http://localhost/eror_api/api/kategori/item/id/${id}`
+      );
+      setCategory(result.data.data);
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    fetchUserLogin();
+    fetchCategoryById(id);
+  }, [id]);
+
   return (
     <div>
       <Head>
-        <title>E-ROR | SuperAdmin Create Account</title>
+        <title>E-ROR | Buat Laporan</title>
       </Head>
       <DashboardLayout>
         <Box px="14" pb="14">
@@ -18,13 +64,45 @@ export default function CreateUserReport() {
             boxShadow="2xl"
             _hover={{ boxShadow: "dark-lg" }}
           >
-            <Box display="flex" alignItems="center" fontWeight="semibold">
-              <Icon icon="carbon:report" width={16 * 2.2} height={16 * 2.2} />
-              <Box as="span" fontSize="2.2em" ml="3">
-                Create Report
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              w="100%"
+              bg={useColorMode().colorMode === "dark" ? "gray.700" : "gray.100"}
+              borderRadius="lg"
+              px="10"
+            >
+              <Box>
+                <Text
+                  fontSize="1.6em"
+                  color={
+                    useColorMode().colorMode === "dark"
+                      ? "gray.400"
+                      : "gray.600"
+                  }
+                  fontWeight="semibold"
+                  letterSpacing="1px"
+                >
+                  Request for repair:
+                </Text>
+                <Text
+                  fontSize="2em"
+                  fontWeight="bold"
+                  textTransform="capitalize"
+                  letterSpacing="2px"
+                >
+                  {category.nama}
+                </Text>
               </Box>
+              <Box
+                as="img"
+                src={"http://localhost/eror_api" + category.icon}
+                maxW="100%"
+                height="52"
+              ></Box>
             </Box>
-            <FormUserReport />
+            <FormUserReport id={id} />
           </Box>
         </Box>
       </DashboardLayout>

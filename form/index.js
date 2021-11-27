@@ -4,7 +4,11 @@ import FormReport from "./FormReport";
 import FormCategory from "./FormCategory";
 import FormUserReport from "./FormUserReport";
 import FormAdminReport from "./FormAdminReport";
-import FormTechnicianReport from "./FormTechnicianReport";
+import FormChangeProfileUser from "./FormChangeProfileUser";
+import FormChangePassword from "./FormChangePassword";
+import FormForgotPassword from "./FormForgotPassword";
+import FormInputOtp from "./FormInputOtp";
+import FormResetPassword from "./FormResetPassword";
 
 export {
   FormUser,
@@ -13,5 +17,9 @@ export {
   FormCategory,
   FormUserReport,
   FormAdminReport,
-  FormTechnicianReport,
+  FormChangeProfileUser,
+  FormChangePassword,
+  FormForgotPassword,
+  FormInputOtp,
+  FormResetPassword,
 };

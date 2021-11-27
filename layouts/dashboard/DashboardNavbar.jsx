@@ -55,6 +55,7 @@ const DashboardNavbar = () => {
       right="0"
       px="6"
       display="flex"
+      zIndex="500"
     >
       <Button
         visibility={[

@@ -23,8 +23,10 @@ const FormReport = () => {
 
   const fetchUserAndCategory = async () => {
     try {
-      const users = await axios.get("http://localhost/eror/api/user");
-      const category = await axios.get("http://localhost/eror/api/kategori");
+      const users = await axios.get("http://localhost/eror_api/api/user");
+      const category = await axios.get(
+        "http://localhost/eror_api/api/kategori"
+      );
       setUser(users.data.data);
       setCategory(category.data.data);
     } catch (error) {
@@ -32,6 +34,7 @@ const FormReport = () => {
     }
   };
 
+  console.log(user);
   useEffect(() => {
     fetchUserAndCategory();
   }, []);
@@ -113,7 +116,7 @@ const FormReport = () => {
   const userOption = user.map((result, index) => {
     return (
       <option value={result.id} key={index}>
-        {result.username}
+        {result.email}
       </option>
     );
   });
@@ -172,7 +175,7 @@ const FormReport = () => {
           <Box display="flex" justifyContent="end">
             <Button
               type="submit"
-              colorScheme="blue"
+              colorScheme="orange"
               isLoading={isSubmitting}
               mt="5"
             >

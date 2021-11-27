@@ -19,7 +19,6 @@ import axios from "axios";
 const FormUser = () => {
   const [create, setCreate] = useState([]);
   const Schema = Yup.object().shape({
-    username: Yup.string().required("Input tidak boleh kosong"),
     nama_lengkap: Yup.string().required("Input tidak boleh kosong"),
     password: Yup.string()
       .required("Input tidak boleh kosong")
@@ -46,7 +45,7 @@ const FormUser = () => {
     };
     try {
       const result = await axios.post(
-        "http://localhost/eror/api/user",
+        "http://localhost/eror_api/api/user",
         body,
         config
       );
@@ -58,7 +57,6 @@ const FormUser = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
       nama_lengkap: "",
       password: "",
       password_verify: "",
@@ -110,7 +108,6 @@ const FormUser = () => {
     <Box mt="5">
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          {InputTypeText("username")}
           {InputTypeText("nama_lengkap")}
           <Box display="flex">
             <FormControl
@@ -176,7 +173,7 @@ const FormUser = () => {
           <Box display="flex" justifyContent="end">
             <Button
               type="submit"
-              colorScheme="blue"
+              colorScheme="orange"
               isLoading={isSubmitting}
               mt="5"
             >

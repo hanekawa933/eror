@@ -3,8 +3,56 @@ import DashboardLayout from "../../layouts/dashboard";
 import CardCategory from "../../components/CardCategory";
 import { Box, Grid, useColorMode } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
+import { useEffect, useContext, useState } from "react";
+import { ProtectedRoute } from "../../HOC/withAuth";
+import { TempContext } from "../../context/TempContext";
+import axios from "axios";
 
 export default function CategoryList() {
+  const [userLogin, setUserLogin] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [settings, setSettings] = useContext(TempContext);
+
+  const fetchUserLogin = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost/eror_api/api/user/profile"
+      );
+      setUserLogin(result.data.data);
+      setSettings({ ...settings, userLogin: result.data.data });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const fetchCategory = async () => {
+    try {
+      const result = await axios.get("http://localhost/eror_api/api/kategori");
+      setCategory(result.data.data);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserLogin();
+    fetchCategory();
+  }, []);
+
+  const listCategory = category.map((res) => {
+    return (
+      <>
+        <CardCategory
+          key={res.id}
+          icon={res.icon}
+          category={res.nama}
+          id={res.id}
+          role={userLogin.role_id}
+        />
+      </>
+    );
+  });
+
   return (
     <div>
       <Head>
@@ -31,30 +79,7 @@ export default function CategoryList() {
             </Box>
             <Box>
               <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="5">
-                <CardCategory
-                  icon="/assets/svg/welcome.svg"
-                  category="Mechanical Engineering"
-                />
-                <CardCategory
-                  icon="/assets/svg/welcome.svg"
-                  category="Mechanical Engineering"
-                />
-                <CardCategory
-                  icon="/assets/svg/welcome.svg"
-                  category="Mechanical Engineering"
-                />
-                <CardCategory
-                  icon="/assets/svg/welcome.svg"
-                  category="Mechanical Engineering"
-                />
-                <CardCategory
-                  icon="/assets/svg/welcome.svg"
-                  category="Mechanical Engineering"
-                />
-                <CardCategory
-                  icon="/assets/svg/welcome.svg"
-                  category="Mechanical Engineering"
-                />
+                {listCategory}
               </Grid>
             </Box>
           </Box>

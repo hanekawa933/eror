@@ -38,7 +38,7 @@ const DashboardSidebar = () => {
         settings.bigMode === true ? "90px" : "280px",
       ]}
       role="group"
-      minH="100%"
+      minHeight="100%"
       borderRight="2px"
       borderColor="gray.200"
       display={[
@@ -157,14 +157,18 @@ const DashboardSidebar = () => {
             ]}
             _groupHover={{ display: "inline" }}
           >
-            <Heading fontSize="md">Username</Heading>
+            <Heading fontSize="md">
+              {settings.userLogin &&
+                settings.userLogin.nama_lengkap &&
+                settings.userLogin.nama_lengkap.split(" ")[0]}
+            </Heading>
             <Text
               fontSize="sm"
               color={
                 useColorMode().colorMode === "dark" ? "gray.200" : "gray.700"
               }
             >
-              Administrator
+              {settings.userLogin.jabatan}
             </Text>
           </Box>
         </Flex>

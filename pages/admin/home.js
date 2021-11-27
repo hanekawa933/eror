@@ -1,4 +1,6 @@
 import Head from "next/head";
+import { useEffect, useContext, useState } from "react";
+import { ProtectedRoute } from "../../HOC/withAuth";
 import DashboardLayout from "../../layouts/dashboard";
 import CardCategory from "../../components/CardCategory";
 import {
@@ -9,8 +11,55 @@ import {
   useColorMode,
   Button,
 } from "@chakra-ui/react";
+import { TempContext } from "../../context/TempContext";
+import axios from "axios";
+import Link from "next/link";
 
 export default function UserHomepage() {
+  const [userLogin, setUserLogin] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [report, setReport] = useState([]);
+  const [settings, setSettings] = useContext(TempContext);
+
+  const fetchUserLogin = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost/eror_api/api/user/profile"
+      );
+      setUserLogin(result.data.data);
+      setSettings({ ...settings, userLogin: result.data.data });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const fetchCategory = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost/eror_api/api/kategori/notif?query=admin"
+      );
+      setCategory(result.data.data);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const fetchReportByUserLogin = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost/eror_api/api/laporan/user"
+      );
+      setReport(result.data.data);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserLogin();
+    fetchCategory();
+    fetchReportByUserLogin();
+  }, []);
   const { colorMode } = useColorMode();
   const bgTheme = colorMode === "dark" ? "gray.700" : "gray.50";
   const colorTheme = colorMode === "dark" ? "white" : "black";
@@ -40,6 +89,24 @@ export default function UserHomepage() {
     "left",
     "left",
   ];
+
+  const listCategory = category
+    .map((res) => {
+      return (
+        <>
+          <CardCategory
+            key={res.id}
+            icon={res.icon}
+            category={res.nama}
+            id={res.id}
+            role={userLogin.role_id}
+            notification={res.notifikasi}
+          />
+        </>
+      );
+    })
+    .slice(0, 3);
+
   return (
     <div>
       <Head>
@@ -57,73 +124,59 @@ export default function UserHomepage() {
             justifyContent={jfyContentResponsive}
             flexDir={jfyDirResponsive}
             alignItems={alItemsResponsive}
+            bg="#FFD202"
           >
             <Box>
               <Heading
                 fontSize={["1.2em", "1.4em", "1.6em", "1.8em", "2em", "2.2em"]}
-                color={colorTheme}
+                color="black"
                 pb="2"
                 textAlign={alignResponsive}
               >
-                Hai, Muhammad Iqbal Ramadhan!
-              </Heading>
-              <Heading
-                fontSize={["1em", "1.2em", "1.4em", "1.6em", "1.8em", "2em"]}
-                color={colorTheme}
-                textAlign={alignResponsive}
-              >
-                Selamat datang di E-ROR.
+                <Box as="span" display="block" color="rgba(0,0,0,0.55)">
+                  Selamat datang,
+                </Box>
+                {userLogin.nama_lengkap}!
               </Heading>
               <Text
-                color={colorThemeSecondary}
+                color="rgba(0,0,0,0.55)"
                 fontSize={["1em", "1em", "1em", "1.2em", "1.4em", "1.6em"]}
                 fontWeight="semibold"
                 textAlign={alignResponsive}
               >
-                Periksa laporan yang masuk yuk!
+                Periksa laporan masuk, yuk!
               </Text>
             </Box>
             <Box
-              as="object"
-              type="image/svg+xml"
-              data="/assets/svg/welcome.svg"
+              as="img"
+              src="/assets/svg/amico.svg"
               maxW="100%"
               height={["52", "56", "60", "48", "64", "72"]}
               mt={["5", "5", "5", "0", "0", "0"]}
             ></Box>
           </Box>
           <Box p="5" borderRadius="lg" mt="10">
-            <Heading fontSize="1.3em">Kategori Laporan</Heading>
-            <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="5">
-              <CardCategory
-                icon="/assets/svg/welcome.svg"
-                category="Mechanical Engineering"
-                id="1"
-                role="admin"
-              />
-              <CardCategory
-                icon="/assets/svg/welcome.svg"
-                category="Mechanical Engineering"
-                id="1"
-                role="admin"
-              />
-              <CardCategory
-                icon="/assets/svg/welcome.svg"
-                category="Mechanical Engineering"
-                id="1"
-                role="admin"
-              />
-            </Grid>
             <Box
               display="flex"
-              justifyContent="center"
+              justifyContent="space-between"
               alignItems="center"
-              mt="10"
             >
-              <Button colorScheme="purple" textTransform="capitalize">
-                Lihat semua kategori
-              </Button>
+              <Heading fontSize="1.3em">Kategori Laporan</Heading>
+              <Link href="/admin/report/category">
+                <a>
+                  <Button
+                    colorScheme="orange"
+                    textTransform="capitalize"
+                    size="sm"
+                  >
+                    lihat semua kategori
+                  </Button>
+                </a>
+              </Link>
             </Box>
+            <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="9">
+              {listCategory}
+            </Grid>
           </Box>
         </Box>
       </DashboardLayout>

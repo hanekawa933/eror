@@ -9,9 +9,17 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { Link as NextLink } from "next/link";
-import { general, report, operational } from "./SidebarData";
+import {
+  general,
+  report,
+  operational,
+  user,
+  admin,
+  technician,
+} from "./SidebarData";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/router";
+import Cookie from "js-cookie";
 
 const logoutIcon = "simple-line-icons:logout";
 const getIcon = (icon) => <Icon icon={icon} width={22} height={22} />;
@@ -20,6 +28,34 @@ const NavSection = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const router = useRouter();
   const [settings, setSettings] = useContext(TempContext);
+
+  const homeLink =
+    parseInt(settings.userLogin.role_id) === 1
+      ? "/home"
+      : parseInt(settings.userLogin.role_id) === 2
+      ? "/admin/home"
+      : parseInt(settings.userLogin.role_id) === 3
+      ? "/technician/home"
+      : "/dashboard/home";
+
+  const profileLink =
+    parseInt(settings.userLogin.role_id) === 1
+      ? "/profile"
+      : parseInt(settings.userLogin.role_id) === 2
+      ? "/admin/profile"
+      : parseInt(settings.userLogin.role_id) === 3
+      ? "/technician/profile"
+      : "/dashboard/profile";
+
+  const linkNya = [homeLink, profileLink];
+
+  const newGeneral = general.map((res, index) => {
+    return {
+      text: res.text,
+      icon: res.icon,
+      to: linkNya[index],
+    };
+  });
 
   const ActiveList = (path, key, icon, text, btn) => {
     return (
@@ -105,7 +141,7 @@ const NavSection = () => {
       ? ActiveList(path, key, icon, text, log)
       : NonActiveList(path, key, icon, text, log);
 
-  const GeneralList = general.map((data, index) => {
+  const GeneralList = newGeneral.map((data, index) => {
     return checkWhatListIsActive(data.to, index, data.icon, data.text);
   });
   const OperationalList = operational.map((data, index) => {
@@ -115,10 +151,33 @@ const NavSection = () => {
     return checkWhatListIsActive(data.to, index, data.icon, data.text);
   });
 
+  const UserList = user.map((data, index) => {
+    return checkWhatListIsActive(data.to, index, data.icon, data.text);
+  });
+
+  const AdminList = admin.map((data, index) => {
+    return checkWhatListIsActive(data.to, index, data.icon, data.text);
+  });
+
+  const TechnicianList = technician.map((data, index) => {
+    return checkWhatListIsActive(data.to, index, data.icon, data.text);
+  });
+
+  const whatListUsed =
+    parseInt(settings.userLogin.role_id) === 1
+      ? UserList
+      : parseInt(settings.userLogin.role_id) === 2
+      ? AdminList
+      : TechnicianList;
+
+  const logout = () => {
+    Cookie.remove("token");
+    router.push("/login");
+  };
+
   const logoutLink = (
     <ListItem>
-      <Link
-        href="/dashboard"
+      <Box
         borderRadius="md"
         _hover={{
           background: colorMode === "dark" ? "gray.700" : "gray.100",
@@ -128,6 +187,8 @@ const NavSection = () => {
         alignItems="center"
         display="flex"
         p="3"
+        onClick={() => logout()}
+        cursor="pointer"
       >
         {getIcon(logoutIcon)}
         <Text
@@ -148,48 +209,12 @@ const NavSection = () => {
         >
           logout
         </Text>
-      </Link>
+      </Box>
     </ListItem>
   );
 
-  return (
-    <Box
-      w={[
-        "280px",
-        "280px",
-        "280px",
-        settings.bigMode === true ? "90px" : "280px",
-        settings.bigMode === true ? "90px" : "280px",
-        settings.bigMode === true ? "90px" : "280px",
-      ]}
-      mt="10"
-      _groupHover={{ width: "280px" }}
-    >
-      <Box>
-        <Box
-          fontWeight="500"
-          fontSize="sm"
-          textTransform="uppercase"
-          mx="5"
-          my="5"
-          letterSpacing="2px"
-          display={[
-            "inline",
-            "inline",
-            "inline",
-            settings.bigMode === true ? "none" : "inline",
-            settings.bigMode === true ? "none" : "inline",
-            settings.bigMode === true ? "none" : "inline",
-          ]}
-          _groupHover={{ display: "inline" }}
-        >
-          General
-        </Box>
-        <List px="5">
-          {GeneralList}
-          {logoutLink}
-        </List>
-      </Box>
+  const SuperAdminSidebar = (
+    <>
       <Box mt="5">
         <Box
           fontWeight="500"
@@ -234,6 +259,80 @@ const NavSection = () => {
         </Box>
         <List px="5">{ReportList}</List>
       </Box>
+    </>
+  );
+
+  const NonSuperAdminSidebar = (
+    <>
+      <Box mt="5">
+        <Box
+          fontWeight="500"
+          fontSize="sm"
+          textTransform="uppercase"
+          mx="5"
+          my="5"
+          letterSpacing="2px"
+          display={[
+            "inline",
+            "inline",
+            "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+          ]}
+          _groupHover={{ display: "inline" }}
+        >
+          menu
+        </Box>
+        <List px="5">{whatListUsed}</List>
+      </Box>
+    </>
+  );
+
+  const whatSidebarUsed =
+    settings.userLogin.role_id === undefined
+      ? SuperAdminSidebar
+      : NonSuperAdminSidebar;
+
+  return (
+    <Box
+      w={[
+        "280px",
+        "280px",
+        "280px",
+        settings.bigMode === true ? "90px" : "280px",
+        settings.bigMode === true ? "90px" : "280px",
+        settings.bigMode === true ? "90px" : "280px",
+      ]}
+      mt="10"
+      _groupHover={{ width: "280px" }}
+    >
+      <Box>
+        <Box
+          fontWeight="500"
+          fontSize="sm"
+          textTransform="uppercase"
+          mx="5"
+          my="5"
+          letterSpacing="2px"
+          display={[
+            "inline",
+            "inline",
+            "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+          ]}
+          _groupHover={{ display: "inline" }}
+        >
+          Umum
+        </Box>
+        <List px="5">
+          {GeneralList}
+          {logoutLink}
+        </List>
+      </Box>
+      {whatSidebarUsed}
     </Box>
   );
 };
