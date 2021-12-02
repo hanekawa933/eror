@@ -19,6 +19,47 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const UserHomepage = () => {
+  const { colorMode } = useColorMode();
+
+  const headingResponsive = ["1em", "1em", "1.3em", "1.3em", "1.3em", "1.3em"];
+  const gridResponsive = [
+    "repeat(3, 1fr)",
+    "repeat(1, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+  ];
+  const gridResponsive2 = [
+    "repeat(3, 1fr)",
+    "repeat(1, 1fr)",
+    "repeat(2, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+  ];
+
+  const bgTheme = colorMode === "dark" ? "gray.700" : "gray.50";
+  const colorTheme = colorMode === "dark" ? "white" : "black";
+  const jfyContentResponsive = [
+    "space-between",
+    "center",
+    "center",
+    "space-between",
+    "space-between",
+    "space-between",
+  ];
+  const alItemsResponsive = [
+    "center",
+    "center",
+    "center",
+    "center",
+    "center",
+    "center",
+  ];
+  const jfyDirResponsive = ["row", "column", "column", "row", "row", "row"];
+  const alignResponsive = ["left", "center", "center", "left", "left", "left"];
+
   const router = useRouter();
   const [userLogin, setUserLogin] = useState([]);
   const [category, setCategory] = useState([]);
@@ -32,6 +73,7 @@ const UserHomepage = () => {
       );
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
+      console.log(result.data.data);
     } catch (error) {
       alert(error);
       console.log(error);
@@ -83,9 +125,17 @@ const UserHomepage = () => {
     .slice(0, 3);
 
   const listReport = report
-    .map((res) => {
+    .map((res, index) => {
       return (
-        <>
+        <Box
+          key={res.id}
+          gridColumn={[
+            "auto",
+            "auto",
+            parseInt(index) === 2 ? "1/3" : null,
+            "auto",
+          ]}
+        >
           <CardHistoryReport
             lokasi={res.lokasi}
             laporan={res.jenis_kerusakan}
@@ -100,7 +150,7 @@ const UserHomepage = () => {
             role={userLogin.role_id}
             status_id={res.sId}
           />
-        </>
+        </Box>
       );
     })
     .slice(0, 3);
@@ -120,60 +170,31 @@ const UserHomepage = () => {
         data="/assets/svg/not-found.svg"
         type="image/svg+xml"
         maxW="100%"
-        height={["32", "36", "40", "44", "48", "52"]}
-        mt={["5", "5", "5", "5", "5", "5"]}
+        height={["32", "44", "44", "44", "48", "52"]}
+        mt={["3", "5"]}
         pointerEvents="none"
       ></Box>
-      <Text as="h1" fontWeight="semibold">
+      <Text as="h1" fontWeight="semibold" fontSize={["0.8em", "1em"]}>
         Ooops... Kamu belum pernah buat laporan.
       </Text>
     </Box>
   );
 
   const gridReport = (
-    <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="5">
+    <Grid templateColumns={gridResponsive2} gap={[3, 6]} mt="5">
       {listReport}
     </Grid>
   );
   const showReport = report.length < 1 ? notFound : gridReport;
-
-  const { colorMode } = useColorMode();
-  const bgTheme = colorMode === "dark" ? "gray.700" : "gray.50";
-  const colorTheme = colorMode === "dark" ? "white" : "black";
-  const jfyContentResponsive = [
-    "center",
-    "center",
-    "center",
-    "space-between",
-    "space-between",
-    "space-between",
-  ];
-  const alItemsResponsive = [
-    "center",
-    "center",
-    "center",
-    "center",
-    "center",
-    "center",
-  ];
-  const jfyDirResponsive = ["column", "column", "column", "row", "row", "row"];
-  const alignResponsive = [
-    "center",
-    "center",
-    "center",
-    "left",
-    "left",
-    "left",
-  ];
   return (
     <div>
       <Head>
         <title>E-ROR | SuperAdmin Create Account</title>
       </Head>
       <DashboardLayout>
-        <Box px="10" pt="5" pb="7">
+        <Box px={["3", "5"]} pb="7">
           <Box
-            px="10%"
+            px={["5%", "10%"]}
             py="5"
             borderRadius="lg"
             boxShadow="lg"
@@ -186,9 +207,9 @@ const UserHomepage = () => {
           >
             <Box>
               <Heading
-                fontSize={["1.2em", "1.4em", "1.6em", "1.8em", "2em", "2.2em"]}
+                fontSize={["0.8em", "1.4em", "1.6em", "1.8em", "2em", "2.2em"]}
                 color="black"
-                pb="2"
+                pb={["1", "2"]}
                 textAlign={alignResponsive}
               >
                 <Box as="span" display="block" color="rgba(0,0,0,0.55)">
@@ -198,7 +219,7 @@ const UserHomepage = () => {
               </Heading>
               <Text
                 color="rgba(0,0,0,0.55)"
-                fontSize={["1em", "1em", "1em", "1.2em", "1.4em", "1.6em"]}
+                fontSize={["0.8em", "1em", "1em", "1.2em", "1.4em", "1.6em"]}
                 fontWeight="semibold"
                 textAlign={alignResponsive}
               >
@@ -209,18 +230,18 @@ const UserHomepage = () => {
               as="img"
               src="/assets/svg/amico.svg"
               maxW="100%"
-              height={["52", "56", "60", "48", "64", "72"]}
+              height={["32", "56", "60", "48", "64", "72"]}
               mt={["5", "5", "5", "0", "0", "0"]}
             ></Box>
           </Box>
-          <Box p="5" borderRadius="lg" mt="10">
+          <Box borderRadius="lg" mt="10">
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
               mt="10"
             >
-              <Heading fontSize="1.3em" textTransform="capitalize">
+              <Heading fontSize={headingResponsive} textTransform="capitalize">
                 Request For Repair
               </Heading>
               <Link href="/report/category">
@@ -230,34 +251,23 @@ const UserHomepage = () => {
                     textTransform="capitalize"
                     size="sm"
                   >
-                    lihat semua kategori
+                    semua kategori
                   </Button>
                 </a>
               </Link>
             </Box>
-            <Grid
-              templateColumns={[
-                "repeat(3, 1fr)",
-                "repeat(3, 1fr)",
-                "repeat(3, 1fr)",
-                "repeat(3, 1fr)",
-                "repeat(3, 1fr)",
-                "repeat(3, 1fr)",
-              ]}
-              gap={6}
-              mt="5"
-            >
+            <Grid templateColumns={gridResponsive} gap={[2, 6]} mt="5">
               {listCategory}
             </Grid>
           </Box>
-          <Box mt="10" p="5" borderRadius="lg">
+          <Box mt={["5", "10"]} borderRadius="lg">
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
-              mt="10"
+              mt={["5", "10"]}
             >
-              <Heading fontSize="1.3em">Laporan Terakhir</Heading>
+              <Heading fontSize={headingResponsive}>Laporan Terakhir</Heading>
               {report.length > 0 ? (
                 <Link href="/report/history">
                   <a>
@@ -266,7 +276,7 @@ const UserHomepage = () => {
                       size="sm"
                       textTransform="capitalize"
                     >
-                      Lihat semua laporan
+                      semua laporan
                     </Button>
                   </a>
                 </Link>

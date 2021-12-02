@@ -52,13 +52,14 @@ const CardHistoryReport = ({
             ? "1px solid var(--chakra-colors-gray-800)"
             : "1px solid var(--chakra-colors-gray-200)"
         }
+        height={["80"]}
       >
         <Image
           src={"http://localhost/eror_api" + image}
           alt="Last Report Image"
           borderTopRadius="lg"
           w="100%"
-          height="60"
+          height="48"
         />
         <Box p="6">
           <Box

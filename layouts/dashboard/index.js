@@ -34,7 +34,7 @@ const DashboardLayout = ({ children }) => {
           0,
           0,
           0,
-          settings.bigMode === true ? "90px" : "280px",
+          0,
           settings.bigMode === true ? "90px" : "280px",
           settings.bigMode === true ? "90px" : "280px",
         ]}

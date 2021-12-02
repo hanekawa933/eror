@@ -17,6 +17,7 @@ import Link from "next/link";
 import NavSection from "./NavSection";
 
 const DashboardSidebar = () => {
+  const { colorMode } = useColorMode();
   const [settings, setSettings] = useContext(TempContext);
 
   const toggleChange = () => {
@@ -26,6 +27,9 @@ const DashboardSidebar = () => {
   const toggleSidebar = () => {
     setSettings({ ...settings, active: !settings.active });
   };
+
+  const exp =
+    settings && settings.userLogin && parseInt(settings.userLogin.current_exp);
 
   return (
     <Box
@@ -54,7 +58,7 @@ const DashboardSidebar = () => {
         settings.active === true ? "translateX(0)" : "translateX(-100%)",
         settings.active === true ? "translateX(0)" : "translateX(-100%)",
         settings.active === true ? "translateX(0)" : "translateX(-100%)",
-        "translateX(0)",
+        settings.active === true ? "translateX(0)" : "translateX(-100%)",
         "translateX(0)",
         "translateX(0)",
       ]}
@@ -65,13 +69,29 @@ const DashboardSidebar = () => {
           "1",
           "1",
           "1",
-          settings.bigMode === true ? "0.97" : "1",
+          "1",
           settings.bigMode === true ? "0.97" : "1",
           settings.bigMode === true ? "0.97" : "1",
         ],
+        overflowY: settings.userLogin.role_id ? "hidden" : "scroll",
       }}
-      position="absolute"
+      position="fixed"
       zIndex={999}
+      overflow="hidden"
+      top="0"
+      bottom={settings.userLogin.role_id ? "0" : "45px"}
+      css={{
+        "&::-webkit-scrollbar": {
+          width: "4px",
+        },
+        "&::-webkit-scrollbar-track": {
+          width: "4px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "var(--chakra-colors-gray-200)",
+          borderRadius: "24px",
+        },
+      }}
     >
       <Flex
         pt="5"
@@ -80,7 +100,7 @@ const DashboardSidebar = () => {
           "space-between",
           "space-between",
           "space-between",
-          settings.bigMode === true ? "center" : "space-between",
+          "space-between",
           settings.bigMode === true ? "center" : "space-between",
           settings.bigMode === true ? "center" : "space-between",
         ]}
@@ -100,19 +120,19 @@ const DashboardSidebar = () => {
                 "none",
                 "none",
                 "none",
-                settings.bigMode === true ? "none" : "inline",
+                "none",
                 settings.bigMode === true ? "none" : "inline",
                 settings.bigMode === true ? "none" : "inline",
               ]}
               _groupHover={{
-                display: ["none", "none", "none", "inline", "inline", "inline"],
+                display: ["none", "none", "none", "none", "inline", "inline"],
               }}
               onChange={() => toggleChange()}
             />
           </Box>
         </Tooltip>
         <Button
-          display={["inline", "inline", "inline", "none", "none", "none"]}
+          display={["inline", "inline", "inline", "inline", "none", "none"]}
           onClick={() => toggleSidebar()}
         >
           <Icon icon="eva:close-fill" width={24} height={24} />
@@ -123,12 +143,12 @@ const DashboardSidebar = () => {
           "7",
           "7",
           "7",
-          settings.bigMode === true ? "4" : "7",
+          "7",
           settings.bigMode === true ? "4" : "7",
           settings.bigMode === true ? "4" : "7",
         ]}
         borderRadius="md"
-        py="4"
+        py={settings.bigMode === true ? "2" : "4"}
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -136,42 +156,83 @@ const DashboardSidebar = () => {
           "xl",
           "xl",
           "xl",
-          settings.bigMode === true ? "none" : "xl",
+          "xl",
           settings.bigMode === true ? "none" : "xl",
           settings.bigMode === true ? "none" : "xl",
         ]}
-        mx={settings.bigMode === true ? "0" : "5"}
-        _groupHover={{ boxShadow: "xl", mx: "5", my: "7" }}
+        mx={settings.bigMode === true ? "3" : "3"}
+        _groupHover={{ boxShadow: "xl", mx: "3", my: "7", py: "4" }}
+        background={colorMode === "dark" ? "gray.900" : "gray.50"}
       >
-        <Flex>
-          <Avatar size="md" name="Avatar" src="/assets/img/photo_profile.png" />
-          <Box
-            mx="5"
-            display={[
-              "inline",
-              "inline",
-              "inline",
-              settings.bigMode === true ? "none" : "inline",
-              settings.bigMode === true ? "none" : "inline",
-              settings.bigMode === true ? "none" : "inline",
-            ]}
-            _groupHover={{ display: "inline" }}
-          >
-            <Heading fontSize="md">
-              {settings.userLogin &&
-                settings.userLogin.nama_lengkap &&
-                settings.userLogin.nama_lengkap.split(" ")[0]}
-            </Heading>
-            <Text
-              fontSize="sm"
-              color={
-                useColorMode().colorMode === "dark" ? "gray.200" : "gray.700"
-              }
-            >
-              {settings.userLogin.jabatan}
-            </Text>
-          </Box>
-        </Flex>
+        <Avatar size="md" name="Avatar" src="/assets/img/photo_profile.png" />
+        <Box
+          mx="3"
+          display={[
+            "inline",
+            "inline",
+            "inline",
+            "inline",
+            settings.bigMode === true ? "none" : "inline",
+            settings.bigMode === true ? "none" : "inline",
+          ]}
+          _groupHover={{ display: "inline" }}
+        >
+          <Heading fontSize="md">
+            {settings.userLogin &&
+              settings.userLogin.nama_lengkap &&
+              settings.userLogin.nama_lengkap.split(" ")[0]}
+          </Heading>
+          {parseInt(settings.userLogin.role_id) === 1 ? (
+            <Box display="flex" justifyContent="space-between" mt="1">
+              <Box
+                background="#FFD202"
+                borderRadius="md"
+                width="max-content"
+                py="1"
+                px="2"
+              >
+                <Text fontSize="small" color="black" fontWeight="semibold">
+                  {exp}
+                  <Box as="span" textTransform="uppercase" ml="1">
+                    exp
+                  </Box>
+                </Text>
+              </Box>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                ml="1"
+              >
+                <Box
+                  as="object"
+                  data={`/assets/svg/${
+                    exp <= 100
+                      ? "bronze"
+                      : exp >= 101 && exp <= 200
+                      ? "silver"
+                      : exp >= 201 && exp <= 400
+                      ? "gold"
+                      : exp >= 401 && exp <= 800
+                      ? "diamond"
+                      : exp >= 801 && exp <= 1600
+                      ? "ruby"
+                      : exp >= 1601 && exp <= 3200
+                      ? "Sapphire"
+                      : "emerald"
+                  }.svg`}
+                  type="image/svg+xml"
+                  maxW="100%"
+                  height={["7"]}
+                  pointerEvents="none"
+                ></Box>
+                <Text fontWeight="semibold">{settings.userLogin.level}</Text>
+              </Box>
+            </Box>
+          ) : (
+            <Text>{settings.userLogin.role_name}</Text>
+          )}
+        </Box>
       </Box>
       <NavSection />
     </Box>

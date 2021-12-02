@@ -7,10 +7,10 @@ const CardCategory = ({ icon, category, id, role, notification = null }) => {
   const slug = category.split(" ").join("_");
   const link =
     parseInt(role) === 1
-      ? `http://localhost:3000/report/create`
+      ? `/report/create`
       : parseInt(role) === 2
-      ? `http://localhost:3000/admin/report/category`
-      : `http://localhost:3000/technician/report/category`;
+      ? `/admin/report/category`
+      : `/technician/report/category`;
   return (
     <Link
       href={`${link}/${id}/${slug.toLowerCase()}`}
@@ -42,7 +42,7 @@ const CardCategory = ({ icon, category, id, role, notification = null }) => {
         flexDir="column"
         borderRadius="lg"
         boxShadow="lg"
-        p="10"
+        p={["0", "10"]}
         justifyContent="center"
         alignItems="center"
         bg={bgTheme}
@@ -55,10 +55,10 @@ const CardCategory = ({ icon, category, id, role, notification = null }) => {
             ? "1px solid var(--chakra-colors-gray-800)"
             : "1px solid var(--chakra-colors-gray-200)"
         }
-        height="72"
+        height={["40", "72"]}
       >
         <Text
-          fontSize={["1.2em", "1.2em", "1.2em", "1em", "1em", "1.2em"]}
+          fontSize={["0.7em", "1.2em"]}
           fontWeight="bold"
           textTransform="uppercase"
           textAlign="center"
@@ -70,7 +70,7 @@ const CardCategory = ({ icon, category, id, role, notification = null }) => {
           data={"http://localhost/eror_api" + icon}
           type="image/svg+xml"
           maxW="100%"
-          height={["32", "36", "40", "44", "48", "52"]}
+          height={["16", "44", "44", "44", "48", "52"]}
           mt={["5", "5", "5", "5", "5", "5"]}
           pointerEvents="none"
         ></Box>

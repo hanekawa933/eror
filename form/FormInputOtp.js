@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef } from "react";
 import {
   Box,
   FormControl,
@@ -10,6 +10,7 @@ import {
   PinInput,
   PinInputField,
   Grid,
+  Link,
 } from "@chakra-ui/react";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
@@ -99,7 +100,42 @@ const FormInputOtp = () => {
     setFieldValue("kode", val);
   };
 
-  console.log(values.kode);
+  const forgotPassword = async (values) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const body = JSON.stringify(values);
+
+      const result = await axios.post(
+        `http://localhost/eror_api/api/user/forgot`,
+        body,
+        config
+      );
+      toast.closeAll();
+      toast({
+        title: "Berhasil Terkirim",
+        description: "Kode OTP telah dikirim ke email anda!",
+        status: "success",
+        duration: 2000,
+        position: "top",
+      });
+    } catch (error) {
+      toast({
+        title: "Gagal Terkirim",
+        description: error.response
+          ? error.response.data.message
+          : "Server Error",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
+      console.log(error.response);
+    }
+  };
 
   return (
     <>
@@ -130,6 +166,30 @@ const FormInputOtp = () => {
                     {touched.kode && errors.kode}
                   </FormErrorMessage>
                 </FormControl>
+              </Box>
+              <Box textAlign="center" mt="5">
+                <Box as="span" fontWeight="semibold" color="gray.500">
+                  Tidak menerima kode?
+                </Box>
+                <Link
+                  px="2"
+                  color="#E67503"
+                  href="#"
+                  fontWeight="700"
+                  textTransform="uppercase"
+                  onClick={() => {
+                    toast({
+                      title: "Mohon tunggu",
+                      description: "Pengiriman email sedang diproses",
+                      background: "blue",
+                      position: "top",
+                    });
+                    forgotPassword({ email });
+                    return false;
+                  }}
+                >
+                  Kirim ulang
+                </Link>
               </Box>
               <Button
                 colorScheme="orange"

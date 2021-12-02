@@ -83,7 +83,7 @@ const NavSection = () => {
               "inline",
               "inline",
               "inline",
-              settings.bigMode === true ? "none" : "inline",
+              "inline",
               settings.bigMode === true ? "none" : "inline",
               settings.bigMode === true ? "none" : "inline",
             ]}
@@ -123,7 +123,7 @@ const NavSection = () => {
               "inline",
               "inline",
               "inline",
-              settings.bigMode === true ? "none" : "inline",
+              "inline",
               settings.bigMode === true ? "none" : "inline",
               settings.bigMode === true ? "none" : "inline",
             ]}
@@ -201,7 +201,7 @@ const NavSection = () => {
             "inline",
             "inline",
             "inline",
-            settings.bigMode === true ? "none" : "inline",
+            "inline",
             settings.bigMode === true ? "none" : "inline",
             settings.bigMode === true ? "none" : "inline",
           ]}
@@ -227,7 +227,7 @@ const NavSection = () => {
             "inline",
             "inline",
             "inline",
-            settings.bigMode === true ? "none" : "inline",
+            "inline",
             settings.bigMode === true ? "none" : "inline",
             settings.bigMode === true ? "none" : "inline",
           ]}
@@ -249,7 +249,7 @@ const NavSection = () => {
             "inline",
             "inline",
             "inline",
-            settings.bigMode === true ? "none" : "inline",
+            "inline",
             settings.bigMode === true ? "none" : "inline",
             settings.bigMode === true ? "none" : "inline",
           ]}
@@ -276,7 +276,7 @@ const NavSection = () => {
             "inline",
             "inline",
             "inline",
-            settings.bigMode === true ? "none" : "inline",
+            "inline",
             settings.bigMode === true ? "none" : "inline",
             settings.bigMode === true ? "none" : "inline",
           ]}
@@ -300,7 +300,7 @@ const NavSection = () => {
         "280px",
         "280px",
         "280px",
-        settings.bigMode === true ? "90px" : "280px",
+        "280px",
         settings.bigMode === true ? "90px" : "280px",
         settings.bigMode === true ? "90px" : "280px",
       ]}
@@ -319,7 +319,7 @@ const NavSection = () => {
             "inline",
             "inline",
             "inline",
-            settings.bigMode === true ? "none" : "inline",
+            "inline",
             settings.bigMode === true ? "none" : "inline",
             settings.bigMode === true ? "none" : "inline",
           ]}

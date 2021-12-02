@@ -28,6 +28,7 @@ import * as Yup from "yup";
 import { useFormik, Form, FormikProvider, Field } from "formik";
 
 const TableUserAccount = () => {
+  const { colorMode } = useColorMode();
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [users, setUsers] = useState([]);
@@ -58,7 +59,6 @@ const TableUserAccount = () => {
   });
 
   const Schema = Yup.object().shape({
-    username: Yup.string().required("Input tidak boleh kosong"),
     nama_lengkap: Yup.string().required("Input tidak boleh kosong"),
     password: Yup.string().min(
       8,
@@ -82,7 +82,6 @@ const TableUserAccount = () => {
 
   dataFiltered.map(async (result) => {
     return (initValues = {
-      username: result.username,
       nama_lengkap: result.nama_lengkap,
       password: "",
       password_verify: "",
@@ -95,11 +94,11 @@ const TableUserAccount = () => {
 
   const columnNames = [
     { names: "No", selector: "no", width: "7%" },
-    { names: "User Info", selector: "user_info", width: "13%" },
-    { names: "User Profile", selector: "user_profile", width: "30%" },
-    { names: "User Contact", selector: "user_contact", width: "25%" },
-    { names: "Roles", selector: "roles", width: "13%" },
-    { names: "Option", selector: "option" },
+    { names: "Info User", selector: "user_info", width: "30%" },
+    { names: "Profil", selector: "user_profile", width: "20%" },
+    { names: "Kontak", selector: "user_contact", width: "15%" },
+    { names: "Jabatan", selector: "roles", width: "15%" },
+    { names: "Aksi", selector: "option", width: "13%", center: true },
   ];
 
   const subHeaderComponentMemo = useMemo(() => {
@@ -125,7 +124,6 @@ const TableUserAccount = () => {
   const dataTable = users.map((result, index) => {
     return {
       no: index + 1,
-      username: result.username,
       nama_lengkap: result.nama_lengkap,
       jenis_kelamin: result.jenis_kelamin,
       email: result.email,
@@ -135,25 +133,28 @@ const TableUserAccount = () => {
       role: result.nama,
       user_info: (
         <Text fontSize="1.3em" my="3">
-          {result.username}
+          {result.email}
         </Text>
       ),
       user_profile: (
         <Box my="3">
           <Text fontSize="1.3em">{result.nama_lengkap}</Text>
-          <Text color="gray.400">{result.jenis_kelamin}</Text>
+          <Text color={colorMode === "light" ? "gray.500" : "gray.400"}>
+            {!result.jenis_kelamin ? "-" : result.jenis_kelamin}
+          </Text>
         </Box>
       ),
       user_contact: (
         <Box my="3">
-          <Text fontSize="1.3em">{result.email}</Text>
-          <Text color="gray.400">{result.no_telp}</Text>
+          <Text fontSize="1.3em">{!result.no_telp ? "-" : result.no_telp}</Text>
         </Box>
       ),
       roles: (
         <Box my="3">
-          <Text fontSize="1.3em">{result.jabatan}</Text>
-          <Text color="gray.400">{result.nama}</Text>
+          <Text fontSize="1.3em">{!result.jabatan ? "-" : result.jabatan}</Text>
+          <Text color={colorMode === "light" ? "gray.500" : "gray.400"}>
+            {result.nama}
+          </Text>
         </Box>
       ),
       option: (
@@ -165,7 +166,6 @@ const TableUserAccount = () => {
   const filteredItems = dataTable.filter((item) => {
     if (!filterText) return true;
     if (
-      item.username.toLowerCase().includes(filterText.toLowerCase()) ||
       item.nama_lengkap.toLowerCase().includes(filterText.toLowerCase()) ||
       item.jenis_kelamin.toLowerCase().includes(filterText.toLowerCase()) ||
       item.email.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -181,8 +181,8 @@ const TableUserAccount = () => {
     return {
       name: res.names,
       selector: (row) => row[res.selector],
-      sortable: true,
       width: res.width,
+      center: res.center,
     };
   });
 

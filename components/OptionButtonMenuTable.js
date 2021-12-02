@@ -16,7 +16,7 @@ const OptionButtonMenuTable = ({ setAndDelete, setAndOpen }) => {
         <SettingsIcon />
       </MenuButton>
       <MenuList minWidth="3em">
-        <MenuItem>
+        <MenuItem _hover={{ background: "transparent" }}>
           <Button
             size="sm"
             variant="outline"
@@ -28,7 +28,7 @@ const OptionButtonMenuTable = ({ setAndDelete, setAndOpen }) => {
             Delete
           </Button>
         </MenuItem>
-        <MenuItem minWidth="3em">
+        <MenuItem minWidth="3em" _hover={{ background: "transparent" }}>
           <Button
             size="sm"
             variant="outline"

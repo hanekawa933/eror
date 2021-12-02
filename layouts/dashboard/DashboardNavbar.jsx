@@ -35,7 +35,7 @@ const DashboardNavbar = () => {
         "100%",
         "100%",
         "100%",
-        "var(--my-calculation)",
+        "100%",
         "var(--my-calculation)",
         "var(--my-calculation)",
       ]}
@@ -62,7 +62,7 @@ const DashboardNavbar = () => {
           "visible",
           "visible",
           "visible",
-          "hidden",
+          "visible",
           "hidden",
           "hidden",
         ]}

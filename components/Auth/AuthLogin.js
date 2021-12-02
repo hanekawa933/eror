@@ -22,7 +22,6 @@ import { useRouter } from "next/router";
 const AuthLogin = () => {
   const toast = useToast();
   const Router = useRouter();
-  const [user, setUser] = useState([]);
   const [hidden, setHidden] = useState(true);
 
   const Schema = Yup.object().shape({
@@ -55,6 +54,8 @@ const AuthLogin = () => {
         "http://localhost/eror_api/api/user/profile"
       );
 
+      console.log(user);
+
       const user_role = parseInt(user.data.data.role_id);
 
       const route =
@@ -80,6 +81,7 @@ const AuthLogin = () => {
         duration: 2000,
         position: "top",
       });
+      console.log(error);
     }
   };
 
@@ -93,10 +95,11 @@ const AuthLogin = () => {
       password: "",
     },
     validationSchema: Schema,
-    onSubmit: (values, { resetForm, setSubmitting }) => {
+    onSubmit: (values, { resetForm, setSubmitting, setFieldValue }) => {
       login(values);
       setTimeout(() => {
-        resetForm({});
+        resetForm();
+        setFieldValue("email", values.email);
         setSubmitting(false);
       }, 2000);
     },
