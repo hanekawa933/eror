@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import instance from "../axios.default";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -34,11 +34,7 @@ const FormForgotPassword = () => {
 
       const body = JSON.stringify(values);
 
-      const result = await axios.post(
-        `http://localhost/eror_api/api/user/forgot`,
-        body,
-        config
-      );
+      const result = await instance.post(`/user/forgot`, body, config);
 
       toast({
         title: "Berhasil Terkirim",
