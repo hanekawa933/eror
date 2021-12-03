@@ -1,15 +1,7 @@
 import Head from "next/head";
 import DashboardLayout from "../../../layouts/dashboard";
 import { FormUser } from "../../../form";
-import {
-  Box,
-  Heading,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 
 export default function DashboardCreateAccount() {
   return (

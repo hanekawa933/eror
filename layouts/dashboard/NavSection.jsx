@@ -6,9 +6,9 @@ import {
   ListItem,
   useColorMode,
   Text,
-  Link,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
-import { Link as NextLink } from "next/link";
+import Link from "next/link";
 import {
   general,
   report,
@@ -60,37 +60,37 @@ const NavSection = () => {
   const ActiveList = (path, key, icon, text, btn) => {
     return (
       <ListItem borderRadius="md" key={key} my="3">
-        <Link
-          as={NextLink}
-          href={path}
-          onClick={btn}
-          alignItems="center"
-          display="flex"
-          borderRadius="md"
-          bg={colorMode === "dark" ? "gray.700" : "gray.100"}
-          p="3"
-          boxShadow="xl"
-          _hover={{ textDecoration: "none" }}
-        >
-          {icon}
-          <Text
-            color={colorMode === "dark" ? "gray.100" : "gray.700"}
-            fontWeight="500"
-            fontSize="sm"
-            casing="uppercase"
-            mx="5"
-            display={[
-              "inline",
-              "inline",
-              "inline",
-              "inline",
-              settings.bigMode === true ? "none" : "inline",
-              settings.bigMode === true ? "none" : "inline",
-            ]}
-            _groupHover={{ display: "inline" }}
+        <Link href={path} passHref>
+          <ChakraLink
+            onClick={btn}
+            alignItems="center"
+            display="flex"
+            borderRadius="md"
+            bg={colorMode === "dark" ? "gray.700" : "gray.100"}
+            p="3"
+            boxShadow="xl"
+            _hover={{ textDecoration: "none" }}
           >
-            {text}
-          </Text>
+            {icon}
+            <Text
+              color={colorMode === "dark" ? "gray.100" : "gray.700"}
+              fontWeight="500"
+              fontSize="sm"
+              casing="uppercase"
+              mx="5"
+              display={[
+                "inline",
+                "inline",
+                "inline",
+                "inline",
+                settings.bigMode === true ? "none" : "inline",
+                settings.bigMode === true ? "none" : "inline",
+              ]}
+              _groupHover={{ display: "inline" }}
+            >
+              {text}
+            </Text>
+          </ChakraLink>
         </Link>
       </ListItem>
     );
@@ -99,38 +99,38 @@ const NavSection = () => {
   const NonActiveList = (path, key, icon, text, btn) => {
     return (
       <ListItem borderRadius="md" key={key} my="3">
-        <Link
-          as={NextLink}
-          href={path}
-          onClick={btn}
-          alignItems="center"
-          display="flex"
-          borderRadius="md"
-          _hover={{
-            background: colorMode === "dark" ? "gray.700" : "gray.100",
-            boxShadow: "xl",
-          }}
-          p="3"
-        >
-          {icon}
-          <Text
-            color={colorMode === "dark" ? "gray.100" : "gray.700"}
-            fontWeight="500"
-            fontSize="sm"
-            casing="uppercase"
-            mx="5"
-            display={[
-              "inline",
-              "inline",
-              "inline",
-              "inline",
-              settings.bigMode === true ? "none" : "inline",
-              settings.bigMode === true ? "none" : "inline",
-            ]}
-            _groupHover={{ display: "inline" }}
+        <Link href={path} passHref>
+          <ChakraLink
+            onClick={btn}
+            alignItems="center"
+            display="flex"
+            borderRadius="md"
+            _hover={{
+              background: colorMode === "dark" ? "gray.700" : "gray.100",
+              boxShadow: "xl",
+            }}
+            p="3"
           >
-            {text}
-          </Text>
+            {icon}
+            <Text
+              color={colorMode === "dark" ? "gray.100" : "gray.700"}
+              fontWeight="500"
+              fontSize="sm"
+              casing="uppercase"
+              mx="5"
+              display={[
+                "inline",
+                "inline",
+                "inline",
+                "inline",
+                settings.bigMode === true ? "none" : "inline",
+                settings.bigMode === true ? "none" : "inline",
+              ]}
+              _groupHover={{ display: "inline" }}
+            >
+              {text}
+            </Text>
+          </ChakraLink>
         </Link>
       </ListItem>
     );

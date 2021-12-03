@@ -3,7 +3,7 @@ import DashboardLayout from "../../../layouts/dashboard";
 import { FormFaq } from "../../../form";
 import { Box, Heading } from "@chakra-ui/react";
 
-export default function DashboardCreateCategory() {
+export default function DashboardCreateFaq() {
   return (
     <div>
       <Head>
