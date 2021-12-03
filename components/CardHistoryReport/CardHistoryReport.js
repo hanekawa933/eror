@@ -28,10 +28,10 @@ const CardHistoryReport = ({
 
   const link =
     parseInt(role) === 1
-      ? `http://localhost:3000/report`
+      ? `/report`
       : parseInt(role) === 2
-      ? `http://localhost:3000/admin/report/validate`
-      : `http://localhost:3000/technician/report/check`;
+      ? `/admin/report/validate`
+      : `/technician/report/check`;
   return (
     <Link
       textDecoration="none"
