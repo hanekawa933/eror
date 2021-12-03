@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider, Field } from "formik";
-import axios from "axios";
+import instance from "../axios.default";
 
 const FormSuperadmin = () => {
   const [create, setCreate] = useState([]);
@@ -38,11 +38,7 @@ const FormSuperadmin = () => {
       },
     };
     try {
-      const result = await axios.post(
-        "http://localhost/eror/api/superadmin",
-        body,
-        config
-      );
+      const result = await instance.post("/superadmin", body, config);
       setCreate(result.data.data);
     } catch (error) {
       alert(error);

@@ -13,7 +13,7 @@ import {
 import { useFormik, Form, FormikProvider } from "formik";
 import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
 import * as Yup from "yup";
-import axios from "axios";
+import instance from "../axios.default";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
@@ -35,8 +35,8 @@ const FormResetPassword = () => {
   const checkOTP = async (mail, kode) => {
     try {
       const encoded = encodeURIComponent(mail);
-      const result = await axios.get(
-        `http://localhost/eror_api/api/user/expired_kode?email=${encoded}&kode=${kode}`
+      const result = await instance.get(
+        `/user/expired_kode?email=${encoded}&kode=${kode}`
       );
     } catch (error) {
       router.push("/forgot_password");
@@ -60,8 +60,8 @@ const FormResetPassword = () => {
       };
       const encoded = encodeURIComponent(email);
       const body = JSON.stringify(values);
-      const result = await axios.put(
-        `http://localhost/eror_api/api/user/reset_password/email/${encoded}/kode/${otp}`,
+      const result = await instance.put(
+        `/user/reset_password/email/${encoded}/kode/${otp}`,
         body,
         config
       );

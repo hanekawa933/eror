@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { TempContext } from "../../context/TempContext";
-import axios from "axios";
+import instance from "../../axios.default";
 import { useEffect, useContext, useState } from "react";
 import { ProtectedRoute } from "../../HOC/withAuth";
 
@@ -23,16 +23,14 @@ export default function ReportHistoryAdmin() {
   const [userLogin, setUserLogin] = useState([]);
   const [report, setReport] = useState([]);
   const [settings, setSettings] = useContext(TempContext);
-  const [category, setCategory] = useState([]);
+  let [category, setCategory] = useState([]);
   let [status, setStatus] = useState([]);
   const [statusUsed, setStatusUsed] = useState(999);
   const [content, setContent] = useState({ start: 0, end: 6 });
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
     } catch (error) {
@@ -43,9 +41,7 @@ export default function ReportHistoryAdmin() {
 
   const fetchStatus = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/laporan/status"
-      );
+      const result = await instance.get("/laporan/status");
       setStatus(result.data.data ? result.data.data : []);
     } catch (error) {
       alert("error");
@@ -54,9 +50,7 @@ export default function ReportHistoryAdmin() {
 
   const fetchReportByCategoryId = async (id) => {
     try {
-      const result = await axios.get(
-        `http://localhost/eror_api/api/laporan/history?query=user`
-      );
+      const result = await instance.get(`/laporan/history?query=user`);
       setReport(result.data.data ? result.data.data : []);
     } catch (error) {
       alert(error);
@@ -65,7 +59,7 @@ export default function ReportHistoryAdmin() {
 
   const fetchCategory = async () => {
     try {
-      const result = await axios.get(`http://localhost/eror_api/api/kategori`);
+      const result = await instance.get(`/kategori`);
       setCategory(result.data.data ? result.data.data : []);
     } catch (error) {
       alert(error);
@@ -221,6 +215,52 @@ export default function ReportHistoryAdmin() {
     }
   });
 
+  const allCategory = report
+    .map((res) => {
+      if (report.length < 1) {
+        return <TabPanel>{notFound(res.nama.toLowerCase())}</TabPanel>;
+      } else {
+        return (
+          <>
+            {statusUsed === parseInt(res.status_id) ? (
+              <CardHistoryReport
+                lokasi={res.lokasi}
+                laporan={res.jenis_kerusakan}
+                waktu={res.date_diff}
+                status={res.status}
+                image={
+                  res.gambar[0] && res.gambar[0].gambar
+                    ? res.gambar[0].gambar
+                    : "/assets/img/no-image.png"
+                }
+                id={res.lId}
+                role={userLogin.role_id}
+                status_id={res.sId}
+                key={res.lId}
+              />
+            ) : statusUsed === 999 ? (
+              <CardHistoryReport
+                lokasi={res.lokasi}
+                laporan={res.jenis_kerusakan}
+                waktu={res.date_diff}
+                status={res.status}
+                image={
+                  res.gambar[0] && res.gambar[0].gambar
+                    ? res.gambar[0].gambar
+                    : "/assets/img/no-image.png"
+                }
+                id={res.lId}
+                role={userLogin.role_id}
+                status_id={res.sId}
+                key={res.lId}
+              />
+            ) : null}
+          </>
+        );
+      }
+    })
+    .slice(content.start, content.end);
+
   return (
     <div>
       <Head>
@@ -246,9 +286,37 @@ export default function ReportHistoryAdmin() {
               </Box>
             </Box>
             <Tabs variant="soft-rounded" colorScheme="orange" mt="3" isLazy>
-              <TabList>{tabs}</TabList>
+              <TabList>
+                <Tab>Semua</Tab>
+                {tabs}
+              </TabList>
               <Box mt="5">{listOfButton}</Box>
-              <TabPanels>{tabList}</TabPanels>
+              <TabPanels>
+                <TabPanel>
+                  <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="5">
+                    {allCategory}
+                  </Grid>
+                  {parseInt(report.length) <= parseInt(content.end) ? null : (
+                    <Box
+                      mt="5"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Button
+                        colorScheme="orange"
+                        px="5"
+                        onClick={() =>
+                          setContent({ ...content, end: content.end + 3 })
+                        }
+                      >
+                        Load more
+                      </Button>
+                    </Box>
+                  )}
+                </TabPanel>
+                {tabList}
+              </TabPanels>
             </Tabs>
           </Box>
         </Box>

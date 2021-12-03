@@ -1,21 +1,13 @@
 import Head from "next/head";
 import DashboardLayout from "../../../layouts/dashboard";
-import { FormUser } from "../../../form";
-import {
-  Box,
-  Heading,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
+import { TableFaq } from "../../../tables";
+import { Box, Heading } from "@chakra-ui/react";
 
-export default function DashboardCreateAccount() {
+export default function DashboardTableAccount() {
   return (
     <div>
       <Head>
-        <title>E-ROR | SuperAdmin Buat Akun User</title>
+        <title>E-ROR | Tabel Data FAQ</title>
       </Head>
       <DashboardLayout>
         <Box p="14">
@@ -25,8 +17,8 @@ export default function DashboardCreateAccount() {
             boxShadow="2xl"
             _hover={{ boxShadow: "dark-lg" }}
           >
-            <Heading fontSize="2.1em">Create User</Heading>
-            <FormUser />
+            <Heading fontSize="2.1em">Tabel FAQ</Heading>
+            <TableFaq />
           </Box>
         </Box>
       </DashboardLayout>

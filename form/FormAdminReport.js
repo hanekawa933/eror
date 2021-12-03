@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
-import axios from "axios";
+import instance from "../axios.default";
 
 const FormAdminReport = ({ id, statusId, fetchReport }) => {
   const toast = useToast();
@@ -26,8 +26,8 @@ const FormAdminReport = ({ id, statusId, fetchReport }) => {
       },
     };
     try {
-      const result = await axios.post(
-        `http://localhost/eror_api/api/notifikasi/admin_validasi/id/${id}`,
+      const result = await instance.post(
+        `/notifikasi/admin_validasi/id/${id}`,
         body,
         config
       );
@@ -61,8 +61,8 @@ const FormAdminReport = ({ id, statusId, fetchReport }) => {
       },
     };
     try {
-      const result = await axios.post(
-        `http://localhost/eror_api/api/notifikasi/finish_admin/id/${id}`,
+      const result = await instance.post(
+        `/notifikasi/finish_admin/id/${id}`,
         body,
         config
       );
@@ -96,8 +96,8 @@ const FormAdminReport = ({ id, statusId, fetchReport }) => {
       },
     };
     try {
-      const result = await axios.post(
-        `http://localhost/eror_api/api/notifikasi/admin_duplikasi/id/${id}`,
+      const result = await instance.post(
+        `/notifikasi/admin_duplikasi/id/${id}`,
         body,
         config
       );

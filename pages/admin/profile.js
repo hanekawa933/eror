@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import DashboardLayout from "../../layouts/dashboard";
 import Head from "next/head";
-import axios from "axios";
+import instance from "../../axios.default";
 import { useEffect, useState, useContext } from "react";
 import { TempContext } from "../../context/TempContext";
 import { FormChangeProfileUser, FormChangePassword } from "../../form";
@@ -23,9 +23,7 @@ const ProfileApp = () => {
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
     } catch (error) {

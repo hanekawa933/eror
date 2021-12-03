@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import instance from "../axios.default";
 import { useEffect, useState, useContext } from "react";
 
 const FormChangeProfileUser = () => {
@@ -20,9 +20,7 @@ const FormChangeProfileUser = () => {
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
     } catch (error) {
       alert(error);
@@ -56,11 +54,7 @@ const FormChangeProfileUser = () => {
 
       const body = JSON.stringify(values);
 
-      const result = await axios.put(
-        `http://localhost/eror_api/api/user/update_profile`,
-        body,
-        config
-      );
+      const result = await instance.put(`/user/update_profile`, body, config);
       fetchUserLogin();
       toast({
         title: "Berhasil Update",

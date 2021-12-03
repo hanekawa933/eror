@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import instance from "../axios.default";
 import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 
@@ -41,11 +41,7 @@ const FormChangePassword = () => {
         },
       };
       const body = JSON.stringify(values);
-      const result = await axios.put(
-        `http://localhost/eror_api/api/user/update_password`,
-        body,
-        config
-      );
+      const result = await instance.put(`/user/update_password`, body, config);
       toast({
         title: "Berhasil Update",
         description: "Password anda berhasil diubah!",

@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
-import axios from "axios";
+import instance from "../axios.default";
 
 const FormCategory = () => {
   const logoRef = useRef();
@@ -33,15 +33,11 @@ const FormCategory = () => {
   const createCategory = async (data) => {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     };
     try {
-      const result = await axios.post(
-        "http://localhost/eror_api/api/kategori",
-        data,
-        config
-      );
+      const result = await instance.post("/kategori", data, config);
       setCreate(result.data.data);
     } catch (error) {
       alert(error);
@@ -147,7 +143,6 @@ const FormCategory = () => {
               name="icon"
               onBlur={handleBlur}
               onChange={(event) => changedHandler(event)}
-              multiple
               ref={logoRef}
               accept=".svg, .png"
             />

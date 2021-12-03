@@ -6,6 +6,7 @@ const account = "bx:bxs-user-account";
 const category = "ic:outline-category";
 const reportIcon = "carbon:report";
 const history = "bx:bx-history";
+const faq = "eva:question-mark-circle-fill";
 const getIcon = (icon) => <Icon icon={icon} width={22} height={22} />;
 
 const general = [
@@ -21,37 +22,47 @@ const general = [
 
 const operational = [
   {
-    text: "akun",
+    text: "buat akun",
     to: "/dashboard/create/account",
     icon: getIcon(account),
   },
   {
-    text: "laporan",
+    text: "buat laporan",
     to: "/dashboard/create/report",
     icon: getIcon(reportIcon),
   },
   {
-    text: "kategori",
+    text: "buat kategori",
     to: "/dashboard/create/category",
     icon: getIcon(category),
+  },
+  {
+    text: "buat faq",
+    to: "/dashboard/create/faq",
+    icon: getIcon(faq),
   },
 ];
 
 const report = [
   {
-    text: "akun",
+    text: "tabel akun",
     to: "/dashboard/table/account",
     icon: getIcon(account),
   },
   {
-    text: "laporan",
+    text: "tabel  laporan",
     to: "/dashboard/table/report",
     icon: getIcon(reportIcon),
   },
   {
-    text: "kategori",
+    text: "tabel  kategori",
     to: "/dashboard/table/category",
     icon: getIcon(category),
+  },
+  {
+    text: "tabel faq",
+    to: "/dashboard/table/faq",
+    icon: getIcon(faq),
   },
 ];
 

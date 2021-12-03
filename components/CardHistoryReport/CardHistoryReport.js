@@ -1,4 +1,5 @@
 import { Box, Text, Badge, Link, useColorMode, Image } from "@chakra-ui/react";
+import path from "../../constant.default";
 import { CalendarIcon } from "@chakra-ui/icons";
 const CardHistoryReport = ({
   laporan,
@@ -55,7 +56,7 @@ const CardHistoryReport = ({
         height={["80"]}
       >
         <Image
-          src={"http://localhost/eror_api" + image}
+          src={path + image}
           alt="Last Report Image"
           borderTopRadius="lg"
           w="100%"

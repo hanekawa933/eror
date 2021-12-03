@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 import { useEffect, useContext, useState } from "react";
 import { ProtectedRoute } from "../../../../HOC/withAuth";
 import { TempContext } from "../../../../context/TempContext";
-import axios from "axios";
+import instance from "../../../../axios.default";
 
 export default function CategoryList() {
   const [userLogin, setUserLogin] = useState([]);
@@ -15,9 +15,7 @@ export default function CategoryList() {
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/api_eror/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
     } catch (error) {
@@ -27,7 +25,7 @@ export default function CategoryList() {
 
   const fetchCategory = async () => {
     try {
-      const result = await axios.get("http://localhost/api_eror/api/kategori");
+      const result = await instance.get("/kategori");
       setCategory(result.data.data);
     } catch (error) {
       alert(error);

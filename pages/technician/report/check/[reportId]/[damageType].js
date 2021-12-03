@@ -8,7 +8,7 @@ import {
 import { Box, Grid, Image, Text, Badge } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { TempContext } from "../../../../../context/TempContext";
-import axios from "axios";
+import instance from "../../../../../axios.default";
 import { useRouter } from "next/router";
 import moment from "moment";
 import "moment/locale/id";
@@ -16,6 +16,7 @@ import { useEffect, useContext, useState } from "react";
 import { ProtectedRoute } from "../../../../../HOC/withAuth";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import path from "../../../../../constant.default";
 
 export default function TechnicianCheckReport() {
   const [userLogin, setUserLogin] = useState([]);
@@ -26,9 +27,7 @@ export default function TechnicianCheckReport() {
   const { reportId } = router.query;
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
     } catch (error) {
@@ -38,9 +37,7 @@ export default function TechnicianCheckReport() {
 
   const fetchLaporanById = async (id) => {
     try {
-      const result = await axios.get(
-        `http://localhost/eror_api/api/laporan/item/id/${id}`
-      );
+      const result = await instance.get(`/laporan/item/id/${id}`);
       setReport(result.data.data);
     } catch (error) {
       alert(error);
@@ -70,7 +67,7 @@ export default function TechnicianCheckReport() {
     return (
       <Box key={index}>
         <Image
-          src={"http://localhost/eror_api" + res.gambar}
+          src={path + res.gambar}
           alt="Lampiran 3"
           height="96"
           w="100%"
@@ -147,7 +144,7 @@ export default function TechnicianCheckReport() {
                 </Box>
                 <Box
                   as="img"
-                  src={"http://localhost/eror_api" + report.icon}
+                  src={path + report.icon}
                   maxW="100%"
                   height="52"
                   px="20"

@@ -40,9 +40,11 @@ const TableUserAccount = () => {
 
   const fetchReportUserAndCategory = async () => {
     try {
-      const users = await axios.get("http://localhost/eror/api/user");
-      const category = await axios.get("http://localhost/eror/api/kategori");
-      const result = await axios.get("http://localhost/eror/api/laporan");
+      const users = await axios.get("http://localhost/eror_api/api/user");
+      const category = await axios.get(
+        "http://localhost/eror_api/api/kategori"
+      );
+      const result = await axios.get("http://localhost/eror_api/api/laporan");
       setReports(result.data.data);
       setUser(users.data.data);
       setCategory(category.data.data);
@@ -50,6 +52,8 @@ const TableUserAccount = () => {
       alert(error);
     }
   };
+
+  console.log(reports);
 
   useEffect(() => {
     fetchReportUserAndCategory();
@@ -97,7 +101,7 @@ const TableUserAccount = () => {
       const body = JSON.stringify(values);
 
       const result = axios.put(
-        `http://localhost/eror/api/laporan/update/id/${ids}`,
+        `http://localhost/eror_api/api/laporan/update/id/${ids}`,
         body,
         config
       );
@@ -132,10 +136,15 @@ const TableUserAccount = () => {
 
   const columnNames = [
     { names: "No", selector: "no", width: "7%" },
-    { names: "User Detail", selector: "user_info" },
-    { names: "Report Detail", selector: "report_detail" },
-    { names: "Last Edited By", selector: "edited_by" },
-    { names: "Option", selector: "option", width: "15%" },
+    { names: "User Pelapor", selector: "user_info" },
+    { names: "Detail Laporan", selector: "report_detail" },
+    {
+      names: "Kategori",
+      selector: "report_kategori",
+      width: "15%",
+      center: true,
+    },
+    { names: "Aksi", selector: "option", width: "11%", center: true },
   ];
 
   const subHeaderComponentMemo = useMemo(() => {
@@ -182,7 +191,6 @@ const TableUserAccount = () => {
     return {
       id: index,
       no: index + 1,
-      username: result.username,
       nama_lengkap: result.nama_lengkap,
       jenis_kelamin: result.jenis_kelamin,
       email: result.email,
@@ -199,8 +207,9 @@ const TableUserAccount = () => {
       tanggal_pengecekan: moment(result.tanggal_pengecekan).format(
         "Do MMMM YYYY"
       ),
+      kategori: result.kategori,
       user_info: (
-        <Box my="3">
+        <Box my="10">
           <Text fontSize="1.3em" fontWeight="semibold">
             {result.nama_lengkap}
           </Text>
@@ -208,7 +217,7 @@ const TableUserAccount = () => {
         </Box>
       ),
       report_detail: (
-        <Box my="3">
+        <Box my="10">
           <Text fontSize="1.3em" fontWeight="semibold">
             {result.jenis_kerusakan}
           </Text>
@@ -216,21 +225,10 @@ const TableUserAccount = () => {
           {BadgeProgress}
         </Box>
       ),
-      user_contact: (
-        <Box my="3">
-          <Text fontSize="1.3em" fontWeight="semibold">
-            {result.email}
-          </Text>
-          <Text color={fontColor}>{result.no_telp}</Text>
-        </Box>
-      ),
-      roles: (
-        <Box my="3">
-          <Text fontSize="1.3em" fontWeight="semibold">
-            {result.jabatan}
-          </Text>
-          <Text color={fontColor}>{result.role}</Text>
-        </Box>
+      report_kategori: (
+        <Text fontSize="1.3em" textTransform="capitalize">
+          {result.kategori}
+        </Text>
       ),
       option: (
         <OptionButtonMenuTable setAndOpen={() => openAndSetIds(result.id)} />
@@ -242,13 +240,17 @@ const TableUserAccount = () => {
   const filteredItems = dataTable.filter((item) => {
     if (!filterText) return true;
     if (
-      item.username.toLowerCase().includes(filterText.toLowerCase()) ||
       item.nama_lengkap.toLowerCase().includes(filterText.toLowerCase()) ||
       item.jenis_kelamin.toLowerCase().includes(filterText.toLowerCase()) ||
       item.email.toLowerCase().includes(filterText.toLowerCase()) ||
       item.no_telp.toLowerCase().includes(filterText.toLowerCase()) ||
       item.jabatan.toLowerCase().includes(filterText.toLowerCase()) ||
-      item.status.toLowerCase().includes(filterText.toLowerCase())
+      item.status.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.tanggal_lapor.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.lokasi.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.jenis_kerusakan.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.keterangan.toLowerCase().includes(filterText.toLowerCase()) ||
+      item.report_kategori.toLowerCase().includes(filterText.toLowerCase())
     ) {
       return true;
     }
@@ -258,7 +260,6 @@ const TableUserAccount = () => {
     return {
       name: res.names,
       selector: (row) => row[res.selector],
-      sortable: true,
       width: res.width,
       center: res.center,
     };
@@ -270,7 +271,7 @@ const TableUserAccount = () => {
 
   const ExpandedComponent = ({ data }) => (
     <Box display="flex" py="5" justifyContent="space-around">
-      <Box>
+      <Box width="50%">
         <Heading
           fontSize="1.2em"
           color={fontHeading}
@@ -280,19 +281,6 @@ const TableUserAccount = () => {
           User Detail
         </Heading>
         <Box px="5">
-          <Box py="3">
-            <FormLabel color={fontLabel} fontWeight="bold">
-              Username
-            </FormLabel>
-            <Text
-              fontSize="1.1em"
-              color={fontDesc}
-              textTransform="capitalize"
-              fontWeight="semibold"
-            >
-              {data.username}
-            </Text>
-          </Box>
           <Box>
             <FormLabel color={fontLabel} fontWeight="bold">
               Nama Lengkap
@@ -360,7 +348,7 @@ const TableUserAccount = () => {
           </Box>
         </Box>
       </Box>
-      <Box>
+      <Box width="50%">
         <Heading
           fontSize="1.2em"
           color={fontHeading}
@@ -477,19 +465,6 @@ const TableUserAccount = () => {
               {data.keterangan_teknisi}
             </Text>
           </Box>
-          <Box>
-            <FormLabel color={fontLabel} fontWeight="bold">
-              Terakhir Diedit Oleh
-            </FormLabel>
-            <Text
-              fontSize="1.1em"
-              color={fontDesc}
-              textTransform="capitalize"
-              fontWeight="semibold"
-            >
-              {data.nama_lengkap}
-            </Text>
-          </Box>
         </Box>
       </Box>
     </Box>
@@ -519,7 +494,7 @@ const TableUserAccount = () => {
   const userOption = user.map((result, index) => {
     return (
       <option value={result.id} key={index}>
-        {result.username}
+        {result.email}
       </option>
     );
   });

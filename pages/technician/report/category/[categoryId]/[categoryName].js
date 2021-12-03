@@ -4,7 +4,8 @@ import CardHistoryReport from "../../../../../components/CardHistoryReport";
 import { Box, Grid, useColorMode, Text } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { TempContext } from "../../../../../context/TempContext";
-import axios from "axios";
+import instance from "../../../../../axios.default";
+import path from "../../../../../constant.default";
 import { useEffect, useContext, useState } from "react";
 import { ProtectedRoute } from "../../../../../HOC/withAuth";
 
@@ -21,9 +22,7 @@ function ReportHistory() {
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
     } catch (error) {
@@ -33,8 +32,8 @@ function ReportHistory() {
 
   const fetchReportByCategoryId = async () => {
     try {
-      const result = await axios.get(
-        `http://localhost/eror_api/api/laporan/kategori?category=${categoryId}&query=teknisi`
+      const result = await instance.get(
+        `/laporan/kategori?category=${categoryId}&query=teknisi`
       );
       setReport(result.data.data ? result.data.data : []);
     } catch (error) {
@@ -44,9 +43,7 @@ function ReportHistory() {
 
   const fetchCategoryById = async (id) => {
     try {
-      const result = await axios.get(
-        `http://localhost/eror_api/api/kategori/item/id/${id}`
-      );
+      const result = await instance.get(`/kategori/item/id/${id}`);
       setCategory(result.data.data);
     } catch (error) {
       alert(error);
@@ -130,7 +127,7 @@ function ReportHistory() {
               </Box>
               <Box
                 as="img"
-                src={"http://localhost/eror_api" + category.icon}
+                src={path + category.icon}
                 maxW="100%"
                 height="52"
               ></Box>

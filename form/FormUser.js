@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   FormControl,
@@ -14,10 +14,10 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
-import axios from "axios";
+import instance from "../axios.default";
 
 const FormUser = () => {
-  const [create, setCreate] = useState([]);
+  const [role, setRole] = useState([]);
   const Schema = Yup.object().shape({
     nama_lengkap: Yup.string().required("Input tidak boleh kosong"),
     password: Yup.string()
@@ -34,7 +34,17 @@ const FormUser = () => {
       .typeError("Input harus berupa angka")
       .required("Input tidak boleh kosong"),
     jabatan: Yup.string().required("Input tidak boleh kosong"),
+    role_id: Yup.number().required("Input tidak boleh kosong"),
   });
+
+  const fetchRole = async () => {
+    try {
+      const role = await instance.get("/role");
+      setRole(role.data.data);
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const createUser = async (data) => {
     const body = JSON.stringify(data);
@@ -44,16 +54,16 @@ const FormUser = () => {
       },
     };
     try {
-      const result = await axios.post(
-        "http://localhost/eror_api/api/user",
-        body,
-        config
-      );
-      setCreate(result.data.data);
+      const result = await instance.post("/user", body, config);
     } catch (error) {
       alert(error);
+      console.log(error.response);
     }
   };
+
+  useEffect(() => {
+    fetchRole();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -64,6 +74,7 @@ const FormUser = () => {
       email: "",
       no_telp: "",
       jabatan: "",
+      role_id: "",
     },
     validationSchema: Schema,
     onSubmit: (values, { resetForm, setSubmitting }) => {
@@ -103,6 +114,14 @@ const FormUser = () => {
       </FormControl>
     );
   };
+
+  const roleOption = role.map((result, index) => {
+    return (
+      <option value={result.id} key={index}>
+        {result.nama}
+      </option>
+    );
+  });
 
   return (
     <Box mt="5">
@@ -170,6 +189,24 @@ const FormUser = () => {
           {InputTypeText("email")}
           {InputTypeText("no_telp")}
           {InputTypeText("jabatan")}
+          <FormControl
+            id="role_id"
+            pt="5"
+            isInvalid={Boolean(touched.role_id && errors.role_id)}
+          >
+            <FormLabel textTransform="capitalize">Kategori</FormLabel>
+            <Select
+              placeholder="Pilih Role"
+              name="role_id"
+              {...getFieldProps("role_id")}
+              onBlur={handleBlur}
+            >
+              {roleOption}
+            </Select>
+            <FormErrorMessage>
+              {touched.role_id && errors.role_id}
+            </FormErrorMessage>
+          </FormControl>
           <Box display="flex" justifyContent="end">
             <Button
               type="submit"

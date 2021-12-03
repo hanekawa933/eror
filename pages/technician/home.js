@@ -12,7 +12,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { TempContext } from "../../context/TempContext";
-import axios from "axios";
+import instance from "../../axios.default";
 import Link from "next/link";
 
 export default function UserHomepage() {
@@ -23,9 +23,7 @@ export default function UserHomepage() {
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
     } catch (error) {
@@ -35,9 +33,7 @@ export default function UserHomepage() {
 
   const fetchCategory = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/kategori/notif?query=teknisi"
-      );
+      const result = await instance.get("/kategori/notif?query=teknisi");
       setCategory(result.data.data);
     } catch (error) {
       alert(error);
@@ -46,9 +42,7 @@ export default function UserHomepage() {
 
   const fetchReportByUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/laporan/user"
-      );
+      const result = await instance.get("/laporan/user");
       setReport(result.data.data);
     } catch (error) {
       alert(error);

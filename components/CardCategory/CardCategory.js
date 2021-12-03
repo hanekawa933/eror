@@ -1,3 +1,4 @@
+import path from "../../constant.default";
 import { Box, Text, Link, useColorMode } from "@chakra-ui/react";
 
 const CardCategory = ({ icon, category, id, role, notification = null }) => {
@@ -67,7 +68,7 @@ const CardCategory = ({ icon, category, id, role, notification = null }) => {
         </Text>
         <Box
           as="object"
-          data={"http://localhost/eror_api" + icon}
+          data={path + icon}
           type="image/svg+xml"
           maxW="100%"
           height={["16", "44", "44", "44", "48", "52"]}

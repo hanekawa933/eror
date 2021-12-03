@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { TempContext } from "../../../context/TempContext";
-import axios from "axios";
+import instance from "../../../axios.default";
 import { useEffect, useContext, useState } from "react";
 import { ProtectedRoute } from "../../../HOC/withAuth";
 
@@ -30,9 +30,7 @@ export default function ReportHistoryTechnician() {
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
     } catch (error) {
@@ -43,9 +41,7 @@ export default function ReportHistoryTechnician() {
 
   const fetchReportByCategoryId = async (id) => {
     try {
-      const result = await axios.get(
-        `http://localhost/eror_api/api/laporan/history?query=teknisi`
-      );
+      const result = await instance.get(`/laporan/history?query=teknisi`);
       setReport(result.data.data ? result.data.data : []);
     } catch (error) {
       alert(error);
@@ -54,7 +50,7 @@ export default function ReportHistoryTechnician() {
 
   const fetchCategory = async () => {
     try {
-      const result = await axios.get(`http://localhost/eror_api/api/kategori`);
+      const result = await instance.get(`/kategori`);
       setCategory(result.data.data ? result.data.data : []);
     } catch (error) {
       alert(error);
@@ -64,9 +60,7 @@ export default function ReportHistoryTechnician() {
 
   const fetchStatus = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/laporan/status"
-      );
+      const result = await instance.get("/laporan/status");
       setStatus(result.data.data ? result.data.data : []);
     } catch (error) {
       alert("error");

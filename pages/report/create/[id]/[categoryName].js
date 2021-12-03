@@ -5,10 +5,11 @@ import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { useContext, useEffect, useState } from "react";
 import { TempContext } from "../../../../context/TempContext";
-import axios from "axios";
+import instance from "../../../../axios.default";
 import { useRouter } from "next/router";
 import moment from "moment";
 import "moment/locale/id";
+import path from "../../../../constant.default";
 
 export default function CreateUserReport() {
   const [userLogin, setUserLogin] = useState([]);
@@ -20,9 +21,7 @@ export default function CreateUserReport() {
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       console.log(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
@@ -33,9 +32,7 @@ export default function CreateUserReport() {
 
   const fetchCategoryById = async (id) => {
     try {
-      const result = await axios.get(
-        `http://localhost/eror_api/api/kategori/item/id/${id}`
-      );
+      const result = await instance.get(`/kategori/item/id/${id}`);
       setCategory(result.data.data);
     } catch (error) {
       alert(error);
@@ -97,7 +94,7 @@ export default function CreateUserReport() {
               </Box>
               <Box
                 as="img"
-                src={"http://localhost/eror_api" + category.icon}
+                src={path + category.icon}
                 maxW="100%"
                 height="52"
               ></Box>

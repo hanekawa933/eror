@@ -9,6 +9,7 @@ import FormChangePassword from "./FormChangePassword";
 import FormForgotPassword from "./FormForgotPassword";
 import FormInputOtp from "./FormInputOtp";
 import FormResetPassword from "./FormResetPassword";
+import FormFaq from "./FormFaq";
 
 export {
   FormUser,
@@ -22,4 +23,5 @@ export {
   FormForgotPassword,
   FormInputOtp,
   FormResetPassword,
+  FormFaq,
 };

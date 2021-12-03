@@ -4,7 +4,7 @@ import { FormAdminReport } from "../../../../../form";
 import { Box, Grid, Image, Text, Badge } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { TempContext } from "../../../../../context/TempContext";
-import axios from "axios";
+import instance from "../../../../../axios.default";
 import { useRouter } from "next/router";
 import moment from "moment";
 import "moment/locale/id";
@@ -23,9 +23,7 @@ export default function CreateUserReport() {
 
   const fetchUserLogin = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
+      const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
     } catch (error) {
@@ -35,9 +33,7 @@ export default function CreateUserReport() {
 
   const fetchLaporanById = async (id) => {
     try {
-      const result = await axios.get(
-        `http://localhost/eror_api/api/laporan/item/id/${id}`
-      );
+      const result = await instance.get(`/laporan/item/id/${id}`);
       setReport(result.data.data);
     } catch (error) {
       alert(error);

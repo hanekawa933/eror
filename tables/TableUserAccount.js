@@ -36,7 +36,7 @@ const TableUserAccount = () => {
 
   const fetchUserData = async () => {
     try {
-      const result = await axios.get("http://localhost/eror/api/user");
+      const result = await axios.get("http://localhost/eror_api/api/user");
       setUsers(result.data.data);
     } catch (error) {
       alert(error);
@@ -132,12 +132,12 @@ const TableUserAccount = () => {
       role_id: result.role_id,
       role: result.nama,
       user_info: (
-        <Text fontSize="1.3em" my="3">
+        <Text fontSize="1.3em" my="10">
           {result.email}
         </Text>
       ),
       user_profile: (
-        <Box my="3">
+        <Box my="10">
           <Text fontSize="1.3em">{result.nama_lengkap}</Text>
           <Text color={colorMode === "light" ? "gray.500" : "gray.400"}>
             {!result.jenis_kelamin ? "-" : result.jenis_kelamin}
@@ -145,12 +145,12 @@ const TableUserAccount = () => {
         </Box>
       ),
       user_contact: (
-        <Box my="3">
+        <Box my="10">
           <Text fontSize="1.3em">{!result.no_telp ? "-" : result.no_telp}</Text>
         </Box>
       ),
       roles: (
-        <Box my="3">
+        <Box my="10">
           <Text fontSize="1.3em">{!result.jabatan ? "-" : result.jabatan}</Text>
           <Text color={colorMode === "light" ? "gray.500" : "gray.400"}>
             {result.nama}
@@ -197,7 +197,7 @@ const TableUserAccount = () => {
       const body = JSON.stringify(values);
 
       const result = axios.put(
-        `http://localhost/eror/api/user/update/id/${ids}`,
+        `http://localhost/eror_api/api/user/update/id/${ids}`,
         body,
         config
       );
@@ -259,7 +259,6 @@ const TableUserAccount = () => {
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <ModalBody>
-              {InputTypeText("username")}
               {InputTypeText("nama_lengkap")}
               <Box display="flex">
                 <FormControl

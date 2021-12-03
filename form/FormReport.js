@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
-import axios from "axios";
+import instance from "../axios.default";
 
 const FormReport = () => {
   const [create, setCreate] = useState([]);
@@ -23,10 +23,8 @@ const FormReport = () => {
 
   const fetchUserAndCategory = async () => {
     try {
-      const users = await axios.get("http://localhost/eror_api/api/user");
-      const category = await axios.get(
-        "http://localhost/eror_api/api/kategori"
-      );
+      const users = await instance.get("/user");
+      const category = await instance.get("/kategori");
       setUser(users.data.data);
       setCategory(category.data.data);
     } catch (error) {
@@ -55,11 +53,7 @@ const FormReport = () => {
       },
     };
     try {
-      const result = await axios.post(
-        "http://localhost/eror/api/laporan",
-        body,
-        config
-      );
+      const result = await instance.post("/laporan", body, config);
       setCreate(result.data.data);
     } catch (error) {
       alert(error);

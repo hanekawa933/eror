@@ -15,7 +15,7 @@ import {
 import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
-import axios from "axios";
+import instance from "../../axios.default";
 
 import { useRouter } from "next/router";
 
@@ -39,22 +39,14 @@ const AuthLogin = () => {
           "Content-Type": "application/json",
         },
       };
-      const result = await axios.post(
-        "http://localhost/eror_api/api/user/login",
-        body,
-        config
-      );
+      const result = await instance.post("/user/login", body, config);
       Cookie.set("token", `Bearer ${result.data.token}`);
 
-      axios.defaults.headers.common[
+      instance.defaults.headers.common[
         "x-auth-token"
       ] = `Bearer ${result.data.token}`;
 
-      const user = await axios.get(
-        "http://localhost/eror_api/api/user/profile"
-      );
-
-      console.log(user);
+      const user = await instance.get("/user/profile");
 
       const user_role = parseInt(user.data.data.role_id);
 

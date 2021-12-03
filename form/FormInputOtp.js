@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import instance from "../axios.default";
 import { useRouter } from "next/router";
 
 const FormInputOtp = () => {
@@ -39,8 +39,8 @@ const FormInputOtp = () => {
 
       const body = JSON.stringify(values);
       const encoded = encodeURIComponent(email);
-      const result = await axios.post(
-        `http://localhost/eror_api/api/user/auth_reset/email/${encoded}`,
+      const result = await instance.post(
+        `/user/auth_reset/email/${encoded}`,
         body,
         config
       );
@@ -110,11 +110,7 @@ const FormInputOtp = () => {
 
       const body = JSON.stringify(values);
 
-      const result = await axios.post(
-        `http://localhost/eror_api/api/user/forgot`,
-        body,
-        config
-      );
+      const result = await instance.post(`/user/forgot`, body, config);
       toast.closeAll();
       toast({
         title: "Berhasil Terkirim",

@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
-import axios from "axios";
+import instance from "../axios.default";
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 
@@ -26,8 +26,8 @@ export const TahapPengecekan = ({ id, fetchReport }) => {
       },
     };
     try {
-      const result = await axios.post(
-        `http://localhost/eror_api/api/notifikasi/teknisi_cek/id/${id}`,
+      const result = await instance.post(
+        `/notifikasi/teknisi_cek/id/${id}`,
         body,
         config
       );
@@ -118,8 +118,8 @@ export const TahapSetelahPengecekan = ({ id, fetchReport }) => {
       },
     };
     try {
-      const result = await axios.post(
-        `http://localhost/eror_api/api/notifikasi/teknisi_perbaikan/id/${id}`,
+      const result = await instance.post(
+        `/notifikasi/teknisi_perbaikan/id/${id}`,
         body,
         config
       );
@@ -149,8 +149,8 @@ export const TahapSetelahPengecekan = ({ id, fetchReport }) => {
       },
     };
     try {
-      const result = await axios.post(
-        `http://localhost/eror_api/api/notifikasi/tolak/id/${id}`,
+      const result = await instance.post(
+        `/notifikasi/tolak/id/${id}`,
         data,
         config
       );
@@ -369,8 +369,8 @@ export const TahapSetelahPerbaikan = ({ id, fetchReport }) => {
       },
     };
     try {
-      const result = await axios.post(
-        `http://localhost/eror_api/api/notifikasi/finish/id/${id}`,
+      const result = await instance.post(
+        `/notifikasi/finish/id/${id}`,
         data,
         config
       );
