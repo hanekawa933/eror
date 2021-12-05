@@ -130,7 +130,7 @@ const AuthRegister = () => {
           />
           <FormErrorMessage>{touched.email && errors.email}</FormErrorMessage>
         </FormControl>
-        <Box display="flex">
+        <Box display="flex" flexDir={["column", "row"]}>
           <FormControl
             id="password"
             pt="5"
@@ -161,12 +161,12 @@ const AuthRegister = () => {
             </FormErrorMessage>
           </FormControl>
           <FormControl
-            id="password"
+            id="password_verify"
             pt="5"
             isInvalid={Boolean(
               touched.password_verify && errors.password_verify
             )}
-            ml="3"
+            ml={["0", "3"]}
           >
             <FormLabel>Ulangi Password</FormLabel>
             <InputGroup>

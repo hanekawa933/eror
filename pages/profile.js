@@ -22,6 +22,7 @@ import { FormChangeProfileUser, FormChangePassword } from "../form";
 const ProfileApp = () => {
   const [userLogin, setUserLogin] = useState([]);
   const [settings, setSettings] = useContext(TempContext);
+  const [change, setChange] = useState(0);
 
   const fetchUserLogin = async () => {
     try {
@@ -36,7 +37,7 @@ const ProfileApp = () => {
 
   useEffect(() => {
     fetchUserLogin();
-  }, [userLogin]);
+  }, [change]);
 
   return (
     <>
@@ -44,7 +45,7 @@ const ProfileApp = () => {
         <title>E-ROR | Ubah Profil</title>
       </Head>
       <DashboardLayout>
-        <Box px="10" pb="10">
+        <Box px={["2", "10"]} pb="10">
           <Box borderRadius="xl" boxShadow="xl">
             <Box
               borderRadius="xl"
@@ -78,7 +79,7 @@ const ProfileApp = () => {
               </Box>
             </Box>
 
-            <Box mt="28" px="20" py="10">
+            <Box mt="28" px={["0", "8", "20"]} py="10">
               <Tabs isFitted>
                 <TabList>
                   <Tab>Ganti Profile</Tab>
@@ -86,7 +87,9 @@ const ProfileApp = () => {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <FormChangeProfileUser />
+                    <FormChangeProfileUser
+                      changed={() => setChange(change + setChange)}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <FormChangePassword />

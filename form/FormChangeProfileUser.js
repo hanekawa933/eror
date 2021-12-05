@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import instance from "../axios.default";
 import { useEffect, useState, useContext } from "react";
 
-const FormChangeProfileUser = () => {
+const FormChangeProfileUser = ({ changed }) => {
   const toast = useToast();
   const [userLogin, setUserLogin] = useState([]);
 
@@ -30,7 +30,7 @@ const FormChangeProfileUser = () => {
 
   useEffect(() => {
     fetchUserLogin();
-  }, [userLogin]);
+  }, []);
 
   const Schema = Yup.object().shape({
     nama_lengkap: Yup.string().required("Input tidak boleh kosong"),
@@ -56,6 +56,7 @@ const FormChangeProfileUser = () => {
 
       const result = await instance.put(`/user/update_profile`, body, config);
       fetchUserLogin();
+      changed(1);
       toast({
         title: "Berhasil Update",
         description: "Profile anda berhasil diubah!",

@@ -183,6 +183,7 @@ const FormInputOtp = () => {
                     forgotPassword({ email });
                     return false;
                   }}
+                  display={["block", "inline"]}
                 >
                   Kirim ulang
                 </Link>
