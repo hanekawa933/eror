@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import { TempContext, NavbarContext } from "../../context/TempContext";
+import { useState, useContext, useEffect } from "react";
+import { TempContext } from "../../context/TempContext";
 import {
   Box,
   Menu,
@@ -8,14 +8,21 @@ import {
   Button,
   Divider,
   useColorMode,
-  Image,
+  Text,
+  Link,
 } from "@chakra-ui/react";
-import { SettingsIcon, SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { SettingsIcon, SunIcon, MoonIcon, BellIcon } from "@chakra-ui/icons";
 import { Icon } from "@iconify/react";
+import instance from "../../axios.default";
+import moment from "moment";
+import "moment/locale/id";
+
 const DashboardNavbar = () => {
   const NavbarMobile = "64px";
   const NavbarDesktop = "92px";
   const { colorMode, toggleColorMode } = useColorMode();
+  const [notif, setNotif] = useState([]);
+  const [notifCount, setNotifCount] = useState(null);
 
   const [settings, setSettings] = useContext(TempContext);
 
@@ -23,6 +30,82 @@ const DashboardNavbar = () => {
     setSettings({ ...settings, active: !settings.active });
   };
 
+  const fetchUserNotif = async () => {
+    try {
+      const result = await instance.get("/notifikasi/user");
+      setNotif(result.data.data);
+    } catch (error) {
+      alert("Error");
+      console.log(result);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserNotif();
+    setNotifCount(localStorage.getItem("notification"));
+  }, []);
+
+  let dateNow = 0;
+
+  const notifikasi =
+    notif &&
+    notif.map((res) => {
+      const today = moment().format("YYYY-MM-DD");
+      const notifDate = moment(res.created_at).format("YYYY-MM-DD");
+      const checkDate = moment(today).isSame(notifDate);
+      checkDate ? (dateNow += 1) : (dateNow += 0);
+      return (
+        <Box
+          key={res.id}
+          _hover={{
+            background: colorMode === "dark" ? "gray.800" : "gray.100",
+          }}
+        >
+          <Link
+            href={`/report/${res.lId}/${res.jenis_kerusakan}`}
+            _hover={{ textDecor: "none" }}
+          >
+            <Box display="flex" alignItems="center" p="5">
+              <Box
+                background="#FFD202"
+                borderRadius="full"
+                p="2"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <BellIcon fontSize="20px" color="orange.500" />
+              </Box>
+              <Box ml="5">
+                <Box display="flex">
+                  <Box width="70%">
+                    <Text fontWeight="semibold">{res.pesan}</Text>
+                  </Box>
+                  <Box
+                    flex="1"
+                    fontSize="0.7em"
+                    display="flex"
+                    justifyContent="end"
+                  >
+                    <Box as="span">
+                      {moment(res.created_at).format("Do MMM, H:mm")}
+                    </Box>
+                  </Box>
+                </Box>
+                <Box>
+                  {res.keterangan.substr(0, 100)}
+                  {res.keterangan.length > 100 ? "..." : null}
+                </Box>
+              </Box>
+            </Box>
+          </Link>
+          <Divider />
+        </Box>
+      );
+    });
+
+  const setLocalStorage = () =>
+    localStorage.setItem("notification", `${dateNow}`);
   return (
     <Box
       sx={{
@@ -71,52 +154,107 @@ const DashboardNavbar = () => {
       >
         <Icon icon="ci:list-ul" width={24} height={24} />
       </Button>
-      <Menu>
-        <MenuButton as={Button}>
-          <SettingsIcon />
-        </MenuButton>
-        <MenuList>
-          <Box as="span" px="5" fontSize="1.1em" fontWeight="bold">
-            Settings
-          </Box>
-          <Divider pb="3" />
-          <Box display="flex" flexDirection="column" px="5">
-            <Box as="span" py="3" fontWeight="semibold">
-              App Theme
-            </Box>
-            <Box display="flex" justifyContent="space-around">
+      <Box display="flex">
+        <Menu>
+          <MenuButton
+            as={Button}
+            mx="3"
+            onClick={() => {
+              setLocalStorage();
+              setNotifCount(localStorage.getItem("notification"));
+            }}
+          >
+            <BellIcon />
+            {!notifCount || dateNow > parseInt(notifCount) ? (
               <Box
-                cursor="pointer"
-                width="20"
-                height="20"
+                position="absolute"
+                top="-3"
+                right="-2"
+                bg="red"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                background="yellow.100"
-                borderRadius="md"
-                _hover={{ background: "yellow.200" }}
-                onClick={colorMode === "dark" ? toggleColorMode : () => null}
+                borderRadius="full"
+                width="25px"
+                height="25px"
+                color="white"
               >
-                <SunIcon color="gray.900" />
+                {dateNow - notifCount}
               </Box>
-              <Box
-                cursor="pointer"
-                width="20"
-                height="20"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                background="gray.800"
-                borderRadius="md"
-                _hover={{ background: "gray.900" }}
-                onClick={colorMode === "light" ? toggleColorMode : () => null}
-              >
-                <MoonIcon color="gray.100" />
+            ) : null}
+          </MenuButton>
+          <MenuList width="md" pb="5">
+            <Box px="5" fontSize="1.1em" fontWeight="bold">
+              <Text>Notifikasi</Text>
+            </Box>
+            <Divider pb="3" />
+            <Box
+              height="70vh"
+              overflowY="auto"
+              css={{
+                "&::-webkit-scrollbar": {
+                  width: "4px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  width: "4px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "var(--chakra-colors-gray-200)",
+                  borderRadius: "24px",
+                },
+              }}
+            >
+              {notifikasi}
+            </Box>
+          </MenuList>
+        </Menu>
+        <Menu>
+          <MenuButton as={Button}>
+            <SettingsIcon />
+          </MenuButton>
+          <MenuList>
+            <Box as="span" px="5" fontSize="1.1em" fontWeight="bold">
+              Settings
+            </Box>
+            <Divider pb="3" />
+            <Box display="flex" flexDirection="column" px="5">
+              <Box as="span" py="3" fontWeight="semibold">
+                App Theme
+              </Box>
+              <Box display="flex" justifyContent="space-around">
+                <Box
+                  cursor="pointer"
+                  width="20"
+                  height="20"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  background="yellow.100"
+                  borderRadius="md"
+                  _hover={{ background: "yellow.200" }}
+                  onClick={colorMode === "dark" ? toggleColorMode : () => null}
+                >
+                  <SunIcon color="gray.900" />
+                </Box>
+                <Box
+                  cursor="pointer"
+                  width="20"
+                  height="20"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  background="gray.800"
+                  borderRadius="md"
+                  _hover={{ background: "gray.900" }}
+                  onClick={colorMode === "light" ? toggleColorMode : () => null}
+                >
+                  <MoonIcon color="gray.100" />
+                </Box>
               </Box>
             </Box>
-          </Box>
-        </MenuList>
-      </Menu>
+          </MenuList>
+        </Menu>
+      </Box>
     </Box>
   );
 };

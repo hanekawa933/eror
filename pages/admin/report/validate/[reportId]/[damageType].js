@@ -12,6 +12,7 @@ import { useEffect, useContext, useState } from "react";
 import { ProtectedRoute } from "../../../../../HOC/withAuth";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import path from "../../../../../constant.default";
 
 export default function CreateUserReport() {
   const [userLogin, setUserLogin] = useState([]);
@@ -55,7 +56,7 @@ export default function CreateUserReport() {
     return (
       <Box key={index}>
         <Image
-          src={"http://localhost/eror_api" + res.gambar}
+          src={path + res.gambar}
           alt="Lampiran 3"
           height="96"
           w="100%"

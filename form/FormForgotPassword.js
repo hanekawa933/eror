@@ -33,7 +33,6 @@ const FormForgotPassword = () => {
       };
 
       const body = JSON.stringify(values);
-
       const result = await instance.post(`/user/forgot`, body, config);
 
       toast({
