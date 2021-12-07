@@ -71,7 +71,6 @@ const UserHomepage = () => {
       const result = await instance.get("/user/profile");
       setUserLogin(result.data.data);
       setSettings({ ...settings, userLogin: result.data.data });
-      console.log(result.data.data);
     } catch (error) {
       alert(error);
       console.log(error);
@@ -107,15 +106,13 @@ const UserHomepage = () => {
   const listCategory = category
     .map((res) => {
       return (
-        <>
-          <CardCategory
-            key={res.id}
-            icon={res.icon}
-            category={res.nama}
-            id={res.id}
-            role={userLogin.role_id}
-          />
-        </>
+        <CardCategory
+          key={res.id}
+          icon={res.icon}
+          category={res.nama}
+          id={res.id}
+          role={userLogin.role_id}
+        />
       );
     })
     .slice(0, 3);
@@ -124,13 +121,14 @@ const UserHomepage = () => {
     .map((res, index) => {
       return (
         <Box
-          key={res.id}
+          key={res.lId}
           gridColumn={[
             "auto",
             "auto",
             parseInt(index) === 2 ? "1/3" : null,
             "auto",
           ]}
+          display={[index === 0 ? "inline" : "none", "inline"]}
         >
           <CardHistoryReport
             lokasi={res.lokasi}

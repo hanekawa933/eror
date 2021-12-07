@@ -60,6 +60,7 @@ const DashboardNavbar = () => {
           _hover={{
             background: colorMode === "dark" ? "gray.800" : "gray.100",
           }}
+          width="100%"
         >
           <Link
             href={`/report/${res.lId}/${res.jenis_kerusakan}`}
@@ -155,59 +156,62 @@ const DashboardNavbar = () => {
         <Icon icon="ci:list-ul" width={24} height={24} />
       </Button>
       <Box display="flex">
-        <Menu>
-          <MenuButton
-            as={Button}
-            mx="3"
-            onClick={() => {
-              setLocalStorage();
-              setNotifCount(localStorage.getItem("notification"));
-            }}
-          >
-            <BellIcon />
-            {!notifCount || dateNow > parseInt(notifCount) ? (
-              <Box
-                position="absolute"
-                top="-3"
-                right="-2"
-                bg="red"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                borderRadius="full"
-                width="25px"
-                height="25px"
-                color="white"
-              >
-                {dateNow - notifCount}
-              </Box>
-            ) : null}
-          </MenuButton>
-          <MenuList width="md" pb="5">
-            <Box px="5" fontSize="1.1em" fontWeight="bold">
-              <Text>Notifikasi</Text>
-            </Box>
-            <Divider pb="3" />
-            <Box
-              height="70vh"
-              overflowY="auto"
-              css={{
-                "&::-webkit-scrollbar": {
-                  width: "4px",
-                },
-                "&::-webkit-scrollbar-track": {
-                  width: "4px",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  background: "var(--chakra-colors-gray-200)",
-                  borderRadius: "24px",
-                },
+        {parseInt(settings.userLogin.role_id) === 1 ? (
+          <Menu>
+            <MenuButton
+              as={Button}
+              mx="3"
+              onClick={() => {
+                setLocalStorage();
+                setNotifCount(localStorage.getItem("notification"));
               }}
             >
-              {notifikasi}
-            </Box>
-          </MenuList>
-        </Menu>
+              <BellIcon />
+              {!notifCount || dateNow > parseInt(notifCount) ? (
+                <Box
+                  position="absolute"
+                  top="-3"
+                  right="-2"
+                  bg="red"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius="full"
+                  width="25px"
+                  height="25px"
+                  color="white"
+                >
+                  {dateNow - notifCount}
+                </Box>
+              ) : null}
+            </MenuButton>
+            <MenuList width={["sm", "md"]} pb="5">
+              <Box px="5" fontSize="1.1em" fontWeight="bold">
+                <Text>Notifikasi</Text>
+              </Box>
+              <Divider pb="3" />
+              <Box
+                width="100%"
+                height={["100vh", "70vh"]}
+                overflowY="auto"
+                css={{
+                  "&::-webkit-scrollbar": {
+                    width: "4px",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    width: "4px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    background: "var(--chakra-colors-gray-200)",
+                    borderRadius: "24px",
+                  },
+                }}
+              >
+                {notifikasi}
+              </Box>
+            </MenuList>
+          </Menu>
+        ) : null}
         <Menu>
           <MenuButton as={Button}>
             <SettingsIcon />

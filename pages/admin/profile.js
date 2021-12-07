@@ -12,6 +12,8 @@ import {
 } from "@chakra-ui/react";
 import DashboardLayout from "../../layouts/dashboard";
 import Head from "next/head";
+import { useFormik, Form, FormikProvider } from "formik";
+import * as Yup from "yup";
 import instance from "../../axios.default";
 import { useEffect, useState, useContext } from "react";
 import { TempContext } from "../../context/TempContext";
@@ -20,6 +22,7 @@ import { FormChangeProfileUser, FormChangePassword } from "../../form";
 const ProfileApp = () => {
   const [userLogin, setUserLogin] = useState([]);
   const [settings, setSettings] = useContext(TempContext);
+  const [change, setChange] = useState(0);
 
   const fetchUserLogin = async () => {
     try {
@@ -34,7 +37,7 @@ const ProfileApp = () => {
 
   useEffect(() => {
     fetchUserLogin();
-  }, [userLogin]);
+  }, [change]);
 
   return (
     <>
@@ -42,8 +45,8 @@ const ProfileApp = () => {
         <title>E-ROR | Ubah Profil</title>
       </Head>
       <DashboardLayout>
-        <Box px="10" pb="10">
-          <Box borderRadius="xl" boxShadow="xl">
+        <Box px={["2", "6"]} pb="10">
+          <Box>
             <Box
               borderRadius="xl"
               pt="64"
@@ -76,7 +79,7 @@ const ProfileApp = () => {
               </Box>
             </Box>
 
-            <Box mt="28" px="20" py="10">
+            <Box mt="28" px={["0", "8", "20"]} py="10">
               <Tabs isFitted>
                 <TabList>
                   <Tab>Ganti Profile</Tab>
@@ -84,7 +87,9 @@ const ProfileApp = () => {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <FormChangeProfileUser />
+                    <FormChangeProfileUser
+                      changed={() => setChange(change + setChange)}
+                    />
                   </TabPanel>
                   <TabPanel>
                     <FormChangePassword />

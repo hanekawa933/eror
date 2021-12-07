@@ -25,7 +25,7 @@ import { darkTheme, lightTheme } from "../styles/tableTheme";
 import InputFilterTable from "../components/InputFilterTable";
 import moment from "moment";
 import "moment/locale/id";
-import axios from "axios";
+import instance from "../axios.default";
 import OptionButtonMenuTable from "../components/OptionButtonMenuTable";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider, Field } from "formik";
@@ -40,11 +40,9 @@ const TableUserAccount = () => {
 
   const fetchReportUserAndCategory = async () => {
     try {
-      const users = await axios.get("http://localhost/eror_api/api/user");
-      const category = await axios.get(
-        "http://localhost/eror_api/api/kategori"
-      );
-      const result = await axios.get("http://localhost/eror_api/api/laporan");
+      const users = await instance.get("/user");
+      const category = await instance.get("/kategori");
+      const result = await instance.get("/laporan");
       setReports(result.data.data);
       setUser(users.data.data);
       setCategory(category.data.data);
@@ -67,7 +65,7 @@ const TableUserAccount = () => {
   };
 
   const dataFiltered = reports.filter((val) => {
-    return val.id === ids;
+    return val.lId === ids;
   });
 
   const Schema = Yup.object().shape({
@@ -90,6 +88,8 @@ const TableUserAccount = () => {
     });
   });
 
+  console.log(dataFiltered);
+
   const updateReport = (ids, values) => {
     try {
       const config = {
@@ -100,11 +100,7 @@ const TableUserAccount = () => {
 
       const body = JSON.stringify(values);
 
-      const result = axios.put(
-        `http://localhost/eror_api/api/laporan/update/id/${ids}`,
-        body,
-        config
-      );
+      const result = instance.put(`/laporan/update/id/${ids}`, body, config);
       setIds("");
       fetchReportUserAndCategory();
     } catch (error) {
@@ -231,7 +227,7 @@ const TableUserAccount = () => {
         </Text>
       ),
       option: (
-        <OptionButtonMenuTable setAndOpen={() => openAndSetIds(result.id)} />
+        <OptionButtonMenuTable setAndOpen={() => openAndSetIds(result.lId)} />
       ),
       progress: BadgeProgress,
     };

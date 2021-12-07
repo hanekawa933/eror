@@ -25,7 +25,7 @@ import { darkTheme, lightTheme } from "../styles/tableTheme";
 import InputFilterTable from "../components/InputFilterTable";
 import moment from "moment";
 import "moment/locale/id";
-import axios from "axios";
+import instance from "../axios.default";
 import OptionButtonMenuTable from "../components/OptionButtonMenuTable";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider, Field } from "formik";
@@ -38,7 +38,7 @@ const TableFaq = () => {
 
   const fetchFaq = async () => {
     try {
-      const result = await axios.get("http://localhost/eror_api/api/faq");
+      const result = await instance.get("/faq");
       setFaq(result.data.data);
     } catch (error) {
       alert(error);
@@ -84,11 +84,7 @@ const TableFaq = () => {
 
       const body = JSON.stringify(values);
 
-      const result = axios.put(
-        `http://localhost/eror_api/api/faq/update/id/${ids}`,
-        body,
-        config
-      );
+      const result = instance.put(`/faq/update/id/${ids}`, body, config);
       setIds("");
       fetchFaq();
     } catch (error) {

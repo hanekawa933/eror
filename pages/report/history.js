@@ -1,6 +1,6 @@
 import Head from "next/head";
-import DashboardLayout from "../../layouts/dashboard";
-import CardHistoryReport from "../../components/CardHistoryReport";
+import DashboardLayout from "../../../layouts/dashboard";
+import CardHistoryReport from "../../../components/CardHistoryReport";
 import {
   Box,
   Grid,
@@ -12,20 +12,35 @@ import {
   TabPanel,
   Text,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Tag,
 } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Icon } from "@iconify/react";
-import { TempContext } from "../../context/TempContext";
-import instance from "../../axios.default";
+import { TempContext } from "../../../context/TempContext";
+import instance from "../../../axios.default";
 import { useEffect, useContext, useState } from "react";
-import { ProtectedRoute } from "../../HOC/withAuth";
+import { ProtectedRoute } from "../../../HOC/withAuth";
 
 export default function ReportHistoryAdmin() {
+  const gridResponsive = [
+    "repeat(1, 1fr)",
+    "repeat(1, 1fr)",
+    "repeat(2, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+  ];
   const [userLogin, setUserLogin] = useState([]);
   const [report, setReport] = useState([]);
   const [settings, setSettings] = useContext(TempContext);
   let [category, setCategory] = useState([]);
   let [status, setStatus] = useState([]);
   const [statusUsed, setStatusUsed] = useState(999);
+  const [categoryUsed, setCategoryUsed] = useState(999);
   const [content, setContent] = useState({ start: 0, end: 6 });
 
   const fetchUserLogin = async () => {
@@ -81,39 +96,92 @@ export default function ReportHistoryAdmin() {
     status.map((res) => {
       const parsedId = parseInt(res.id);
       return (
-        <Button
+        <MenuItem
           key={res.id}
-          colorScheme={
+          px="0"
+          py="0"
+          background={
             (parsedId === 1 && statusUsed === 1) ||
             (parsedId === 6 && statusUsed === 6)
-              ? "green"
+              ? "green.100"
               : (parsedId === 2 && statusUsed === 2) ||
                 (parsedId === 7 && statusUsed === 7)
-              ? "red"
+              ? "red.100"
               : parsedId === 3 && statusUsed === 3
-              ? "blue"
+              ? "blue.100"
               : (parsedId === 4 && statusUsed === 4) ||
                 (parsedId === 5 && statusUsed === 5)
-              ? "yellow"
+              ? "yellow.100"
               : parsedId === 999 && statusUsed === 999
-              ? "orange"
-              : "gray"
+              ? "orange.100"
+              : "gray.50"
           }
-          mr="3"
-          size="sm"
-          borderRadius="full"
           onClick={() => setStatusUsed(parsedId)}
         >
-          {res.nama}
-        </Button>
+          <Button
+            colorScheme={
+              (parsedId === 1 && statusUsed === 1) ||
+              (parsedId === 6 && statusUsed === 6)
+                ? "green"
+                : (parsedId === 2 && statusUsed === 2) ||
+                  (parsedId === 7 && statusUsed === 7)
+                ? "red"
+                : parsedId === 3 && statusUsed === 3
+                ? "blue"
+                : (parsedId === 4 && statusUsed === 4) ||
+                  (parsedId === 5 && statusUsed === 5)
+                ? "yellow"
+                : parsedId === 999 && statusUsed === 999
+                ? "orange"
+                : "gray"
+            }
+            isFullWidth
+            variant="ghost"
+          >
+            {res.nama}
+          </Button>
+        </MenuItem>
       );
     });
 
+  const activeStatus =
+    status && status.filter((res) => parseInt(res.id) === parseInt(statusUsed));
+
+  const activeCategory =
+    category &&
+    category.filter((res) => parseInt(res.id) === parseInt(categoryUsed));
+
   const tabs = category.map((res) => {
-    return <Tab key={res.id}>{res.nama}</Tab>;
+    return (
+      <Tab key={res.id} width="100%" onClick={() => setCategoryUsed(res.id)}>
+        <Box
+          background={
+            parseInt(categoryUsed) === parseInt(res.id)
+              ? "orange.100"
+              : "gray.50"
+          }
+          _hover={{
+            background:
+              parseInt(categoryUsed) === parseInt(res.id)
+                ? "orange.300"
+                : "gray.100",
+          }}
+          fontWeight="semibold"
+          color={
+            parseInt(categoryUsed) === parseInt(res.id)
+              ? "orange.500"
+              : "gray.900"
+          }
+          w="100%"
+          py="1"
+        >
+          {res.nama}
+        </Box>
+      </Tab>
+    );
   });
 
-  const notFound = (kategori) => {
+  const notFound = (kategori, semua = false) => {
     return (
       <Box
         display="flex"
@@ -134,7 +202,8 @@ export default function ReportHistoryAdmin() {
           pointerEvents="none"
         ></Box>
         <Text as="h1" fontWeight="semibold">
-          Ooops... tidak ada data pada kategori {kategori}
+          Ooops... tidak ada data pada
+          {semua ? " semua kategori" : `kategori ${kategori}`}
         </Text>
       </Box>
     );
@@ -149,15 +218,66 @@ export default function ReportHistoryAdmin() {
 
     data = { ...data, [cat.nama.toLowerCase()]: filtered };
 
-    if (data[cat.nama.toLowerCase()] < 1) {
-      return <TabPanel>{notFound(cat.nama.toLowerCase())}</TabPanel>;
+    const filteredStatus = data[cat.nama.toLowerCase()].filter((stat) => {
+      return parseInt(stat.status_id) === statusUsed;
+    });
+
+    if (filteredStatus < 1) {
+      return (
+        <TabPanel p="0">
+          {data[cat.nama.toLowerCase()] < 1 ? (
+            notFound(cat.nama.toLowerCase())
+          ) : (
+            <Grid templateColumns={gridResponsive} gap={["3", "6"]} mt="5">
+              {data[cat.nama.toLowerCase()]
+                .map((res) => {
+                  return (
+                    <CardHistoryReport
+                      lokasi={res.lokasi}
+                      laporan={res.jenis_kerusakan}
+                      waktu={res.date_diff}
+                      status={res.status}
+                      image={
+                        res.gambar[0] && res.gambar[0].gambar
+                          ? res.gambar[0].gambar
+                          : "/assets/img/no-image.png"
+                      }
+                      id={res.lId}
+                      role={userLogin.role_id}
+                      status_id={res.sId}
+                      key={res.lId}
+                    />
+                  );
+                })
+                .slice(content.start, content.end)}
+            </Grid>
+          )}
+          {data[cat.nama.toLowerCase()].length <=
+          parseInt(content.end) ? null : (
+            <Box
+              mt="5"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Button
+                colorScheme="orange"
+                px="5"
+                onClick={() => setContent({ ...content, end: content.end + 3 })}
+              >
+                Load more
+              </Button>
+            </Box>
+          )}
+        </TabPanel>
+      );
     } else {
       return (
-        <TabPanel>
-          <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="5">
-            {data[cat.nama.toLowerCase()]
+        <TabPanel p="0">
+          <Grid templateColumns={gridResponsive} gap={["3", "6"]} mt="5">
+            {filteredStatus
               .map((res) => {
-                return statusUsed === parseInt(res.status_id) ? (
+                return (
                   <CardHistoryReport
                     lokasi={res.lokasi}
                     laporan={res.jenis_kerusakan}
@@ -173,28 +293,11 @@ export default function ReportHistoryAdmin() {
                     status_id={res.sId}
                     key={res.lId}
                   />
-                ) : statusUsed === 999 ? (
-                  <CardHistoryReport
-                    lokasi={res.lokasi}
-                    laporan={res.jenis_kerusakan}
-                    waktu={res.date_diff}
-                    status={res.status}
-                    image={
-                      res.gambar[0] && res.gambar[0].gambar
-                        ? res.gambar[0].gambar
-                        : "/assets/img/no-image.png"
-                    }
-                    id={res.lId}
-                    role={userLogin.role_id}
-                    status_id={res.sId}
-                    key={res.lId}
-                  />
-                ) : null;
+                );
               })
               .slice(content.start, content.end)}
           </Grid>
-          {parseInt(data[cat.nama.toLowerCase()].length) <=
-          parseInt(content.end) ? null : (
+          {filteredStatus.length <= parseInt(content.end) ? null : (
             <Box
               mt="5"
               display="flex"
@@ -215,51 +318,103 @@ export default function ReportHistoryAdmin() {
     }
   });
 
-  const allCategory = report
-    .map((res) => {
-      if (report.length < 1) {
-        return <TabPanel>{notFound(res.nama.toLowerCase())}</TabPanel>;
-      } else {
-        return (
-          <>
-            {statusUsed === parseInt(res.status_id) ? (
-              <CardHistoryReport
-                lokasi={res.lokasi}
-                laporan={res.jenis_kerusakan}
-                waktu={res.date_diff}
-                status={res.status}
-                image={
-                  res.gambar[0] && res.gambar[0].gambar
-                    ? res.gambar[0].gambar
-                    : "/assets/img/no-image.png"
-                }
-                id={res.lId}
-                role={userLogin.role_id}
-                status_id={res.sId}
-                key={res.lId}
-              />
-            ) : statusUsed === 999 ? (
-              <CardHistoryReport
-                lokasi={res.lokasi}
-                laporan={res.jenis_kerusakan}
-                waktu={res.date_diff}
-                status={res.status}
-                image={
-                  res.gambar[0] && res.gambar[0].gambar
-                    ? res.gambar[0].gambar
-                    : "/assets/img/no-image.png"
-                }
-                id={res.lId}
-                role={userLogin.role_id}
-                status_id={res.sId}
-                key={res.lId}
-              />
-            ) : null}
-          </>
-        );
-      }
-    })
-    .slice(content.start, content.end);
+  const filteredStatus = report.filter((stat) => {
+    return parseInt(stat.status_id) === statusUsed;
+  });
+
+  const allCategoryStatusFilter = (
+    <>
+      {filteredStatus
+        .map((res) => {
+          return (
+            <CardHistoryReport
+              lokasi={res.lokasi}
+              laporan={res.jenis_kerusakan}
+              waktu={res.date_diff}
+              status={res.status}
+              image={
+                res.gambar[0] && res.gambar[0].gambar
+                  ? res.gambar[0].gambar
+                  : "/assets/img/no-image.png"
+              }
+              id={res.lId}
+              role={userLogin.role_id}
+              status_id={res.sId}
+              key={res.lId}
+            />
+          );
+        })
+        .slice(content.start, content.end)}
+      ;
+      {parseInt(filteredStatus.length) <= parseInt(content.end) ? null : (
+        <Box mt="5" display="flex" justifyContent="center" alignItems="center">
+          <Button
+            colorScheme="orange"
+            px="5"
+            onClick={() => setContent({ ...content, end: content.end + 3 })}
+          >
+            Load more
+          </Button>
+        </Box>
+      )}
+    </>
+  );
+
+  const allCategoryNoFilter = (
+    <>
+      {report
+        .map((res) => {
+          return (
+            <CardHistoryReport
+              lokasi={res.lokasi}
+              laporan={res.jenis_kerusakan}
+              waktu={res.date_diff}
+              status={res.status}
+              image={
+                res.gambar[0] && res.gambar[0].gambar
+                  ? res.gambar[0].gambar
+                  : "/assets/img/no-image.png"
+              }
+              id={res.lId}
+              role={userLogin.role_id}
+              status_id={res.sId}
+              key={res.lId}
+            />
+          );
+        })
+        .slice(content.start, content.end)}
+      ;
+      {parseInt(report.length) <= parseInt(content.end) ? null : (
+        <Box mt="5" display="flex" justifyContent="center" alignItems="center">
+          <Button
+            colorScheme="orange"
+            px="5"
+            onClick={() => setContent({ ...content, end: content.end + 3 })}
+          >
+            Load more
+          </Button>
+        </Box>
+      )}
+    </>
+  );
+
+  const allCategory =
+    parseInt(statusUsed) === 999
+      ? allCategoryNoFilter
+      : allCategoryStatusFilter;
+
+  const buttonStatus =
+    parseInt(activeStatus[0].id) === 1 || parseInt(activeStatus[0].id) === 6
+      ? "green"
+      : parseInt(activeStatus[0].id) === 2 || parseInt(activeStatus[0].id) === 7
+      ? "red"
+      : parseInt(activeStatus[0].id) === 3
+      ? "blue"
+      : parseInt(activeStatus[0].id) === 4 || parseInt(activeStatus[0].id) === 5
+      ? "yellow"
+      : parseInt(activeStatus[0].id) === 999
+      ? "orange"
+      : "gray";
 
   return (
     <div>
@@ -267,53 +422,97 @@ export default function ReportHistoryAdmin() {
         <title>E-ROR | Riwayat Laporan User</title>
       </Head>
       <DashboardLayout>
-        <Box px="14" pb="14">
-          <Box
-            p="10"
-            borderRadius="lg"
-            boxShadow="2xl"
-            _hover={{ boxShadow: "dark-lg" }}
-          >
+        <Box px="5" pb="14">
+          <Box p={["3", "3", "5"]}>
             <Box display="flex" alignItems="center" fontWeight="semibold">
               <Icon
                 icon="bi:clock-history"
-                width={16 * 2.2}
-                height={16 * 2.2}
+                width={30}
+                height={30}
                 color={useColorMode().colorMode === "dark" ? "white" : "black"}
               />
-              <Box as="span" fontSize="2.2em" ml="3">
+              <Box as="span" fontSize={["1em", "1.5em", "2.2em"]} ml="3">
                 Riwayat Laporan
               </Box>
             </Box>
-            <Tabs variant="soft-rounded" colorScheme="orange" mt="3" isLazy>
-              <TabList>
-                <Tab>Semua</Tab>
-                {tabs}
-              </TabList>
-              <Box mt="5">{listOfButton}</Box>
-              <TabPanels>
-                <TabPanel>
-                  <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="5">
-                    {allCategory}
-                  </Grid>
-                  {parseInt(report.length) <= parseInt(content.end) ? null : (
+            <Tabs variant="soft-rounded" colorScheme="orange" isLazy mt="3">
+              <TabList display="flex" justifyContent="right">
+                <Menu autoSelect={false}>
+                  <MenuButton
+                    as={Button}
+                    rightIcon={<ChevronDownIcon />}
+                    colorScheme="orange"
+                    mx="3"
+                  >
+                    Kategori
+                  </MenuButton>
+                  <MenuList>
                     <Box
-                      mt="5"
                       display="flex"
                       justifyContent="center"
                       alignItems="center"
+                      flexDir="column"
                     >
-                      <Button
-                        colorScheme="orange"
-                        px="5"
-                        onClick={() =>
-                          setContent({ ...content, end: content.end + 3 })
-                        }
-                      >
-                        Load more
-                      </Button>
+                      <Tab width="100%" onClick={() => setCategoryUsed(999)}>
+                        <Box
+                          background={
+                            parseInt(categoryUsed) === parseInt(999)
+                              ? "orange.100"
+                              : "gray.50"
+                          }
+                          fontWeight="semibold"
+                          color={
+                            parseInt(categoryUsed) === parseInt(999)
+                              ? "orange.500"
+                              : "gray.900"
+                          }
+                          w="100%"
+                          py="1"
+                          _hover={{
+                            background:
+                              parseInt(categoryUsed) === parseInt(999)
+                                ? "orange.300"
+                                : "gray.100",
+                          }}
+                        >
+                          Semua
+                        </Box>
+                      </Tab>
+                      {tabs}
                     </Box>
-                  )}
+                  </MenuList>
+                </Menu>
+                <Menu autoSelect={false}>
+                  <MenuButton
+                    as={Button}
+                    rightIcon={<ChevronDownIcon />}
+                    colorScheme="blue"
+                  >
+                    Status
+                  </MenuButton>
+                  <MenuList>
+                    <Box>{listOfButton}</Box>
+                  </MenuList>
+                </Menu>
+              </TabList>
+              <Box display="flex" justifyContent="end" my="3">
+                <Tag size="md" variant="subtle" colorScheme="orange" mx="2">
+                  {activeCategory.length < 1 ? "Semua" : activeCategory[0].nama}
+                </Tag>
+                <Tag size="md" variant="subtle" colorScheme={buttonStatus}>
+                  {activeStatus[0].nama}
+                </Tag>
+              </Box>
+              <TabPanels>
+                <TabPanel p="0">
+                  <Grid
+                    templateColumns={gridResponsive}
+                    gap={["3", "6"]}
+                    mt="5"
+                  >
+                    {allCategory}
+                  </Grid>
+                  {report.length < 1 ? notFound("", true) : ""}
                 </TabPanel>
                 {tabList}
               </TabPanels>

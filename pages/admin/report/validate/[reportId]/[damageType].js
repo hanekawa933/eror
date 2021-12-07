@@ -75,6 +75,8 @@ export default function CreateUserReport() {
     fetchLaporanById(reportId);
   }, [reportId, report]);
 
+  const forbiddenStatus = [4, 5, 6];
+
   return (
     <div>
       <Head>
@@ -180,13 +182,15 @@ export default function CreateUserReport() {
                   {report.keterangan}
                 </Box>
               </Box>
-              <FormAdminReport
-                id={reportId}
-                statusId={report.sId}
-                fetchReport={
-                  !reportId ? null : () => fetchLaporanById(reportId)
-                }
-              />
+              {forbiddenStatus.includes(parseInt(report.sId)) ? null : (
+                <FormAdminReport
+                  id={reportId}
+                  statusId={report.sId}
+                  fetchReport={
+                    !reportId ? null : () => fetchLaporanById(reportId)
+                  }
+                />
+              )}
             </Box>
           </Box>
         </Box>

@@ -23,15 +23,15 @@ const CardCategory = ({ icon, category, id, role, notification = null }) => {
       {!notification ? null : (
         <Box
           position="absolute"
-          top="-3"
-          right="-3"
+          top={["-2", "-3"]}
+          right={["-2", "-3"]}
           bg="blue.300"
           display="flex"
           justifyContent="center"
           alignItems="center"
           borderRadius="full"
-          width="40px"
-          height="40px"
+          width={["30px", "40px"]}
+          height={["30px", "40px"]}
         >
           <Box as="span" color="white">
             {notification}

@@ -186,27 +186,29 @@ export default function TechnicianCheckReport() {
                   {report.keterangan}
                 </Box>
               </Box>
-              {parseInt(report.status_id) === 3 ? (
-                <TahapPengecekan
-                  id={reportId}
-                  fetchReport={
-                    !reportId ? null : () => fetchLaporanById(reportId)
-                  }
-                />
-              ) : parseInt(report.status_id) === 4 ? (
-                <TahapSetelahPengecekan
-                  id={reportId}
-                  fetchReport={
-                    !reportId ? null : () => fetchLaporanById(reportId)
-                  }
-                />
-              ) : parseInt(report.status_id) === 5 ? (
-                <TahapSetelahPerbaikan
-                  id={reportId}
-                  fetchReport={
-                    !reportId ? null : () => fetchLaporanById(reportId)
-                  }
-                />
+              {parseInt(userLogin.role_id) !== 3 ? (
+                parseInt(report.status_id) === 3 ? (
+                  <TahapPengecekan
+                    id={reportId}
+                    fetchReport={
+                      !reportId ? null : () => fetchLaporanById(reportId)
+                    }
+                  />
+                ) : parseInt(report.status_id) === 4 ? (
+                  <TahapSetelahPengecekan
+                    id={reportId}
+                    fetchReport={
+                      !reportId ? null : () => fetchLaporanById(reportId)
+                    }
+                  />
+                ) : parseInt(report.status_id) === 5 ? (
+                  <TahapSetelahPerbaikan
+                    id={reportId}
+                    fetchReport={
+                      !reportId ? null : () => fetchLaporanById(reportId)
+                    }
+                  />
+                ) : null
               ) : null}
             </Box>
           </Box>

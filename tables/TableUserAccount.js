@@ -22,7 +22,7 @@ import {
 import DataTable from "react-data-table-component";
 import { darkTheme, lightTheme } from "../styles/tableTheme";
 import InputFilterTable from "../components/InputFilterTable";
-import axios from "axios";
+import instance from "../axios.default";
 import OptionButtonMenuTable from "../components/OptionButtonMenuTable";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider, Field } from "formik";
@@ -36,7 +36,7 @@ const TableUserAccount = () => {
 
   const fetchUserData = async () => {
     try {
-      const result = await axios.get("http://localhost/eror_api/api/user");
+      const result = await instance.get("/user");
       setUsers(result.data.data);
     } catch (error) {
       alert(error);
@@ -45,7 +45,7 @@ const TableUserAccount = () => {
 
   useEffect(() => {
     fetchUserData();
-  }, [ids]);
+  }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -55,7 +55,7 @@ const TableUserAccount = () => {
   };
 
   const dataFiltered = users.filter((val) => {
-    return val.id === ids;
+    return val.uId === ids;
   });
 
   const Schema = Yup.object().shape({
@@ -158,7 +158,7 @@ const TableUserAccount = () => {
         </Box>
       ),
       option: (
-        <OptionButtonMenuTable setAndOpen={() => openAndSetIds(result.id)} />
+        <OptionButtonMenuTable setAndOpen={() => openAndSetIds(result.uId)} />
       ),
     };
   });
@@ -196,15 +196,12 @@ const TableUserAccount = () => {
 
       const body = JSON.stringify(values);
 
-      const result = axios.put(
-        `http://localhost/eror_api/api/user/update/id/${ids}`,
-        body,
-        config
-      );
+      const result = instance.put(`/user/update/id/${ids}`, body, config);
       setIds("");
       fetchUserData();
     } catch (error) {
       alert(error);
+      console.log(error.response);
     }
   };
 

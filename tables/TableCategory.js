@@ -23,10 +23,10 @@ import {
 import DataTable from "react-data-table-component";
 import { darkTheme, lightTheme } from "../styles/tableTheme";
 import InputFilterTable from "../components/InputFilterTable";
-import axios from "axios";
 import OptionButtonMenuTable from "../components/OptionButtonMenuTable";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider, Field } from "formik";
+import instance from "../axios.default";
 
 const TableCategory = () => {
   const [query, setQuery] = useState(``);
@@ -38,7 +38,7 @@ const TableCategory = () => {
 
   const fetchCategory = async () => {
     try {
-      const result = await axios.get("http://localhost/eror_api/api/kategori");
+      const result = await instance.get("/kategori");
       setCategory(result.data.data);
     } catch (error) {
       alert(error);
@@ -93,8 +93,8 @@ const TableCategory = () => {
         },
       };
 
-      const result = await axios.post(
-        `http://localhost/eror_api/api/kategori/update/id/${ids}`,
+      const result = await instance.post(
+        `/kategori/update/id/${ids}`,
         values,
         config
       );

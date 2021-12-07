@@ -45,8 +45,8 @@ const ProfileApp = () => {
         <title>E-ROR | Ubah Profil</title>
       </Head>
       <DashboardLayout>
-        <Box px={["2", "10"]} pb="10">
-          <Box borderRadius="xl" boxShadow="xl">
+        <Box px={["2", "6"]} pb="10">
+          <Box>
             <Box
               borderRadius="xl"
               pt="64"
