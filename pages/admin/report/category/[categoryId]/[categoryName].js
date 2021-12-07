@@ -1,7 +1,7 @@
 import Head from "next/head";
 import DashboardLayout from "../../../../../layouts/dashboard";
 import CardHistoryReport from "../../../../../components/CardHistoryReport";
-import { Box, Grid, useColorMode, Text } from "@chakra-ui/react";
+import { Box, Grid, useColorMode, Text, Button } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { TempContext } from "../../../../../context/TempContext";
 import instance from "../../../../../axios.default";
@@ -15,7 +15,8 @@ function CategoryReport() {
   const [userLogin, setUserLogin] = useState([]);
   const [report, setReport] = useState([]);
   const [settings, setSettings] = useContext(TempContext);
-  const [category, setCategory] = useState({});
+  const [category, setCategory] = useState([]);
+  const [content, setContent] = useState({ start: 0, end: 6 });
 
   const router = useRouter();
   const { categoryId } = router.query;
@@ -59,7 +60,7 @@ function CategoryReport() {
     fetchUserLogin();
     fetchReportByCategoryId();
     fetchCategoryById(categoryId);
-  }, [categoryId]);
+  }, []);
 
   const gridResponsive = [
     "repeat(1, 1fr)",
@@ -95,9 +96,9 @@ function CategoryReport() {
     </Box>
   );
 
-  const listReport = report.map((res) => {
-    return (
-      <>
+  const listReport = report
+    .map((res) => {
+      return (
         <CardHistoryReport
           lokasi={res.lokasi}
           laporan={res.jenis_kerusakan}
@@ -111,10 +112,11 @@ function CategoryReport() {
           id={res.lId}
           role={userLogin.role_id}
           status_id={res.sId}
+          key={res.lId}
         />
-      </>
-    );
-  });
+      );
+    })
+    .slice(content.start, content.end);
 
   return (
     <div>
@@ -123,7 +125,7 @@ function CategoryReport() {
       </Head>
       <DashboardLayout>
         <Box px="4" pb="14">
-          <Box px="4">
+          <Box>
             <Box
               display="flex"
               alignItems="center"
@@ -160,7 +162,7 @@ function CategoryReport() {
                 as="img"
                 src={path + category.icon}
                 maxW="100%"
-                height={["16", "28", "52"]}
+                height={["24", "28", "52"]}
               ></Box>
             </Box>
             <Box
@@ -183,9 +185,27 @@ function CategoryReport() {
               {report.length < 1 ? (
                 notFound
               ) : (
-                <Grid templateColumns={gridResponsive} gap={[3, 6]} mt="5">
+                <Grid templateColumns={gridResponsive} gap={["3", "6"]} mt="5">
                   {listReport}
                 </Grid>
+              )}
+              {report.length <= parseInt(content.end) ? null : (
+                <Box
+                  mt="5"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Button
+                    colorScheme="orange"
+                    px="5"
+                    onClick={() =>
+                      setContent({ ...content, end: content.end + 3 })
+                    }
+                  >
+                    Load more
+                  </Button>
+                </Box>
               )}
             </Box>
           </Box>

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import DashboardLayout from "../../../../../layouts/dashboard";
 import { FormAdminReport } from "../../../../../form";
-import { Box, Grid, Image, Text, Badge } from "@chakra-ui/react";
+import { Box, Button, Image, Text, Badge } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import { TempContext } from "../../../../../context/TempContext";
 import instance from "../../../../../axios.default";
@@ -13,6 +13,8 @@ import { ProtectedRoute } from "../../../../../HOC/withAuth";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import path from "../../../../../constant.default";
+import { DownloadIcon } from "@chakra-ui/icons";
+import Link from "next/link";
 
 export default function CreateUserReport() {
   const [userLogin, setUserLogin] = useState([]);
@@ -103,6 +105,17 @@ export default function CreateUserReport() {
                   />
                 )}
               </Carousel>
+            </Box>
+            <Box px="5" display="flex">
+              <Link
+                href={path + `/api/laporan/cetak_pdf/id_laporan/${reportId}`}
+              >
+                <a>
+                  <Button rightIcon={<DownloadIcon />} colorScheme="orange">
+                    Download PDF
+                  </Button>
+                </a>
+              </Link>
             </Box>
             <Box px="5" pb="10">
               <Box display="flex" justifyContent="space-between">

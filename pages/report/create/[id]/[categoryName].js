@@ -92,7 +92,7 @@ export default function CreateUserReport() {
                 as="img"
                 src={path + category.icon}
                 maxW="100%"
-                height={["16", "28", "52"]}
+                height={["24", "28", "52"]}
               ></Box>
             </Box>
             <Box>

@@ -91,10 +91,12 @@ const CardHistoryReport = ({
             lineHeight="tight"
             isTruncated
           >
-            {laporan}
+            {laporan.length > 35 ? `${laporan.substr(0, 35)}...` : laporan}
           </Box>
 
-          <Box isTruncated>{lokasi}</Box>
+          <Box isTruncated>
+            {lokasi.length > 35 ? `${lokasi.substr(0, 35)}...` : lokasi}
+          </Box>
         </Box>
       </Box>
     </Link>
