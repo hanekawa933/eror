@@ -131,7 +131,7 @@ function CategoryReport() {
               w="100%"
               bg={useColorMode().colorMode === "dark" ? "gray.700" : "gray.100"}
               borderRadius="lg"
-              px="10"
+              px={["5", "5", "10"]}
               pt={["10", "10", "0"]}
             >
               <Box>
@@ -151,7 +151,7 @@ function CategoryReport() {
                   fontSize={["1em", "1.2em", "2em"]}
                   fontWeight="bold"
                   textTransform="capitalize"
-                  letterSpacing="2px"
+                  letterSpacing={["0px", "0px", "2px"]}
                 >
                   {category.nama}
                 </Text>
