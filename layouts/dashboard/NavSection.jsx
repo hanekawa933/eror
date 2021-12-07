@@ -57,12 +57,11 @@ const NavSection = () => {
     };
   });
 
-  const ActiveList = (path, key, icon, text, btn) => {
+  const ActiveList = (path, key, icon, text) => {
     return (
       <ListItem borderRadius="md" key={key} my="3">
         <Link href={path} passHref>
           <ChakraLink
-            onClick={btn}
             alignItems="center"
             display="flex"
             borderRadius="md"
@@ -70,6 +69,9 @@ const NavSection = () => {
             p="3"
             boxShadow="xl"
             _hover={{ textDecoration: "none" }}
+            onClick={() =>
+              setSettings({ ...settings, active: !settings.active })
+            }
           >
             {icon}
             <Text
@@ -96,12 +98,14 @@ const NavSection = () => {
     );
   };
 
-  const NonActiveList = (path, key, icon, text, btn) => {
+  const NonActiveList = (path, key, icon, text) => {
     return (
       <ListItem borderRadius="md" key={key} my="3">
         <Link href={path} passHref>
           <ChakraLink
-            onClick={btn}
+            onClick={() =>
+              setSettings({ ...settings, active: !settings.active })
+            }
             alignItems="center"
             display="flex"
             borderRadius="md"

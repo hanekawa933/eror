@@ -214,7 +214,7 @@ export default function ReportHistoryTeknisi() {
         ></Box>
         <Text as="h1" fontWeight="semibold">
           Ooops... tidak ada data pada
-          {semua ? " semua kategori" : `kategori ${kategori}`}
+          {semua ? " semua kategori" : ` kategori ${kategori}`}
         </Text>
       </Box>
     );

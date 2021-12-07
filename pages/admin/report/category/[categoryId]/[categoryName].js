@@ -9,8 +9,9 @@ import { useEffect, useContext, useState } from "react";
 import { ProtectedRoute } from "../../../../../HOC/withAuth";
 
 import { useRouter } from "next/router";
+import path from "../../../../../constant.default";
 
-function ReportHistory() {
+function CategoryReport() {
   const [userLogin, setUserLogin] = useState([]);
   const [report, setReport] = useState([]);
   const [settings, setSettings] = useContext(TempContext);
@@ -59,6 +60,15 @@ function ReportHistory() {
     fetchReportByCategoryId();
     fetchCategoryById(categoryId);
   }, [categoryId]);
+
+  const gridResponsive = [
+    "repeat(1, 1fr)",
+    "repeat(1, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+  ];
 
   const notFound = (
     <Box
@@ -112,13 +122,8 @@ function ReportHistory() {
         <title>E-ROR | SuperAdmin Create Account</title>
       </Head>
       <DashboardLayout>
-        <Box px="14" pb="14">
-          <Box
-            p="10"
-            borderRadius="lg"
-            boxShadow="2xl"
-            _hover={{ boxShadow: "dark-lg" }}
-          >
+        <Box px="4" pb="14">
+          <Box px="4">
             <Box
               display="flex"
               alignItems="center"
@@ -127,22 +132,23 @@ function ReportHistory() {
               bg={useColorMode().colorMode === "dark" ? "gray.700" : "gray.100"}
               borderRadius="lg"
               px="10"
+              pt={["10", "10", "0"]}
             >
               <Box>
                 <Text
-                  fontSize="1.6em"
+                  fontSize={["1em", "1em", "1.6em"]}
                   color={
                     useColorMode().colorMode === "dark"
                       ? "gray.400"
                       : "gray.600"
                   }
                   fontWeight="semibold"
-                  letterSpacing="1px"
+                  letterSpacing={["0px", "0px", "1px"]}
                 >
                   Request for repair:
                 </Text>
                 <Text
-                  fontSize="2em"
+                  fontSize={["1em", "1.2em", "2em"]}
                   fontWeight="bold"
                   textTransform="capitalize"
                   letterSpacing="2px"
@@ -152,9 +158,9 @@ function ReportHistory() {
               </Box>
               <Box
                 as="img"
-                src={"http://localhost/eror_api" + category.icon}
+                src={path + category.icon}
                 maxW="100%"
-                height="52"
+                height={["24", "28", "52"]}
               ></Box>
             </Box>
             <Box
@@ -165,11 +171,11 @@ function ReportHistory() {
             >
               <Icon
                 icon="bi:clock-history"
-                width={16 * 2.2}
-                height={16 * 2.2}
+                width={30}
+                height={30}
                 color={useColorMode().colorMode === "dark" ? "white" : "black"}
               />
-              <Box as="span" fontSize="2.2em" ml="3">
+              <Box as="span" fontSize={["1em", "1.4em", "2.2em"]} ml="3">
                 Laporan Masuk
               </Box>
             </Box>
@@ -177,7 +183,7 @@ function ReportHistory() {
               {report.length < 1 ? (
                 notFound
               ) : (
-                <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="5">
+                <Grid templateColumns={gridResponsive} gap={[3, 6]} mt="5">
                   {listReport}
                 </Grid>
               )}
@@ -189,4 +195,4 @@ function ReportHistory() {
   );
 }
 
-export default ProtectedRoute(ReportHistory);
+export default ProtectedRoute(CategoryReport);

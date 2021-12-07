@@ -53,10 +53,10 @@ export default function CategoryList() {
   const listOfStep = [...Array(5)].map((_, i) => {
     return (
       <StepProgress
-        key={i}
         index={i}
         stepNumber={i + 1}
         status_id={parseInt(report.sId)}
+        key={i}
       />
     );
   });
@@ -78,6 +78,21 @@ export default function CategoryList() {
         <Image
           src={path + res.gambar}
           alt="Lampiran 3"
+          height={["52", "52", "96"]}
+          w="100%"
+          borderTopRadius="lg"
+          objectFit="center"
+        />
+      </Box>
+    );
+  });
+
+  const listOfImageBukti = gambar.map((res, index) => {
+    return (
+      <Box key={index}>
+        <Image
+          src={path + res.gambar}
+          alt="Lampiran 3"
           height="96"
           w="100%"
           borderTopRadius="lg"
@@ -93,12 +108,8 @@ export default function CategoryList() {
         <title>E-ROR | User Report Details</title>
       </Head>
       <DashboardLayout>
-        <Box px="14" pb="14">
-          <Box
-            borderRadius="lg"
-            boxShadow="2xl"
-            _hover={{ boxShadow: "dark-lg" }}
-          >
+        <Box px="5" pb="14">
+          <Box>
             <Box width="100%" borderRadius="lg">
               <Carousel
                 autoPlay={true}
@@ -113,31 +124,35 @@ export default function CategoryList() {
                     src="/assets/img/no-image.png"
                     alt="No Image"
                     width="100%"
-                    height="96"
+                    height={["52", "52", "96"]}
                   />
                 )}
               </Carousel>
             </Box>
-            <Box px="10" pb="10">
+            <Box px="5" pb="10">
               <Box display="flex" justifyContent="space-between">
                 <Box display="flex" flexDir="column" width="max-content" py="5">
                   <Text fontSize="1em" fontWeight="bold" color="gray.600">
                     {moment(report.tanggal_lapor).format("Do/MM/YYYY")}
                   </Text>
-                  <Text fontSize="1.4em" fontWeight="bold" color="gray.600">
+                  <Text
+                    fontSize={["1em", "1em", "1.2em"]}
+                    fontWeight="bold"
+                    color="gray.600"
+                  >
                     {report.kode_laporan}
                   </Text>
-                  <Text fontSize="1.7em" fontWeight="bold">
+                  <Text fontSize={["1em", "1em", "1.7em"]} fontWeight="bold">
                     {report.jenis_kerusakan}
                   </Text>
                   <Badge
                     colorScheme={badgeColor}
-                    py="3"
-                    px="5"
+                    py={["1", "1", "3"]}
+                    px={["2", "2", "5"]}
                     textAlign="center"
                     borderRadius="full"
                     mt="3"
-                    fontSize="1.1em"
+                    fontSize={["1em", "1em", "1.1em"]}
                   >
                     {report.status}
                   </Badge>
@@ -146,8 +161,8 @@ export default function CategoryList() {
                   as="img"
                   src={path + report.icon}
                   maxW="100%"
-                  height="52"
-                  px="20"
+                  height={["28", "32", "52"]}
+                  px={["0", "0", "20"]}
                 ></Box>
               </Box>
               <Box display="flex" flexDir="column" mt="3">
@@ -155,7 +170,7 @@ export default function CategoryList() {
                   as="span"
                   fontWeight="bold"
                   textTransform="capitalize"
-                  fontSize="1.4em"
+                  fontSize={["1em", "1.2em", "1.4em"]}
                 >
                   Lokasi
                 </Box>
@@ -163,7 +178,7 @@ export default function CategoryList() {
                   as="p"
                   fontWeight="semibold"
                   color="gray.500"
-                  fontSize="1.2em"
+                  fontSize={["1em", "1em", "1.2em"]}
                 >
                   {report.lokasi}
                 </Box>
@@ -173,7 +188,7 @@ export default function CategoryList() {
                   as="span"
                   fontWeight="bold"
                   textTransform="capitalize"
-                  fontSize="1.4em"
+                  fontSize={["1em", "1.2em", "1.4em"]}
                 >
                   Keterangan
                 </Box>
@@ -182,7 +197,7 @@ export default function CategoryList() {
                   textAlign="justify"
                   fontWeight="semibold"
                   color="gray.500"
-                  fontSize="1.2em"
+                  fontSize={["1em", "1em", "1.2em"]}
                 >
                   {report.keterangan}
                 </Box>
@@ -192,14 +207,38 @@ export default function CategoryList() {
                   as="span"
                   fontWeight="bold"
                   textTransform="capitalize"
-                  fontSize="1.4em"
+                  fontSize={["1em", "1.2em", "1.4em"]}
                 >
                   Perkembangan Laporan
                 </Box>
-                <Grid templateColumns="repeat(5, 1fr)" mt="5">
+                <Grid
+                  templateColumns={[
+                    "repeat(1, 1fr)",
+                    "repeat(1, 1fr)",
+                    "repeat(5, 1fr)",
+                  ]}
+                  grid
+                  mt="5"
+                >
                   {listOfStep}
                 </Grid>
               </Box>
+              {parseInt(report.status_id) !== 6 &&
+              parseInt(report.status_id) !== 7 ? null : (
+                <Box py="5">
+                  <Box
+                    as="span"
+                    fontWeight="bold"
+                    textTransform="capitalize"
+                    fontSize="1.4em"
+                  >
+                    Bukti Teknisi
+                  </Box>
+                  <Grid templateColumns="repeat(5, 1fr)" mt="5">
+                    {listOfStep}
+                  </Grid>
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>

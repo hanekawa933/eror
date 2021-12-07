@@ -58,7 +58,7 @@ export default function CreateUserReport() {
         <Image
           src={path + res.gambar}
           alt="Lampiran 3"
-          height="96"
+          height={["52", "52", "96"]}
           w="100%"
           borderTopRadius="lg"
           objectFit="center"
@@ -83,12 +83,8 @@ export default function CreateUserReport() {
         <title>E-ROR | Admin Validasi Laporan</title>
       </Head>
       <DashboardLayout>
-        <Box px="14" pb="14">
-          <Box
-            borderRadius="lg"
-            boxShadow="2xl"
-            _hover={{ boxShadow: "dark-lg" }}
-          >
+        <Box px="5" pb="14">
+          <Box>
             <Box width="100%" borderRadius="lg">
               <Carousel
                 autoPlay={true}
@@ -103,47 +99,45 @@ export default function CreateUserReport() {
                     src="/assets/img/no-image.png"
                     alt="No Image"
                     width="100%"
-                    height="96"
+                    height={["52", "52", "96"]}
                   />
                 )}
               </Carousel>
             </Box>
-            <Box px="10" pb="10">
-              <Box display="flex" alignItems="center" fontWeight="semibold">
-                <Icon icon="carbon:report" width={16 * 2.2} height={16 * 2.2} />
-                <Box as="span" fontSize="2.2em" ml="3">
-                  Validasi Laporan
-                </Box>
-              </Box>
+            <Box px="5" pb="10">
               <Box display="flex" justifyContent="space-between">
                 <Box display="flex" flexDir="column" width="max-content" py="5">
                   <Text fontSize="1em" fontWeight="bold" color="gray.600">
                     {moment(report.tanggal_lapor).format("Do/MM/YYYY")}
                   </Text>
-                  <Text fontSize="1.4em" fontWeight="bold" color="gray.600">
+                  <Text
+                    fontSize={["1em", "1em", "1.2em"]}
+                    fontWeight="bold"
+                    color="gray.600"
+                  >
                     {report.kode_laporan}
                   </Text>
-                  <Text fontSize="1.7em" fontWeight="bold">
+                  <Text fontSize={["1em", "1em", "1.7em"]} fontWeight="bold">
                     {report.jenis_kerusakan}
                   </Text>
                   <Badge
                     colorScheme={badgeColor}
-                    py="3"
-                    px="5"
+                    py={["1", "1", "3"]}
+                    px={["2", "2", "5"]}
                     textAlign="center"
                     borderRadius="full"
                     mt="3"
-                    fontSize="1.1em"
+                    fontSize={["1em", "1em", "1.1em"]}
                   >
                     {report.status}
                   </Badge>
                 </Box>
                 <Box
                   as="img"
-                  src={"http://localhost/eror_api" + report.icon}
+                  src={path + report.icon}
                   maxW="100%"
-                  height="52"
-                  px="20"
+                  height={["28", "32", "52"]}
+                  px={["0", "0", "20"]}
                 ></Box>
               </Box>
               <Box display="flex" flexDir="column" mt="3">
@@ -151,15 +145,15 @@ export default function CreateUserReport() {
                   as="span"
                   fontWeight="bold"
                   textTransform="capitalize"
-                  fontSize="1.4em"
+                  fontSize={["1em", "1.2em", "1.4em"]}
                 >
                   Lokasi
                 </Box>
                 <Box
-                  textAlign="justify"
+                  as="p"
                   fontWeight="semibold"
                   color="gray.500"
-                  fontSize="1.2em"
+                  fontSize={["1em", "1em", "1.2em"]}
                 >
                   {report.lokasi}
                 </Box>
@@ -169,15 +163,16 @@ export default function CreateUserReport() {
                   as="span"
                   fontWeight="bold"
                   textTransform="capitalize"
-                  fontSize="1.4em"
+                  fontSize={["1em", "1.2em", "1.4em"]}
                 >
                   Keterangan
                 </Box>
                 <Box
+                  as="p"
                   textAlign="justify"
                   fontWeight="semibold"
                   color="gray.500"
-                  fontSize="1.2em"
+                  fontSize={["1em", "1em", "1.2em"]}
                 >
                   {report.keterangan}
                 </Box>

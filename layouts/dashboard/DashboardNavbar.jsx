@@ -185,7 +185,7 @@ const DashboardNavbar = () => {
                 </Box>
               ) : null}
             </MenuButton>
-            <MenuList width={["sm", "md"]} pb="5">
+            <MenuList width={["xs", "md"]} pb="5">
               <Box px="5" fontSize="1.1em" fontWeight="bold">
                 <Text>Notifikasi</Text>
               </Box>

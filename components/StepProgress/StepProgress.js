@@ -95,17 +95,18 @@ const StepProgress = ({ index, stepNumber, status_id }) => {
           ? "var(--chakra-colors-gray-800)"
           : "white"
       }`}
+      borderBottom={[`5px solid white`, `5px solid white`, "none"]}
     >
       <Box
         bg={activeCircleColor}
         width="50%"
         height="50%"
         borderRadius="50%"
-        display="flex"
         justifyContent="center"
         alignItems="center"
         border={`5px solid white`}
         p="3"
+        display={["none", "none", "flex"]}
       >
         <Icon
           icon={icon[index]}
