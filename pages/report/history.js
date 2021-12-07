@@ -1,6 +1,6 @@
 import Head from "next/head";
-import DashboardLayout from "../../../layouts/dashboard";
-import CardHistoryReport from "../../../components/CardHistoryReport";
+import DashboardLayout from "../../layouts/dashboard";
+import CardHistoryReport from "../../components/CardHistoryReport";
 import {
   Box,
   Grid,
@@ -20,10 +20,10 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Icon } from "@iconify/react";
-import { TempContext } from "../../../context/TempContext";
-import instance from "../../../axios.default";
+import { TempContext } from "../../context/TempContext";
+import instance from "../../axios.default";
 import { useEffect, useContext, useState } from "react";
-import { ProtectedRoute } from "../../../HOC/withAuth";
+import { ProtectedRoute } from "../../HOC/withAuth";
 
 export default function ReportHistoryAdmin() {
   const gridResponsive = [
