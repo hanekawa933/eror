@@ -11,12 +11,7 @@ export default function DashboardCreateAccount() {
       </Head>
       <DashboardLayout>
         <Box p="14">
-          <Box
-            p="10"
-            borderRadius="lg"
-            boxShadow="2xl"
-            _hover={{ boxShadow: "dark-lg" }}
-          >
+          <Box p="0">
             <Heading fontSize="2.1em">Create User</Heading>
             <FormUser />
           </Box>

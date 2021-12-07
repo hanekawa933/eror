@@ -194,7 +194,7 @@ const FormUser = () => {
             pt="5"
             isInvalid={Boolean(touched.role_id && errors.role_id)}
           >
-            <FormLabel textTransform="capitalize">Kategori</FormLabel>
+            <FormLabel textTransform="capitalize">Role</FormLabel>
             <Select
               placeholder="Pilih Role"
               name="role_id"

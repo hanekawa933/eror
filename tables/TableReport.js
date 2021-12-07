@@ -88,6 +88,8 @@ const TableUserAccount = () => {
     });
   });
 
+  console.log(initValues);
+
   console.log(dataFiltered);
 
   const updateReport = (ids, values) => {
@@ -489,7 +491,7 @@ const TableUserAccount = () => {
 
   const userOption = user.map((result, index) => {
     return (
-      <option value={result.id} key={index}>
+      <option value={result.uId} key={index}>
         {result.email}
       </option>
     );

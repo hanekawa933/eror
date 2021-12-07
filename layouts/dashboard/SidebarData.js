@@ -72,6 +72,11 @@ const user = [
     to: "/report/history",
     icon: getIcon(history),
   },
+  {
+    text: "faq",
+    to: "/faq",
+    icon: getIcon(faq),
+  },
 ];
 
 const admin = [
