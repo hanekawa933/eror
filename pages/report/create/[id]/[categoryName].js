@@ -54,13 +54,8 @@ export default function CreateUserReport() {
         <title>E-ROR | Buat Laporan</title>
       </Head>
       <DashboardLayout>
-        <Box px="14" pb="14">
-          <Box
-            p="10"
-            borderRadius="lg"
-            boxShadow="2xl"
-            _hover={{ boxShadow: "dark-lg" }}
-          >
+        <Box px="4" pb="14">
+          <Box p="4">
             <Box
               display="flex"
               alignItems="center"
@@ -69,22 +64,23 @@ export default function CreateUserReport() {
               bg={useColorMode().colorMode === "dark" ? "gray.700" : "gray.100"}
               borderRadius="lg"
               px="10"
+              pt={["10", "10", "0"]}
             >
               <Box>
                 <Text
-                  fontSize="1.6em"
+                  fontSize={["1em", "1em", "1.6em"]}
                   color={
                     useColorMode().colorMode === "dark"
                       ? "gray.400"
                       : "gray.600"
                   }
                   fontWeight="semibold"
-                  letterSpacing="1px"
+                  letterSpacing={["0px", "0px", "1px"]}
                 >
                   Request for repair:
                 </Text>
                 <Text
-                  fontSize="2em"
+                  fontSize={["1em", "1.2em", "2em"]}
                   fontWeight="bold"
                   textTransform="capitalize"
                   letterSpacing="2px"
@@ -96,10 +92,12 @@ export default function CreateUserReport() {
                 as="img"
                 src={path + category.icon}
                 maxW="100%"
-                height="52"
+                height={["24", "28", "52"]}
               ></Box>
             </Box>
-            <FormUserReport id={id} />
+            <Box>
+              <FormUserReport id={id} />
+            </Box>
           </Box>
         </Box>
       </DashboardLayout>

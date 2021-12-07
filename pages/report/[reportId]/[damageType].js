@@ -161,7 +161,7 @@ export default function CategoryList() {
                   as="img"
                   src={path + report.icon}
                   maxW="100%"
-                  height={["28", "32", "52"]}
+                  height={["24", "32", "52"]}
                   px={["0", "0", "20"]}
                 ></Box>
               </Box>
