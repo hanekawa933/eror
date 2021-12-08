@@ -80,7 +80,7 @@ export const TahapPengecekan = ({ id, fetchReport }) => {
               mt="5"
               type="submit"
             >
-              Pengecekan
+              Konfirmasi Cek
             </Button>
           </Box>
         </Form>
