@@ -178,7 +178,7 @@ export default function TechnicianCheckReport() {
                   {report.keterangan}
                 </Box>
               </Box>
-              {parseInt(userLogin.role_id) !== 3 ? (
+              {parseInt(userLogin.role_id) === 3 ? (
                 parseInt(report.status_id) === 3 ? (
                   <TahapPengecekan
                     id={reportId}

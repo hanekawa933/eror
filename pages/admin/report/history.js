@@ -91,9 +91,20 @@ export default function ReportHistoryAdmin() {
 
   status = [{ id: "999", nama: "Semua" }, ...status];
 
-  const listOfButton =
+  const adminStatus =
     status &&
-    status.map((res) => {
+    status.filter(
+      (res) =>
+        parseInt(res.id) === 2 ||
+        parseInt(res.id) === 3 ||
+        parseInt(res.id) === 6 ||
+        parseInt(res.id) === 7 ||
+        parseInt(res.id) === 999
+    );
+
+  const listOfButton =
+    adminStatus &&
+    adminStatus.map((res) => {
       const parsedId = parseInt(res.id);
       return (
         <MenuItem
@@ -202,6 +213,7 @@ export default function ReportHistoryAdmin() {
           pointerEvents="none"
         ></Box>
         <Text as="h1" fontWeight="semibold">
+          Ooops... tidak ada data pada
           {semua ? " semua kategori" : `kategori ${kategori}`}
         </Text>
       </Box>
