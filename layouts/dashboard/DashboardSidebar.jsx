@@ -77,7 +77,7 @@ const DashboardSidebar = () => {
       }}
       position="fixed"
       zIndex={999}
-      overflow={["scroll", "hidden"]}
+      overflowY={settings.userLogin.role_id ? "auto" : "hidden"}
       top="0"
       bottom="45px"
       css={{
