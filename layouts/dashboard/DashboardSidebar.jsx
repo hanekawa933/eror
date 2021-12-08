@@ -73,13 +73,13 @@ const DashboardSidebar = () => {
           settings.bigMode === true ? "0.97" : "1",
           settings.bigMode === true ? "0.97" : "1",
         ],
-        overflowY: settings.userLogin.role_id ? "hidden" : "scroll",
+        overflowY: "auto",
       }}
       position="fixed"
       zIndex={999}
       overflow="hidden"
       top="0"
-      bottom={settings.userLogin.role_id ? "0" : "45px"}
+      bottom="45px"
       css={{
         "&::-webkit-scrollbar": {
           width: "4px",
