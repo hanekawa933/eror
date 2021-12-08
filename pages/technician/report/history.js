@@ -65,7 +65,7 @@ export default function ReportHistoryTeknisi() {
 
   const fetchReportByCategoryId = async (id) => {
     try {
-      const result = await instance.get(`/laporan/history?query=user`);
+      const result = await instance.get(`/laporan/history?query=teknisi`);
       setReport(result.data.data ? result.data.data : []);
     } catch (error) {
       alert(error);

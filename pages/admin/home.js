@@ -169,7 +169,7 @@ export default function UserHomepage() {
                     textTransform="capitalize"
                     size="sm"
                   >
-                    lihat semua kategori
+                    semua kategori
                   </Button>
                 </a>
               </Link>

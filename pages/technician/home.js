@@ -16,6 +16,43 @@ import instance from "../../axios.default";
 import Link from "next/link";
 
 export default function UserHomepage() {
+  const { colorMode } = useColorMode();
+  const bgTheme = colorMode === "dark" ? "gray.700" : "gray.50";
+  const jfyContentResponsive = [
+    "center",
+    "center",
+    "center",
+    "space-between",
+    "space-between",
+    "space-between",
+  ];
+  const alItemsResponsive = [
+    "center",
+    "center",
+    "center",
+    "center",
+    "center",
+    "center",
+  ];
+  const jfyDirResponsive = ["column", "column", "column", "row", "row", "row"];
+  const alignResponsive = [
+    "center",
+    "center",
+    "center",
+    "left",
+    "left",
+    "left",
+  ];
+
+  const gridResponsive = [
+    "repeat(3, 1fr)",
+    "repeat(1, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+    "repeat(3, 1fr)",
+  ];
+
   const [userLogin, setUserLogin] = useState([]);
   const [category, setCategory] = useState([]);
   const [report, setReport] = useState([]);
@@ -54,49 +91,18 @@ export default function UserHomepage() {
     fetchCategory();
     fetchReportByUserLogin();
   }, []);
-  const { colorMode } = useColorMode();
-  const bgTheme = colorMode === "dark" ? "gray.700" : "gray.50";
-  const colorTheme = colorMode === "dark" ? "white" : "black";
-  const colorThemeSecondary = colorMode === "dark" ? "gray.200" : "gray.500";
-  const jfyContentResponsive = [
-    "center",
-    "center",
-    "center",
-    "space-between",
-    "space-between",
-    "space-between",
-  ];
-  const alItemsResponsive = [
-    "center",
-    "center",
-    "center",
-    "center",
-    "center",
-    "center",
-  ];
-  const jfyDirResponsive = ["column", "column", "column", "row", "row", "row"];
-  const alignResponsive = [
-    "center",
-    "center",
-    "center",
-    "left",
-    "left",
-    "left",
-  ];
 
   const listCategory = category
     .map((res) => {
       return (
-        <>
-          <CardCategory
-            key={res.id}
-            icon={res.icon}
-            category={res.nama}
-            id={res.id}
-            role={userLogin.role_id}
-            notification={res.notifikasi}
-          />
-        </>
+        <CardCategory
+          key={res.id}
+          icon={res.icon}
+          category={res.nama}
+          id={res.id}
+          role={userLogin.role_id}
+          notification={res.notifikasi}
+        />
       );
     })
     .slice(0, 3);
@@ -104,12 +110,12 @@ export default function UserHomepage() {
   return (
     <div>
       <Head>
-        <title>E-ROR | SuperAdmin Create Account</title>
+        <title>E-ROR | Halaman Home</title>
       </Head>
       <DashboardLayout>
-        <Box px="10" pt="5" pb="7">
+        <Box px={["3", "5"]} pt="5" pb="7">
           <Box
-            px="10%"
+            px={["5%", "10%"]}
             py="5"
             borderRadius="lg"
             boxShadow="lg"
@@ -124,7 +130,7 @@ export default function UserHomepage() {
               <Heading
                 fontSize={["1.2em", "1.4em", "1.6em", "1.8em", "2em", "2.2em"]}
                 color="black"
-                pb="2"
+                pb={["1", "2"]}
                 textAlign={alignResponsive}
               >
                 <Box as="span" display="block" color="rgba(0,0,0,0.55)">
@@ -138,7 +144,7 @@ export default function UserHomepage() {
                 fontWeight="semibold"
                 textAlign={alignResponsive}
               >
-                Lakukan pengecekan, yuk!
+                Periksa laporan masuk, yuk!
               </Text>
             </Box>
             <Box
@@ -149,26 +155,26 @@ export default function UserHomepage() {
               mt={["5", "5", "5", "0", "0", "0"]}
             ></Box>
           </Box>
-          <Box p="5" borderRadius="lg" mt="10">
+          <Box p="5" mt={["5", "10"]}>
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
             >
               <Heading fontSize="1.3em">Kategori Laporan</Heading>
-              <Link href="/technician/report/category">
+              <Link href="/admin/report/category">
                 <a>
                   <Button
                     colorScheme="orange"
                     textTransform="capitalize"
                     size="sm"
                   >
-                    lihat semua kategori
+                    semua kategori
                   </Button>
                 </a>
               </Link>
             </Box>
-            <Grid templateColumns="repeat(3, 1fr)" gap={6} mt="9">
+            <Grid templateColumns={gridResponsive} gap={[3, 6]} mt="9">
               {listCategory}
             </Grid>
           </Box>
