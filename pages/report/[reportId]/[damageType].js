@@ -71,6 +71,8 @@ export default function CategoryList() {
       : "blue";
 
   const gambar = report && report.gambar ? report.gambar : [];
+  const gambarTeknisi =
+    report && report.gambarTeknisi ? report.gambarTeknisi : [];
 
   const listOfImage = gambar.map((res, index) => {
     return (
@@ -87,15 +89,15 @@ export default function CategoryList() {
     );
   });
 
-  const listOfImageBukti = gambar.map((res, index) => {
+  const listOfImageBukti = gambarTeknisi.map((res, index) => {
     return (
       <Box key={index}>
         <Image
           src={path + res.gambar}
           alt="Lampiran 3"
-          height="96"
+          height="56"
           w="100%"
-          borderTopRadius="lg"
+          borderRadius="lg"
           objectFit="center"
         />
       </Box>
@@ -224,7 +226,8 @@ export default function CategoryList() {
                 </Grid>
               </Box>
               {parseInt(report.status_id) !== 6 &&
-              parseInt(report.status_id) !== 7 ? null : (
+              parseInt(report.status_id) !==
+                7 ? null : listOfImageBukti.length < 1 ? null : (
                 <Box py="5">
                   <Box
                     as="span"
@@ -234,8 +237,12 @@ export default function CategoryList() {
                   >
                     Bukti Teknisi
                   </Box>
-                  <Grid templateColumns="repeat(5, 1fr)" mt="5">
-                    {listOfStep}
+                  <Grid
+                    templateColumns="repeat(3, 1fr)"
+                    mt="5"
+                    gap={["3", "6"]}
+                  >
+                    {listOfImageBukti}
                   </Grid>
                 </Box>
               )}

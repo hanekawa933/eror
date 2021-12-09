@@ -194,17 +194,15 @@ const UserHomepage = () => {
               mt={["5", "5", "5", "0", "0", "0"]}
             ></Box>
           </Box>
-          <Box borderRadius="lg" mt="10" pr={["0", "10", "10", "10", "96"]}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              mt="10"
-            >
-              <Heading fontSize={headingResponsive} textTransform="capitalize">
-                FAQ
-              </Heading>
-            </Box>
+          <Box
+            borderRadius="lg"
+            mt="10"
+            pr={["0", "10", "10", "10", "96"]}
+            pl="5"
+          >
+            <Heading fontSize={headingResponsive} textTransform="capitalize">
+              FAQ
+            </Heading>
             <Box mt="4">
               <Accordion allowMultiple>{listFaq}</Accordion>
             </Box>
